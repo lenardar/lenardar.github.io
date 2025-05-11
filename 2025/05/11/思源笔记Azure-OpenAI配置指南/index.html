@@ -6,25 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  API">
+    <meta name="description" content="思源笔记Azure OpenAI配置指南关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”">
 <meta property="og:type" content="article">
 <meta property="og:title" content="思源笔记Azure OpenAI配置指南">
 <meta property="og:url" content="http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
-<meta property="og:description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  API">
+<meta property="og:description" content="思源笔记Azure OpenAI配置指南关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972323673.png">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972337938.png">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972347964.png">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972359247.png">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972365840.png">
-<meta property="og:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972372484.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/jpg/35652371/1746971757925-d0ac42b0-464f-4fc2-88e1-7991a3965750.jpg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758218-fc0ccf0f-dcbd-4100-97b2-51a7167d55d3.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758286-3061edc4-7c56-4185-8894-c78a9c3bf5cc.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758434-7bf9b635-5a60-4695-8d7e-4f33e2274b06.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758494-1c43590c-05c8-4baa-a8d9-6aeb987d69b3.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758560-6e493b3b-dd6f-4809-bc26-2ba7976a70b4.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758620-b7c07e29-e3a5-4318-a8e3-824cececd9f2.png">
 <meta property="article:published_time" content="2025-05-11T14:04:58.000Z">
-<meta property="article:modified_time" content="2025-05-11T14:06:14.459Z">
+<meta property="article:modified_time" content="2025-05-11T14:20:37.955Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://lenardar.github.io/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972323673.png">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2025/jpg/35652371/1746971757925-d0ac42b0-464f-4fc2-88e1-7991a3965750.jpg">
     
     
       
@@ -120,7 +121,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">思源笔记Azure OpenAI配置指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">4.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">7.</span> <span class="toc-text">模型测试</span></a></li></ol>
       </div>
     
   </span>
@@ -165,15 +166,16 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！</p>
+    <p><img src="https://cdn.nlark.com/yuque/0/2025/jpg/35652371/1746971757925-d0ac42b0-464f-4fc2-88e1-7991a3965750.jpg"></p>
+<h1 id="思源笔记Azure-OpenAI配置指南"><a href="#思源笔记Azure-OpenAI配置指南" class="headerlink" title="思源笔记Azure OpenAI配置指南"></a>思源笔记Azure OpenAI配置指南</h1><p>关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！</p>
 <h1 id="需要填写的参数"><a href="#需要填写的参数" class="headerlink" title="需要填写的参数"></a>需要填写的参数</h1><p>首先需要填一下用红框框出来的参数：</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972323673.png" alt="1746972323673"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758218-fc0ccf0f-dcbd-4100-97b2-51a7167d55d3.png"></p>
 <p>一个一个介绍。</p>
 <h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>打开<a target="_blank" rel="noopener" href="https://ai.azure.com/resource/overview?wsid=/subscriptions/0b9125f4-4aaa-4c9c-9baf-8cf08ef536fa/resourceGroups/xu/providers/Microsoft.CognitiveServices/accounts/hangz-ma8x5yyo-eastus2&tid=160241f0-17d5-495b-a797-4fa33b5ed5aa">欢迎使用 Azure AI Foundry - Azure OpenAI 服务</a>连接</p>
 <p>选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972337938.png" alt="1746972337938"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758286-3061edc4-7c56-4185-8894-c78a9c3bf5cc.png"></p>
 <h1 id="API-Key"><a href="#API-Key" class="headerlink" title="API Key"></a>API Key</h1><p>点击任意一个模型，模型中的“密钥”就是要设置的API Key：</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972347964.png" alt="1746972347964"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758434-7bf9b635-5a60-4695-8d7e-4f33e2274b06.png"></p>
 <h1 id="API-基础地址"><a href="#API-基础地址" class="headerlink" title="API 基础地址"></a>API 基础地址</h1><p>这个设置就比较坑了，不能直接用目标URL，而是截取一部分，比如你的API是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&#123;你的&#125;.cognitiveservices.azure.com/openai/deployments/o3-mini/chat/completions?api-version=<span class="number">2025</span>-01-01-preview</span><br></pre></td></tr></table></figure>
 
@@ -181,15 +183,15 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&#123;你的&#125;.cognitiveservices.azure.com</span><br></pre></td></tr></table></figure>
 
 <p>或者也可以直接复制主页的“Azure OpenAI 服务终结点”：</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972359247.png" alt="1746972359247"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758494-1c43590c-05c8-4baa-a8d9-6aeb987d69b3.png"></p>
 <h1 id="API版本"><a href="#API版本" class="headerlink" title="API版本"></a>API版本</h1><p>这也是一个坑，在“部署”界面中的“模型版本”是没用的：</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972365840.png" alt="1746972365840"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758560-6e493b3b-dd6f-4809-bc26-2ba7976a70b4.png"></p>
 <p>正确的做法是从目标URL中提取：</p>
-<p><img src="/image/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/1746972372484.png" alt="1746972372484"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758620-b7c07e29-e3a5-4318-a8e3-824cececd9f2.png"></p>
 <p>比如目标URL是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&#123;你的&#125;.cognitiveservices.azure.com/openai/deployments/o3-mini/chat/completions?api-version=<span class="number">2025</span>-01-01-preview</span><br></pre></td></tr></table></figure>
 
-<p>那么模型版本就是api-version&#x3D;后面的部分，这里是：</p>
+<p>那么模型版本就是 <code>api-version=</code>后面的部分，这里是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2025</span>-01-01-preview</span><br></pre></td></tr></table></figure>
 
 <h1 id="模型测试"><a href="#模型测试" class="headerlink" title="模型测试"></a>模型测试</h1><p>这些参数填完，就可以用了，测试一下！</p>
@@ -226,7 +228,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">思源笔记Azure OpenAI配置指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">4.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">7.</span> <span class="toc-text">模型测试</span></a></li></ol>
       </div>
     
 
