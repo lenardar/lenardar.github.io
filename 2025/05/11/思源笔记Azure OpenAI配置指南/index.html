@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="思源笔记Azure OpenAI配置指南关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”">
+    <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="见字如面！">
+<meta property="og:title" content="思源笔记Azure OpenAI 配置指南">
 <meta property="og:url" content="http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
-<meta property="og:description" content="思源笔记Azure OpenAI配置指南关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”">
+<meta property="og:description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/jpg/35652371/1746971757925-d0ac42b0-464f-4fc2-88e1-7991a3965750.jpg">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758218-fc0ccf0f-dcbd-4100-97b2-51a7167d55d3.png">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758560-6e493b3b-dd6f-4809-bc26-2ba7976a70b4.png">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758620-b7c07e29-e3a5-4318-a8e3-824cececd9f2.png">
 <meta property="article:published_time" content="2025-05-11T12:31:16.000Z">
-<meta property="article:modified_time" content="2025-05-12T01:20:50.909Z">
+<meta property="article:modified_time" content="2025-05-12T01:22:39.984Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -45,7 +45,7 @@
       
     
     <!-- title -->
-    <title>见字如面！</title>
+    <title>思源笔记Azure OpenAI 配置指南</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -105,23 +105,23 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=见字如面！"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=见字如面！"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=见字如面！&body=Check out this article: http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=见字如面！&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=见字如面！"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=思源笔记Azure OpenAI 配置指南"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=思源笔记Azure OpenAI 配置指南"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=思源笔记Azure OpenAI 配置指南&body=Check out this article: http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=思源笔记Azure OpenAI 配置指南&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=思源笔记Azure OpenAI 配置指南"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">思源笔记Azure OpenAI配置指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">4.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">7.</span> <span class="toc-text">模型测试</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
       </div>
     
   </span>
@@ -134,7 +134,7 @@
   <header>
     
     <h1 class="posttitle p-name" itemprop="name headline">
-        见字如面！
+        思源笔记Azure OpenAI 配置指南
     </h1>
 
 
@@ -167,7 +167,7 @@
 
   <div class="content e-content" itemprop="articleBody">
     <p><img src="https://cdn.nlark.com/yuque/0/2025/jpg/35652371/1746971757925-d0ac42b0-464f-4fc2-88e1-7991a3965750.jpg" alt="img"></p>
-<h1 id="思源笔记Azure-OpenAI配置指南"><a href="#思源笔记Azure-OpenAI配置指南" class="headerlink" title="思源笔记Azure OpenAI配置指南"></a>思源笔记Azure OpenAI配置指南</h1><p>关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！</p>
+<p>关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！</p>
 <h1 id="需要填写的参数"><a href="#需要填写的参数" class="headerlink" title="需要填写的参数"></a>需要填写的参数</h1><p>首先需要填一下用红框框出来的参数：</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2025/png/35652371/1746971758218-fc0ccf0f-dcbd-4100-97b2-51a7167d55d3.png"></p>
 <p>一个一个介绍。</p>
@@ -228,23 +228,23 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure-OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">思源笔记Azure OpenAI配置指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">4.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">7.</span> <span class="toc-text">模型测试</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
       </div>
     
 
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=见字如面！"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=见字如面！"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=见字如面！&body=Check out this article: http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=见字如面！"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=见字如面！&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=见字如面！"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=思源笔记Azure OpenAI 配置指南"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=思源笔记Azure OpenAI 配置指南"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=思源笔记Azure OpenAI 配置指南&body=Check out this article: http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记Azure OpenAI 配置指南"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=思源笔记Azure OpenAI 配置指南&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/05/11/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=思源笔记Azure OpenAI 配置指南"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
