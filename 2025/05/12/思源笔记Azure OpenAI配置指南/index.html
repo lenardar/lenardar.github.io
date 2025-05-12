@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数 ‍">
+    <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="见字如面！">
 <meta property="og:url" content="http://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
-<meta property="og:description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数 ‍">
+<meta property="og:description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/marek-piwnicki-RAdX-hwTci8-unsplash.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100022387.png">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100153645.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100330277.png">
 <meta property="article:published_time" content="2025-05-12T02:08:34.000Z">
-<meta property="article:modified_time" content="2025-05-12T02:09:10.130Z">
+<meta property="article:modified_time" content="2025-05-12T02:10:06.014Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -173,10 +173,8 @@
 <p>一个一个介绍。</p>
 <h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>打开<a target="_blank" rel="noopener" href="https://ai.azure.com/resource/overview?wsid=/subscriptions/0b9125f4-4aaa-4c9c-9baf-8cf08ef536fa/resourceGroups/xu/providers/Microsoft.CognitiveServices/accounts/hangz-ma8x5yyo-eastus2&tid=160241f0-17d5-495b-a797-4fa33b5ed5aa">欢迎使用 Azure AI Foundry - Azure OpenAI 服务</a>连接</p>
 <p>选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数</p>
-<p>‍</p>
 <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100103717.png"></p>
 <h1 id="API-Key"><a href="#API-Key" class="headerlink" title="API Key"></a>API Key</h1><p>点击任意一个模型，模型中的“密钥”就是要设置的API Key：</p>
-<p>‍</p>
 <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100122535.png"></p>
 <h1 id="API-基础地址"><a href="#API-基础地址" class="headerlink" title="API 基础地址"></a>API 基础地址</h1><p>这个设置就比较坑了，不能直接用目标URL，而是截取一部分，比如你的API是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&#123;你的&#125;.cognitiveservices.azure.com/openai/deployments/o3-mini/chat/completions?api-version=<span class="number">2025</span>-01-01-preview</span><br></pre></td></tr></table></figure>
@@ -189,7 +187,6 @@
 <h1 id="API版本"><a href="#API版本" class="headerlink" title="API版本"></a>API版本</h1><p>这也是一个坑，在“部署”界面中的“模型版本”是没用的：</p>
 <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100153645.png"></p>
 <p>正确的做法是从目标URL中提取：</p>
-<p>‍</p>
 <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250512100330277.png"></p>
 <p>比如目标URL是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://&#123;你的&#125;.cognitiveservices.azure.com/openai/deployments/o3-mini/chat/completions?api-version=<span class="number">2025</span>-01-01-preview</span><br></pre></td></tr></table></figure>
