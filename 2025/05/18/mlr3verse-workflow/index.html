@@ -6,16 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="先抓主要矛盾，再抓次要矛盾。 学习mlr3，应该先掌握mlr3的工作流，在关注每个环节的细节，从而实现连贯的理解。 一般机器学习流程123456789101112graph LR    A[问题定义] --&gt; B[数据准备]    B --&gt; C[特征工程]    C --&gt; D[模型构建]    D --&gt; E[模型验证]    E --&gt; F[模型部署]">
+    <meta name="description" content="先抓主要矛盾，再抓次要矛盾。 学习mlr3，应该先掌握mlr3的工作流，在关注每个环节的细节，从而实现连贯的理解。 一般机器学习流程 单次模型训练工作流考虑训练单个模型的工作流，不考虑调参。  数据准备只涉及数据集划分，不包含EDA等。 特征工程暂不考虑，先考虑极简工作流。 因此总结为以下工作流：  任务（Task） 功能：定义数据和问题类型 类型：ClassifTask（分类）、RegrTas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mlr3verse workflow">
 <meta property="og:url" content="http://lenardar.github.io/2025/05/18/mlr3verse-workflow/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
-<meta property="og:description" content="先抓主要矛盾，再抓次要矛盾。 学习mlr3，应该先掌握mlr3的工作流，在关注每个环节的细节，从而实现连贯的理解。 一般机器学习流程123456789101112graph LR    A[问题定义] --&gt; B[数据准备]    B --&gt; C[特征工程]    C --&gt; D[模型构建]    D --&gt; E[模型验证]    E --&gt; F[模型部署]">
+<meta property="og:description" content="先抓主要矛盾，再抓次要矛盾。 学习mlr3，应该先掌握mlr3的工作流，在关注每个环节的细节，从而实现连贯的理解。 一般机器学习流程 单次模型训练工作流考虑训练单个模型的工作流，不考虑调参。  数据准备只涉及数据集划分，不包含EDA等。 特征工程暂不考虑，先考虑极简工作流。 因此总结为以下工作流：  任务（Task） 功能：定义数据和问题类型 类型：ClassifTask（分类）、RegrTas">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/unsplash-5VV06BO2kyc-20250518183202-yyuy5ry.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/download.svg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/1111.svg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/324324.svg">
 <meta property="article:published_time" content="2025-05-18T13:50:32.000Z">
-<meta property="article:modified_time" content="2025-05-18T13:53:27.388Z">
+<meta property="article:modified_time" content="2025-05-18T13:59:55.787Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="机器学习">
@@ -164,16 +167,13 @@
     <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/unsplash-5VV06BO2kyc-20250518183202-yyuy5ry.jpg"></p>
 <p>先抓主要矛盾，再抓次要矛盾。</p>
 <p>学习mlr3，应该先掌握mlr3的工作流，在关注每个环节的细节，从而实现连贯的理解。</p>
-<h1 id="一般机器学习流程"><a href="#一般机器学习流程" class="headerlink" title="一般机器学习流程"></a><strong>一般机器学习流程</strong></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[问题定义] --&gt; B[数据准备]</span><br><span class="line">    B --&gt; C[特征工程]</span><br><span class="line">    C --&gt; D[模型构建]</span><br><span class="line">    D --&gt; E[模型验证]</span><br><span class="line">    E --&gt; F[模型部署]</span><br><span class="line">    F --&gt; G[持续优化]</span><br><span class="line"></span><br><span class="line">    subgraph 迭代过程</span><br><span class="line">        C --&gt;|反馈| E</span><br><span class="line">        E --&gt;|调整| D</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
-
+<h1 id="一般机器学习流程"><a href="#一般机器学习流程" class="headerlink" title="一般机器学习流程"></a><strong>一般机器学习流程</strong></h1><p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/download.svg"></p>
 <h1 id="单次模型训练工作流"><a href="#单次模型训练工作流" class="headerlink" title="单次模型训练工作流"></a><strong>单次模型训练工作流</strong></h1><p>考虑训练单个模型的工作流，不考虑调参。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[问题定义] --&gt; B[数据准备]</span><br><span class="line">    B --&gt; C[特征工程]</span><br><span class="line">    C --&gt; D[模型构建]</span><br><span class="line">    D --&gt; E[模型验证]</span><br></pre></td></tr></table></figure>
-
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/1111.svg"></p>
 <p>数据准备只涉及数据集划分，不包含EDA等。</p>
 <p>特征工程暂不考虑，先考虑极简工作流。</p>
 <p>因此总结为以下工作流：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[Task] --&gt; B[数据+问题类型]</span><br><span class="line">B --&gt; C[Learner]</span><br><span class="line">C --&gt; D[模型算法]</span><br><span class="line">D --&gt; E[Resampling]</span><br><span class="line">E --&gt; F[性能评估]</span><br></pre></td></tr></table></figure>
-
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/324324.svg"></p>
 <h2 id="任务（Task）"><a href="#任务（Task）" class="headerlink" title="任务（Task）"></a>任务（Task）</h2><ul>
 <li><strong>功能</strong>：定义数据和问题类型</li>
 <li><strong>类型</strong>：<code>ClassifTask</code>（分类）、<code>RegrTask</code>（回归）、<code>ClusterTask</code>（聚类）</li>
