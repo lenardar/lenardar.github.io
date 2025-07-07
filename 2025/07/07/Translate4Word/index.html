@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="语雀链接：https:&#x2F;&#x2F;www.yuque.com&#x2F;lenardar&#x2F;scp81t&#x2F;lqtleq91wvncza35?singleDoc# 《Translate4Word》 此工具模仿沉浸式翻译实现 Word 段落翻译，简单介绍一下使用方法。 硅基流动使用指南注册硅基流动后复制 api 即可，代码考虑使用体验默认使用 deepseek-v3。  硅基流动白嫖指南注册输入邀请码注册即送 14 元">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Translate4Word">
+<meta property="og:url" content="http://lenardar.github.io/2025/07/07/Translate4Word/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="语雀链接：https:&#x2F;&#x2F;www.yuque.com&#x2F;lenardar&#x2F;scp81t&#x2F;lqtleq91wvncza35?singleDoc# 《Translate4Word》 此工具模仿沉浸式翻译实现 Word 段落翻译，简单介绍一下使用方法。 硅基流动使用指南注册硅基流动后复制 api 即可，代码考虑使用体验默认使用 deepseek-v3。  硅基流动白嫖指南注册输入邀请码注册即送 14 元">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/OmijimaIsland_ZH-CN3328515301_UHD.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101326.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101420.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101535.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707102051.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707102107.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104540.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104503.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104627.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104656.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104850.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104949.png">
+<meta property="article:published_time" content="2025-07-07T02:51:37.000Z">
+<meta property="article:modified_time" content="2025-07-07T02:52:17.175Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/OmijimaIsland_ZH-CN3328515301_UHD.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Translate4Word</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/05/24/MacBook-%E5%BE%AE%E4%BF%A1%E6%96%87%E4%BB%B6%E4%BA%91%E5%A4%87%E4%BB%BD/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/07/07/Translate4Word/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/07/07/Translate4Word/&text=Translate4Word"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/07/07/Translate4Word/&is_video=false&description=Translate4Word"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Translate4Word&body=Check out this article: http://lenardar.github.io/2025/07/07/Translate4Word/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/07/07/Translate4Word/&name=Translate4Word&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/07/07/Translate4Word/&t=Translate4Word"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%85%E5%9F%BA%E6%B5%81%E5%8A%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">硅基流动使用指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%85%E5%9F%BA%E6%B5%81%E5%8A%A8%E7%99%BD%E5%AB%96%E6%8C%87%E5%8D%97"><span class="toc-number">2.</span> <span class="toc-text">硅基流动白嫖指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%BE%93%E5%85%A5%E9%82%80%E8%AF%B7%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">注册输入邀请码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%80%E8%AF%B7%E6%96%B0%E4%BA%BA"><span class="toc-number">2.2.</span> <span class="toc-text">邀请新人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81"><span class="toc-number">2.3.</span> <span class="toc-text">学生认证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Translate4Word-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="toc-number">3.</span> <span class="toc-text">Translate4Word 使用指南</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Translate4Word
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-07-07T02:51:37.000Z" class="dt-published" itemprop="datePublished">2025-07-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/OmijimaIsland_ZH-CN3328515301_UHD.jpg"></p>
+<p><strong>语雀链接：</strong><a target="_blank" rel="noopener" href="https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?singleDoc#">https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?singleDoc# 《Translate4Word》</a></p>
+<p>此工具模仿沉浸式翻译实现 Word 段落翻译，简单介绍一下使用方法。</p>
+<h1 id="硅基流动使用指南"><a href="#硅基流动使用指南" class="headerlink" title="硅基流动使用指南"></a>硅基流动使用指南</h1><p>注册硅基流动后复制 api 即可，代码考虑使用体验默认使用 deepseek-v3。</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101326.png"></p>
+<h1 id="硅基流动白嫖指南"><a href="#硅基流动白嫖指南" class="headerlink" title="硅基流动白嫖指南"></a>硅基流动白嫖指南</h1><h2 id="注册输入邀请码"><a href="#注册输入邀请码" class="headerlink" title="注册输入邀请码"></a>注册输入邀请码</h2><p>注册即送 14 元赠金，输入邀请码多得 14 元赠金：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101420.png"></p>
+<p>我的邀请码是（大家懂我意思吧，哈哈哈）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5Y5AlUSc</span><br></pre></td></tr></table></figure>
+
+<p>邀请链接：</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.siliconflow.cn/i/5Y5AlUSc">https://cloud.siliconflow.cn/i/5Y5AlUSc</a></p>
+<h2 id="邀请新人"><a href="#邀请新人" class="headerlink" title="邀请新人"></a>邀请新人</h2><p>通过邀请新人进一步白嫖：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707101535.png"></p>
+<h2 id="学生认证"><a href="#学生认证" class="headerlink" title="学生认证"></a>学生认证</h2><p>硅基流动周年庆，学生认证即送 50 元赠金！</p>
+<p><a target="_blank" rel="noopener" href="https://siliconflow.feishu.cn/docx/CNKIdhUVyo3wrsxPuk2cka3pnyy">https://siliconflow.feishu.cn/docx/CNKIdhUVyo3wrsxPuk2cka3pnyy</a></p>
+<h1 id="Translate4Word-使用指南"><a href="#Translate4Word-使用指南" class="headerlink" title="Translate4Word 使用指南"></a>Translate4Word 使用指南</h1><p>代码如下，直接运行即可：</p>
+<p><a target="_blank" rel="noopener" href="https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=m9a3W">https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=m9a3W</a></p>
+<p>如果家人们方便的话可以去我 github 仓库点个 star：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/lenardar/tools.git">GitHub - lenardar&#x2F;tools</a></p>
+<p>图形化界面，首先可以在代码中指定 api：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707102051.png"></p>
+<p>也可以在图形化界面中输入，直接运行 py 文件：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707102107.png"></p>
+<p>测试文档部分内容：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104540.png"></p>
+<p>文件如下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=gWW4A">https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=gWW4A</a></p>
+<p>下面在图形界面中选择文件：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104503.png"></p>
+<p>选择完成，点击开始翻译：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104627.png"></p>
+<p>随后选择下载位置：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104656.png"></p>
+<p>翻译完成：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104850.png"></p>
+<p>预览一下翻译结果：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/20250707104949.png"></p>
+<p>翻译后的文件：</p>
+<p><a target="_blank" rel="noopener" href="https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=YrKdN">https://www.yuque.com/lenardar/scp81t/lqtleq91wvncza35?inner=YrKdN</a></p>
+<p>欧耶，搞定了</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%85%E5%9F%BA%E6%B5%81%E5%8A%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">硅基流动使用指南</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A1%85%E5%9F%BA%E6%B5%81%E5%8A%A8%E7%99%BD%E5%AB%96%E6%8C%87%E5%8D%97"><span class="toc-number">2.</span> <span class="toc-text">硅基流动白嫖指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%BE%93%E5%85%A5%E9%82%80%E8%AF%B7%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">注册输入邀请码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%80%E8%AF%B7%E6%96%B0%E4%BA%BA"><span class="toc-number">2.2.</span> <span class="toc-text">邀请新人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E7%94%9F%E8%AE%A4%E8%AF%81"><span class="toc-number">2.3.</span> <span class="toc-text">学生认证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Translate4Word-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="toc-number">3.</span> <span class="toc-text">Translate4Word 使用指南</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/07/07/Translate4Word/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/07/07/Translate4Word/&text=Translate4Word"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/07/07/Translate4Word/&is_video=false&description=Translate4Word"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Translate4Word&body=Check out this article: http://lenardar.github.io/2025/07/07/Translate4Word/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/07/07/Translate4Word/&title=Translate4Word"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/07/07/Translate4Word/&name=Translate4Word&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/07/07/Translate4Word/&t=Translate4Word"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2025
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
