@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="我们在使用Apple Books时会发现导入的epub导出后在其他阅读器里不能用了，这是因为Apple Books修改了我们的epub，后缀变成了 .epub.pkgf。 解决方法参考下面链接： 苹果Apple Books相当好用，值得推荐！但也有个大坑要注意 - Apple银魂 - 科技改变生活 - 万事屋 | 生活·动漫·娱乐综合社区-银魂同好聚集地 我们提炼为以下步骤：  拖拽到任意文件夹">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iBooks2epub">
+<meta property="og:url" content="http://lenardar.github.io/2025/08/25/iBooks2epub/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="我们在使用Apple Books时会发现导入的epub导出后在其他阅读器里不能用了，这是因为Apple Books修改了我们的epub，后缀变成了 .epub.pkgf。 解决方法参考下面链接： 苹果Apple Books相当好用，值得推荐！但也有个大坑要注意 - Apple银魂 - 科技改变生活 - 万事屋 | 生活·动漫·娱乐综合社区-银魂同好聚集地 我们提炼为以下步骤：  拖拽到任意文件夹">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/ProcidaItaly_ZH-CN7712975930_UHD.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102630-jmhfj2w.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102744-wo7q2ie.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102807-cwk1ja8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102913-va4pavz.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103746-7apkn2o.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103148-ejs9il4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103308-6w5boy8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103357-7v1xuhm.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103434-wqk58fq.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103456-jybs72f.png">
+<meta property="article:published_time" content="2025-08-25T02:47:57.000Z">
+<meta property="article:modified_time" content="2025-08-25T02:50:44.461Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/ProcidaItaly_ZH-CN7712975930_UHD.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>iBooks2epub</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/07/07/Translate4Word/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/08/25/iBooks2epub/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&text=iBooks2epub"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&is_video=false&description=iBooks2epub"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=iBooks2epub&body=Check out this article: http://lenardar.github.io/2025/08/25/iBooks2epub/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&name=iBooks2epub&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/08/25/iBooks2epub/&t=iBooks2epub"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        iBooks2epub
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-08-25T02:47:57.000Z" class="dt-published" itemprop="datePublished">2025-08-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/ProcidaItaly_ZH-CN7712975930_UHD.jpg"></p>
+<p>我们在使用Apple Books时会发现导入的epub导出后在其他阅读器里不能用了，这是因为Apple Books修改了我们的epub，后缀变成了 <code>.epub.pkgf</code>。</p>
+<p>解决方法参考下面链接：</p>
+<p><a target="_blank" rel="noopener" href="https://www.rei3.com/forum-post/58056.html">苹果Apple Books相当好用，值得推荐！但也有个大坑要注意 - Apple银魂 - 科技改变生活 - 万事屋 | 生活·动漫·娱乐综合社区-银魂同好聚集地</a></p>
+<p>我们提炼为以下步骤：</p>
+<ol>
+<li>拖拽到任意文件夹导出</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102630-jmhfj2w.png" alt="image"></p>
+<ol start="2">
+<li>用默认工具压缩为zip</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102744-wo7q2ie.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102807-cwk1ja8.png" alt="image"></p>
+<ol start="3">
+<li>删除Apple Books中导出的原文件，因为我们要修改后缀</li>
+<li>将压缩包的 <code>.zip</code>后缀删除</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825102913-va4pavz.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103746-7apkn2o.png" alt="image"></p>
+<hr>
+<p>但是，手动操作太麻烦了，如果我们有100本书，1000本书要导出，手动操作太费人了，因此我将上述过程写为了脚本，此脚本会对脚本所在文件夹内所有epub文件执行上述操作，一键完成格式转化：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Change to the directory <span class="built_in">where</span> the script is located</span></span><br><span class="line">cd &quot;$(dirname &quot;$0&quot;)&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;Starting the archiving process (EPUB-aware)...&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Iterate over all files and directories <span class="keyword">in</span> the current directory</span></span><br><span class="line">for item in *; do</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">Skip the script itself and hidden files</span></span><br><span class="line">  if [[ &quot;$item&quot; == &quot;$(basename &quot;$0&quot;)&quot; ]] || [[ &quot;$item&quot; == .* ]]; then</span><br><span class="line">    continue</span><br><span class="line">  fi</span><br><span class="line"></span><br><span class="line">  if [ -d &quot;$item&quot; ]; then</span><br><span class="line">    # Check if it&#x27;s an EPUB directory by looking for the mimetype file</span><br><span class="line">    if [ -f &quot;$item/mimetype&quot; ]; then</span><br><span class="line">      echo &quot;Processing &#x27;$item&#x27; as an EPUB directory...&quot;</span><br><span class="line">  </span><br><span class="line">      ORIG_DIR=$(pwd)</span><br><span class="line">  </span><br><span class="line">      # Change into the EPUB directory to create correct internal paths</span><br><span class="line">      cd &quot;$item&quot;</span><br><span class="line">  </span><br><span class="line">      # 1. Create the archive with the uncompressed mimetype file first.</span><br><span class="line">      #    -X excludes extra file attributes. -0 specifies no compression.</span><br><span class="line">      zip -X -0 &quot;../$&#123;item&#125;.zip&quot; &quot;mimetype&quot;</span><br><span class="line">  </span><br><span class="line">      # 2. Add the rest of the contents to the archive recursively.</span><br><span class="line">      #    -r is for recursive, -x excludes the mimetype file we already added.</span><br><span class="line">      zip -X -r &quot;../$&#123;item&#125;.zip&quot; * -x &quot;mimetype&quot;</span><br><span class="line">  </span><br><span class="line">      # Return to the original directory</span><br><span class="line">      cd &quot;$ORIG_DIR&quot;</span><br><span class="line"></span><br><span class="line">      # Check if the zip command was successful</span><br><span class="line">      if [ $? -eq 0 ]; then</span><br><span class="line">        # 3. Delete the original directory</span><br><span class="line">        rm -rf &quot;$item&quot;</span><br><span class="line">        # 4. Rename the .zip file to remove the extension</span><br><span class="line">        mv &quot;$&#123;item&#125;.zip&quot; &quot;$item&quot;</span><br><span class="line">        echo &quot;Successfully processed EPUB &#x27;$item&#x27;&quot;</span><br><span class="line">      else</span><br><span class="line">        echo &quot;Error processing EPUB &#x27;$item&#x27;. Cleaning up partial zip and skipping.&quot;</span><br><span class="line">        # Clean up the partially created zip file on error</span><br><span class="line">        rm -f &quot;$&#123;item&#125;.zip&quot;</span><br><span class="line">      fi</span><br><span class="line">  </span><br><span class="line">    else</span><br><span class="line">      # It&#x27;s a regular directory, use the standard zip logic</span><br><span class="line">      echo &quot;Processing &#x27;$item&#x27; as a regular directory...&quot;</span><br><span class="line">      zip -r &quot;$&#123;item&#125;.zip&quot; &quot;$item&quot;</span><br><span class="line">      if [ $? -eq 0 ]; then</span><br><span class="line">        rm -rf &quot;$item&quot;</span><br><span class="line">        mv &quot;$&#123;item&#125;.zip&quot; &quot;$item&quot;</span><br><span class="line">        echo &quot;Successfully processed directory &#x27;$item&#x27;&quot;</span><br><span class="line">      else</span><br><span class="line">        echo &quot;Error processing directory &#x27;$item&#x27;. Skipping.&quot;</span><br><span class="line">      fi</span><br><span class="line">    fi</span><br><span class="line">  elif [ -f &quot;$item&quot; ]; then</span><br><span class="line">    # It&#x27;s a regular file, not a directory</span><br><span class="line">    echo &quot;Processing file &#x27;$item&#x27;...&quot;</span><br><span class="line">    zip &quot;$&#123;item&#125;.zip&quot; &quot;$item&quot;</span><br><span class="line">    if [ $? -eq 0 ]; then</span><br><span class="line">      rm -f &quot;$item&quot;</span><br><span class="line">      mv &quot;$&#123;item&#125;.zip&quot; &quot;$item&quot;</span><br><span class="line">      echo &quot;Successfully processed file &#x27;$item&#x27;&quot;</span><br><span class="line">    else</span><br><span class="line">      echo &quot;Error processing file &#x27;$item&#x27;. Skipping.&quot;</span><br><span class="line">    fi</span><br><span class="line">  fi</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">echo &quot;All items have been processed.&quot;</span><br><span class="line">echo &quot;This window will close in 10 seconds.&quot;</span><br><span class="line">sleep 10</span><br></pre></td></tr></table></figure>
+
+<p>使用方法如下：</p>
+<ol>
+<li>将这段代码粘在一个txt文件内</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103148-ejs9il4.png" alt="image"></p>
+<ol start="2">
+<li>将这个文件后缀改为 <code>.command</code></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103308-6w5boy8.png" alt="image"></p>
+<ol start="3">
+<li>将需要转化的文件导入此文件夹</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103357-7v1xuhm.png" alt="image"></p>
+<ol start="4">
+<li>点击脚本执行，等待脚本完成即可</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103434-wqk58fq.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/image-20250825103456-jybs72f.png" alt="image"></p>
+<p>到此教程结束，很惭愧做了一点微不足道的小事～</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2025/08/25/iBooks2epub/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&text=iBooks2epub"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&is_video=false&description=iBooks2epub"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=iBooks2epub&body=Check out this article: http://lenardar.github.io/2025/08/25/iBooks2epub/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&title=iBooks2epub"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2025/08/25/iBooks2epub/&name=iBooks2epub&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2025/08/25/iBooks2epub/&t=iBooks2epub"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2025
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
