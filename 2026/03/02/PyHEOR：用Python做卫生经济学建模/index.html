@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="为什么写 PyHEOR做卫生经济学评价（Health Economics and Outcome Research, HEOR）的同学大多用 R（heemod、hesim、DARTH）或者 TreeAge。R 生态确实成熟，但我在实际项目中遇到了一些痛点：  R 的多个包 API 风格不统一，拼一个完整流程需要在不同包之间跳来跳去 TreeAge 是商业软件，价格不菲，而且不够灵活 Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyHEOR：用Python做卫生经济学建模">
+<meta property="og:url" content="http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="为什么写 PyHEOR做卫生经济学评价（Health Economics and Outcome Research, HEOR）的同学大多用 R（heemod、hesim、DARTH）或者 TreeAge。R 生态确实成熟，但我在实际项目中遇到了一些痛点：  R 的多个包 API 风格不统一，拼一个完整流程需要在不同包之间跳来跳去 TreeAge 是商业软件，价格不菲，而且不够灵活 Python">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-02T11:04:14.000Z">
+<meta property="article:modified_time" content="2026-03-02T11:09:42.363Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="卫生经济学">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>PyHEOR：用Python做卫生经济学建模</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/05/24/MacBook-%E5%BE%AE%E4%BF%A1%E6%96%87%E4%BB%B6%E4%BA%91%E5%A4%87%E4%BB%BD/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-PyHEOR"><span class="toc-number">1.</span> <span class="toc-text">为什么写 PyHEOR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">能做什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">设计思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B%E5%AF%B9%E8%B1%A1%E6%90%9E%E5%AE%9A%E6%89%80%E6%9C%89%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">一个模型对象搞定所有分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ph-C-%E8%A1%A5%E6%95%B0%E5%93%A8%E5%85%B5"><span class="toc-number">3.2.</span> <span class="toc-text">ph.C 补数哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda-%E5%AE%9A%E4%B9%89%E4%B8%80%E5%88%87"><span class="toc-number">3.3.</span> <span class="toc-text">Lambda 定义一切</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84%E5%8F%82%E6%95%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.4.</span> <span class="toc-text">统一的参数系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E7%9A%84%E8%B4%B9%E7%94%A8%E4%BD%93%E7%B3%BB"><span class="toc-number">3.5.</span> <span class="toc-text">灵活的费用体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Excel-%E5%85%AC%E5%BC%8F%E9%AA%8C%E8%AF%81"><span class="toc-number">3.6.</span> <span class="toc-text">Excel 公式验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9AMarkov-%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">示例：Markov 队列模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%88%86%E5%8C%BA%E7%94%9F%E5%AD%98%E6%A8%A1%E5%9E%8B-PSM"><span class="toc-number">5.</span> <span class="toc-text">示例：分区生存模型 (PSM)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E6%96%87%E7%8C%AE-KM-%E5%9B%BE%E5%88%B0%E5%BB%BA%E6%A8%A1"><span class="toc-number">6.</span> <span class="toc-text">从文献 KM 图到建模</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92"><span class="toc-number">7.</span> <span class="toc-text">后续计划</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        PyHEOR：用Python做卫生经济学建模
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-03-02T11:04:14.000Z" class="dt-published" itemprop="datePublished">2026-03-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>, <a class="p-category" href="/tags/%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6/" rel="tag">卫生经济学</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="为什么写-PyHEOR"><a href="#为什么写-PyHEOR" class="headerlink" title="为什么写 PyHEOR"></a>为什么写 PyHEOR</h1><p>做卫生经济学评价（Health Economics and Outcome Research, HEOR）的同学大多用 R（heemod、hesim、DARTH）或者 TreeAge。R 生态确实成熟，但我在实际项目中遇到了一些痛点：</p>
+<ul>
+<li>R 的多个包 API 风格不统一，拼一个完整流程需要在不同包之间跳来跳去</li>
+<li>TreeAge 是商业软件，价格不菲，而且不够灵活</li>
+<li>Python 在数据处理、机器学习方面生态更好，但缺少一个完整的 HEOR 框架</li>
+</ul>
+<p>所以我写了 <strong>PyHEOR</strong>——一个纯 Python 的卫生经济学建模框架，目标是用一套统一的 API 覆盖 HEOR 的全流程。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/PyHEOR">https://github.com/lenardar/PyHEOR</a></p>
+<h1 id="能做什么"><a href="#能做什么" class="headerlink" title="能做什么"></a>能做什么</h1><p>PyHEOR 目前支持以下功能：</p>
+<p><strong>建模引擎</strong></p>
+<ul>
+<li>Markov 队列模型（离散时间状态转移）</li>
+<li>分区生存模型（PSM）</li>
+<li>微观模拟（个体水平状态转移）</li>
+<li>离散事件模拟（DES，连续时间）</li>
+</ul>
+<p><strong>证据合成</strong></p>
+<ul>
+<li>IPD 生存曲线拟合（6 种分布，AIC&#x2F;BIC 比较）</li>
+<li>KM 曲线数字化重建（Guyot method，从文献 KM 图反推 IPD）</li>
+<li>NMA 后验样本整合（导入 R 包产生的 MCMC 样本）</li>
+</ul>
+<p><strong>分析与决策</strong></p>
+<ul>
+<li>基线分析、单因素敏感性分析（OWSA）、概率敏感性分析（PSA）</li>
+<li>多策略比较：效率前沿、ICER、NMB、CEAC、CEAF、EVPI</li>
+<li>预算影响分析（BIA）</li>
+<li>模型校准（Nelder-Mead &#x2F; 随机搜索）</li>
+</ul>
+<p><strong>导出与可视化</strong></p>
+<ul>
+<li>28 种专业图表</li>
+<li>Excel 多 Sheet 导出 + Excel 公式验证模型（用于交叉验证 Python 结果）</li>
+</ul>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><h2 id="一个模型对象搞定所有分析"><a href="#一个模型对象搞定所有分析" class="headerlink" title="一个模型对象搞定所有分析"></a>一个模型对象搞定所有分析</h2><p>定义好模型后，<code>run_base_case()</code>、<code>run_owsa()</code>、<code>run_psa()</code> 一气呵成，不需要为不同分析类型重新组织代码。同一个模型对象，确定性分析、敏感性分析、概率分析全部搞定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = model.run_base_case()   <span class="comment"># 确定性基线</span></span><br><span class="line">owsa   = model.run_owsa()        <span class="comment"># 单因素敏感性</span></span><br><span class="line">psa    = model.run_psa(n_sim=<span class="number">1000</span>)  <span class="comment"># 概率敏感性</span></span><br></pre></td></tr></table></figure>
+
+<p>在 R 里做同样的事情，往往需要手动把参数拆开重组，或者在不同的包之间传递数据。PyHEOR 把这些都封装在模型内部了。</p>
+<h2 id="ph-C-补数哨兵"><a href="#ph-C-补数哨兵" class="headerlink" title="ph.C 补数哨兵"></a><code>ph.C</code> 补数哨兵</h2><p>写转移矩阵时最烦的就是对角线元素——要手动算 <code>1 - sum(其余)</code>，参数一多就容易出错。PyHEOR 用一个 <code>ph.C</code> 占位符自动补齐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.set_transitions(<span class="string">&quot;SOC&quot;</span>, <span class="keyword">lambda</span> p, t: [</span><br><span class="line">    [ph.C,  p[<span class="string">&quot;p_HS&quot;</span>], p[<span class="string">&quot;p_HD&quot;</span>]],  <span class="comment"># ph.C = 1 - p_HS - p_HD</span></span><br><span class="line">    [<span class="number">0</span>,     ph.C,      p[<span class="string">&quot;p_SD&quot;</span>]],  <span class="comment"># ph.C = 1 - p_SD</span></span><br><span class="line">    [<span class="number">0</span>,     <span class="number">0</span>,         <span class="number">1</span>        ],</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<p>这个设计参考了 R heemod 的 <code>C</code> 常量，用过的同学应该很熟悉。</p>
+<h2 id="Lambda-定义一切"><a href="#Lambda-定义一切" class="headerlink" title="Lambda 定义一切"></a>Lambda 定义一切</h2><p>费用、效用、转移概率都用 lambda 函数定义。好处是天然支持时变逻辑和参数依赖，不需要额外的配置项：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 前 24 个月用药费 5000，之后降为 2000</span></span><br><span class="line">model.set_state_cost(<span class="string">&quot;Sick&quot;</span>, <span class="string">&quot;Trt&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">5000</span> <span class="keyword">if</span> t &lt; <span class="number">24</span> <span class="keyword">else</span> <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 年龄依赖的死亡概率（微观模拟中可以访问个体属性）</span></span><br><span class="line">model.set_transitions(<span class="string">&quot;SOC&quot;</span>, <span class="keyword">lambda</span> p, t, attrs: [</span><br><span class="line">    [ph.C,  p[<span class="string">&quot;p_HS&quot;</span>] * (<span class="number">1</span> + (attrs[<span class="string">&quot;age&quot;</span>] - <span class="number">55</span>) * <span class="number">0.02</span>), <span class="number">0.01</span>],</span><br><span class="line">    [<span class="number">0</span>,     ph.C,  p[<span class="string">&quot;p_SD&quot;</span>]],</span><br><span class="line">    [<span class="number">0</span>,     <span class="number">0</span>,     <span class="number">1</span>],</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<p>注意微观模拟的 lambda 有三个参数 <code>(p, t, attrs)</code>，第三个参数是患者属性。引擎会根据 lambda 的参数个数自动判断是队列模式还是个体模式。</p>
+<h2 id="统一的参数系统"><a href="#统一的参数系统" class="headerlink" title="统一的参数系统"></a>统一的参数系统</h2><p>一个 <code>add_param()</code> 调用，同时定义基线值、OWSA 范围和 PSA 分布。不同分析自动取用对应的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model.add_param(<span class="string">&quot;p_HS&quot;</span>,</span><br><span class="line">    base=<span class="number">0.15</span>,                        <span class="comment"># 确定性分析用</span></span><br><span class="line">    low=<span class="number">0.10</span>, high=<span class="number">0.20</span>,              <span class="comment"># OWSA 范围</span></span><br><span class="line">    dist=ph.Beta(mean=<span class="number">0.15</span>, sd=<span class="number">0.03</span>), <span class="comment"># PSA 抽样分布</span></span><br><span class="line">    label=<span class="string">&quot;健康→生病概率&quot;</span>,             <span class="comment"># 图表显示名</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>内置分布：Beta、Gamma、Normal、LogNormal、Uniform、Triangular、Dirichlet、Fixed。参数化方式用 <code>mean</code>&#x2F;<code>sd</code>，不需要手动算 alpha&#x2F;beta。</p>
+<h2 id="灵活的费用体系"><a href="#灵活的费用体系" class="headerlink" title="灵活的费用体系"></a>灵活的费用体系</h2><p>除了基础的状态费用，还支持多种特殊费用场景：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首周期一次性费用（如入组筛查费）</span></span><br><span class="line">model.set_state_cost(<span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;Trt&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">50000</span>, first_cycle_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 限定应用周期（如 24 个月停药）</span></span><br><span class="line">model.set_state_cost(<span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;Trt&quot;</span>, <span class="keyword">lambda</span> p, t: p[<span class="string">&quot;c_drug&quot;</span>], apply_cycles=(<span class="number">0</span>, <span class="number">24</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转移费用：从 PFS 进展到 Progressed 时的手术费</span></span><br><span class="line">model.set_transition_cost(<span class="string">&quot;surgery&quot;</span>, <span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;Progressed&quot;</span>, <span class="number">50000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转移费用计划表：手术 + 后续两周期随访</span></span><br><span class="line">model.set_transition_cost(<span class="string">&quot;surgery&quot;</span>, <span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;Progressed&quot;</span>, [<span class="number">50000</span>, <span class="number">10000</span>, <span class="number">10000</span>])</span><br></pre></td></tr></table></figure>
+
+<p>转移费用是基于每周期转移流量自动计算的，不受半周期校正影响。计划表通过卷积处理多批次转入患者的费用叠加。</p>
+<h2 id="Excel-公式验证"><a href="#Excel-公式验证" class="headerlink" title="Excel 公式验证"></a>Excel 公式验证</h2><p>做 HEOR 审稿人经常要求提供 Excel 验证模型。PyHEOR 可以导出一个用 Excel 公式独立计算的完整模型文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ph.export_excel_model(result, <span class="string">&quot;verification.xlsx&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>导出的 Excel 里，转移矩阵是输入区（黄色底色），Trace、费用、QALY 全部用 <code>SUMPRODUCT</code> 等公式计算，Summary sheet 显示 Excel 结果 vs Python 结果的差异（应该是 ~0）。这样审稿人可以在 Excel 里直接验证模型逻辑。</p>
+<h1 id="示例：Markov-队列模型"><a href="#示例：Markov-队列模型" class="headerlink" title="示例：Markov 队列模型"></a>示例：Markov 队列模型</h1><p>用 Markov 模型做一个三状态（健康→生病→死亡）的成本效果分析：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyheor <span class="keyword">as</span> ph</span><br><span class="line"></span><br><span class="line">model = ph.MarkovModel(</span><br><span class="line">    states=[<span class="string">&quot;Healthy&quot;</span>, <span class="string">&quot;Sick&quot;</span>, <span class="string">&quot;Dead&quot;</span>],</span><br><span class="line">    strategies=[<span class="string">&quot;Standard&quot;</span>, <span class="string">&quot;New Treatment&quot;</span>],</span><br><span class="line">    n_cycles=<span class="number">40</span>,</span><br><span class="line">    cycle_length=<span class="number">1</span>,</span><br><span class="line">    discount_rate=<span class="number">0.03</span>,</span><br><span class="line">    half_cycle_correction=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加参数</span></span><br><span class="line">model.add_param(<span class="string">&quot;p_HS&quot;</span>, base=<span class="number">0.15</span>, dist=ph.Beta(mean=<span class="number">0.15</span>, sd=<span class="number">0.03</span>))</span><br><span class="line">model.add_param(<span class="string">&quot;p_SD&quot;</span>, base=<span class="number">0.10</span>, dist=ph.Beta(mean=<span class="number">0.10</span>, sd=<span class="number">0.02</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转移矩阵</span></span><br><span class="line">model.set_transitions(<span class="string">&quot;Standard&quot;</span>, <span class="keyword">lambda</span> p, t: [</span><br><span class="line">    [ph.C,  p[<span class="string">&quot;p_HS&quot;</span>], <span class="number">0.02</span>],</span><br><span class="line">    [<span class="number">0</span>,     ph.C,      p[<span class="string">&quot;p_SD&quot;</span>]],</span><br><span class="line">    [<span class="number">0</span>,     <span class="number">0</span>,         <span class="number">1</span>],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">model.set_transitions(<span class="string">&quot;New Treatment&quot;</span>, <span class="keyword">lambda</span> p, t: [</span><br><span class="line">    [ph.C,  p[<span class="string">&quot;p_HS&quot;</span>] * <span class="number">0.7</span>, <span class="number">0.02</span>],</span><br><span class="line">    [<span class="number">0</span>,     ph.C,             p[<span class="string">&quot;p_SD&quot;</span>] * <span class="number">0.8</span>],</span><br><span class="line">    [<span class="number">0</span>,     <span class="number">0</span>,                <span class="number">1</span>],</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 费用和效用</span></span><br><span class="line">model.set_state_cost(<span class="string">&quot;Healthy&quot;</span>, <span class="string">&quot;Standard&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">500</span>)</span><br><span class="line">model.set_state_cost(<span class="string">&quot;Healthy&quot;</span>, <span class="string">&quot;New Treatment&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">500</span> + <span class="number">2000</span>)</span><br><span class="line">model.set_state_cost(<span class="string">&quot;Sick&quot;</span>, <span class="string">&quot;Standard&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">3000</span>)</span><br><span class="line">model.set_state_cost(<span class="string">&quot;Sick&quot;</span>, <span class="string">&quot;New Treatment&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">3000</span> + <span class="number">2000</span>)</span><br><span class="line">model.set_utility(<span class="string">&quot;Healthy&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">0.95</span>)</span><br><span class="line">model.set_utility(<span class="string">&quot;Sick&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">0.60</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">result = model.run_base_case()</span><br><span class="line"><span class="built_in">print</span>(result.summary())</span><br><span class="line"><span class="built_in">print</span>(result.icer())</span><br><span class="line"></span><br><span class="line"><span class="comment"># OWSA 龙卷风图</span></span><br><span class="line">owsa = model.run_owsa()</span><br><span class="line">owsa.plot_tornado()</span><br><span class="line"></span><br><span class="line"><span class="comment"># PSA</span></span><br><span class="line">psa = model.run_psa(n_sim=<span class="number">1000</span>)</span><br><span class="line">psa.plot_scatter(wtp=<span class="number">50000</span>)</span><br><span class="line">psa.plot_ceac(wtp_range=(<span class="number">0</span>, <span class="number">150000</span>))</span><br></pre></td></tr></table></figure>
+
+<p>从定义模型到出结果，代码量很少，逻辑也比较清晰。</p>
+<h1 id="示例：分区生存模型-PSM"><a href="#示例：分区生存模型-PSM" class="headerlink" title="示例：分区生存模型 (PSM)"></a>示例：分区生存模型 (PSM)</h1><p>肿瘤经济学评价最常用的就是 PSM。模型基于两条参数化生存曲线（OS 和 PFS）划分三个状态的占比，不需要写转移矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyheor <span class="keyword">as</span> ph</span><br><span class="line"></span><br><span class="line">psm = ph.PSMModel(</span><br><span class="line">    states=[<span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;Progressed&quot;</span>, <span class="string">&quot;Dead&quot;</span>],</span><br><span class="line">    strategies=[<span class="string">&quot;SOC&quot;</span>, <span class="string">&quot;New Drug&quot;</span>],</span><br><span class="line">    n_cycles=<span class="number">120</span>,</span><br><span class="line">    cycle_length=<span class="number">1</span>/<span class="number">12</span>,  <span class="comment"># 月周期</span></span><br><span class="line">    discount_rate=<span class="number">0.03</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置参数化生存曲线</span></span><br><span class="line"><span class="comment"># SOC：直接用 Weibull 和 LogLogistic</span></span><br><span class="line">psm.set_survival_all(<span class="string">&quot;SOC&quot;</span>, [</span><br><span class="line">    ph.Weibull(shape=<span class="number">1.2</span>, scale=<span class="number">36</span>),      <span class="comment"># OS</span></span><br><span class="line">    ph.LogLogistic(shape=<span class="number">1.5</span>, scale=<span class="number">18</span>),  <span class="comment"># PFS</span></span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># New Drug：在 SOC 基础上应用 HR 和加速因子</span></span><br><span class="line">psm.set_survival_all(<span class="string">&quot;New Drug&quot;</span>, [</span><br><span class="line">    ph.ProportionalHazards(</span><br><span class="line">        ph.Weibull(shape=<span class="number">1.2</span>, scale=<span class="number">36</span>), hr=<span class="number">0.7</span></span><br><span class="line">    ),  <span class="comment"># OS: HR=0.7</span></span><br><span class="line">    ph.AcceleratedFailureTime(</span><br><span class="line">        ph.LogLogistic(shape=<span class="number">1.5</span>, scale=<span class="number">18</span>), af=<span class="number">1.3</span></span><br><span class="line">    ),  <span class="comment"># PFS: AF=1.3</span></span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 费用</span></span><br><span class="line">psm.set_state_cost(<span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;SOC&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">1000</span>)</span><br><span class="line">psm.set_state_cost(<span class="string">&quot;PFS&quot;</span>, <span class="string">&quot;New Drug&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">1000</span> + <span class="number">5000</span>)</span><br><span class="line">psm.set_state_cost(<span class="string">&quot;Progressed&quot;</span>, <span class="string">&quot;SOC&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">2500</span>)</span><br><span class="line">psm.set_state_cost(<span class="string">&quot;Progressed&quot;</span>, <span class="string">&quot;New Drug&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">2500</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 效用</span></span><br><span class="line">psm.set_utility(<span class="string">&quot;PFS&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">0.80</span>)</span><br><span class="line">psm.set_utility(<span class="string">&quot;Progressed&quot;</span>, <span class="keyword">lambda</span> p, t: <span class="number">0.55</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">result = psm.run_base_case()</span><br><span class="line"><span class="built_in">print</span>(result.summary())</span><br><span class="line"><span class="built_in">print</span>(result.icer())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化</span></span><br><span class="line">result.plot_survival()    <span class="comment"># 生存曲线</span></span><br><span class="line">result.plot_state_area()  <span class="comment"># 状态面积图</span></span><br></pre></td></tr></table></figure>
+
+<p>PSM 的核心是生存分布的选择。PyHEOR 内置了 10 种参数化分布（Exponential、Weibull、LogLogistic、LogNormal、Gompertz、Generalized Gamma 等），还支持 <code>ProportionalHazards</code> 和 <code>AcceleratedFailureTime</code> 包装器，可以很方便地在基线曲线上应用 HR 或 AF。</p>
+<h1 id="从文献-KM-图到建模"><a href="#从文献-KM-图到建模" class="headerlink" title="从文献 KM 图到建模"></a>从文献 KM 图到建模</h1><p>做 HEOR 经常遇到一个问题：文献只给了 KM 曲线图，没有原始数据。PyHEOR 集成了 Guyot method（Guyot et al. 2012），可以从数字化的 KM 坐标反推 IPD，然后直接拟合参数分布用于建模：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 从 WebPlotDigitizer 等工具获取 KM 坐标</span></span><br><span class="line">t_digitized = [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">15</span>, <span class="number">18</span>, <span class="number">21</span>, <span class="number">24</span>]</span><br><span class="line">s_digitized = [<span class="number">1.0</span>, <span class="number">0.92</span>, <span class="number">0.83</span>, <span class="number">0.74</span>, <span class="number">0.66</span>, <span class="number">0.58</span>, <span class="number">0.50</span>, <span class="number">0.40</span>, <span class="number">0.32</span>, <span class="number">0.25</span>, <span class="number">0.20</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 从文献中读取 number-at-risk 表</span></span><br><span class="line">t_risk = [<span class="number">0</span>, <span class="number">6</span>, <span class="number">12</span>, <span class="number">18</span>, <span class="number">24</span>]</span><br><span class="line">n_risk = [<span class="number">120</span>, <span class="number">88</span>, <span class="number">60</span>, <span class="number">38</span>, <span class="number">22</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 重建 IPD（内置坐标预处理：去噪、排序、单调化）</span></span><br><span class="line">ipd_time, ipd_event = ph.guyot_reconstruct(</span><br><span class="line">    t_digitized, s_digitized,</span><br><span class="line">    t_risk, n_risk,</span><br><span class="line">    tot_events=<span class="number">96</span>,  <span class="comment"># 可选：文献报告的总事件数</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 拟合 6 种分布，AIC/BIC 自动比较</span></span><br><span class="line">fitter = ph.SurvivalFitter(ipd_time, ipd_event, label=<span class="string">&quot;OS&quot;</span>)</span><br><span class="line">fitter.fit()</span><br><span class="line"><span class="built_in">print</span>(fitter.summary())        <span class="comment"># AIC/BIC 比较表</span></span><br><span class="line">best = fitter.best_model()     <span class="comment"># 自动选最优</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 直接用于 PSM 建模</span></span><br><span class="line">psm.set_survival_all(<span class="string">&quot;SOC&quot;</span>, [best.distribution, ...])</span><br></pre></td></tr></table></figure>
+
+<p>手动数字化的坐标难免有噪声（手抖、非单调点），<code>guyot_reconstruct</code> 内部会自动调用预处理（参考了 R 包 IPDfromKM 的策略），包括异常值检测、重复时间处理、强制单调非递增等。</p>
+<p>这个「文献 KM 图 → IPD → 参数拟合 → 建模」的流程在实际项目中非常实用。</p>
+<h1 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h1><p>PyHEOR 目前的功能基本覆盖了 HEOR 常见需求。后续可能会做的事情：</p>
+<ul>
+<li>更多的示例和教程</li>
+<li>与 R 生态的结果对比验证</li>
+<li>性能优化（特别是微观模拟和 DES）</li>
+</ul>
+<p>如果你也在做卫生经济学评价，欢迎试用和反馈：<a target="_blank" rel="noopener" href="https://github.com/lenardar/PyHEOR">PyHEOR on GitHub</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-PyHEOR"><span class="toc-number">1.</span> <span class="toc-text">为什么写 PyHEOR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">能做什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">设计思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B%E5%AF%B9%E8%B1%A1%E6%90%9E%E5%AE%9A%E6%89%80%E6%9C%89%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">一个模型对象搞定所有分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ph-C-%E8%A1%A5%E6%95%B0%E5%93%A8%E5%85%B5"><span class="toc-number">3.2.</span> <span class="toc-text">ph.C 补数哨兵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda-%E5%AE%9A%E4%B9%89%E4%B8%80%E5%88%87"><span class="toc-number">3.3.</span> <span class="toc-text">Lambda 定义一切</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84%E5%8F%82%E6%95%B0%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.4.</span> <span class="toc-text">统一的参数系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E7%9A%84%E8%B4%B9%E7%94%A8%E4%BD%93%E7%B3%BB"><span class="toc-number">3.5.</span> <span class="toc-text">灵活的费用体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Excel-%E5%85%AC%E5%BC%8F%E9%AA%8C%E8%AF%81"><span class="toc-number">3.6.</span> <span class="toc-text">Excel 公式验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9AMarkov-%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">示例：Markov 队列模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%88%86%E5%8C%BA%E7%94%9F%E5%AD%98%E6%A8%A1%E5%9E%8B-PSM"><span class="toc-number">5.</span> <span class="toc-text">示例：分区生存模型 (PSM)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E6%96%87%E7%8C%AE-KM-%E5%9B%BE%E5%88%B0%E5%BB%BA%E6%A8%A1"><span class="toc-number">6.</span> <span class="toc-text">从文献 KM 图到建模</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92"><span class="toc-number">7.</span> <span class="toc-text">后续计划</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2026
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
