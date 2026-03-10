@@ -14,13 +14,15 @@
 <meta property="og:description" content="为什么写 PyKMExtract上一篇介绍了 PyHEOR，其中「文献 KM 图 → IPD → 参数拟合 → 建模」是一个很实用的流程。但实际操作中，第一步「从 KM 图提取坐标」仍然是手工活——要么用 WebPlotDigitizer 一个点一个点地点，要么用 Engauge Digitizer 半自动描线，一张双臂 KM 图搞下来十几二十分钟是常事。 当一个系统评价涉及十几篇文献、每篇两三">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://lenardar.github.io/cover.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/PenzancePool_ZH-CN4493022613_UHD.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/all_overlays.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_original.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_reconstructed.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_overlay.png">
 <meta property="article:published_time" content="2026-03-10T12:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-10T05:28:46.101Z">
+<meta property="article:modified_time" content="2026-03-10T11:11:02.837Z">
 <meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="Python">
 <meta property="article:tag" content="研究">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://lenardar.github.io/cover.jpg">
@@ -157,7 +159,7 @@
       
     <div class="article-tag">
         <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E7%A0%94%E7%A9%B6/" rel="tag">研究</a>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>, <a class="p-category" href="/tags/%E7%A0%94%E7%A9%B6/" rel="tag">研究</a>
     </div>
 
 
@@ -166,7 +168,7 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p><img src="/cover.jpg"></p>
+    <p><img src="/cover.jpg"><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/PenzancePool_ZH-CN4493022613_UHD.jpg"></p>
 <h1 id="为什么写-PyKMExtract"><a href="#为什么写-PyKMExtract" class="headerlink" title="为什么写 PyKMExtract"></a>为什么写 PyKMExtract</h1><p>上一篇介绍了 <a target="_blank" rel="noopener" href="https://github.com/lenardar/PyHEOR">PyHEOR</a>，其中「文献 KM 图 → IPD → 参数拟合 → 建模」是一个很实用的流程。但实际操作中，第一步「从 KM 图提取坐标」仍然是手工活——要么用 WebPlotDigitizer 一个点一个点地点，要么用 Engauge Digitizer 半自动描线，一张双臂 KM 图搞下来十几二十分钟是常事。</p>
 <p>当一个系统评价涉及十几篇文献、每篇两三张 KM 图时，手工数字化就变成了一件非常痛苦的事情。</p>
 <p>所以我写了 <strong>PyKMExtract</strong>——一个面向研究场景的 KM 曲线自动化数字化工具。它从论文截图中提取结构化的 <code>time / survival</code> 数据，做基础验证，再桥接到 PyHEOR 做 Guyot 重建和后续生存建模。</p>
