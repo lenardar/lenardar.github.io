@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="为什么写 TidyPy4DS做数据分析的人，大概率都在 pandas 和 tidyverse 之间摇摆过。 如果你长期写 R，dplyr &#x2F; tidyr &#x2F; stringr 那套东西会很顺手：选列有 selector，批量变换有 across()，宽长表转换、字符串处理、缺失值处理都有比较统一的入口。 但一旦切到 Python，虽然 pandas 功能很强，日常清洗时还是经常会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验">
+<meta property="og:url" content="http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="为什么写 TidyPy4DS做数据分析的人，大概率都在 pandas 和 tidyverse 之间摇摆过。 如果你长期写 R，dplyr &#x2F; tidyr &#x2F; stringr 那套东西会很顺手：选列有 selector，批量变换有 across()，宽长表转换、字符串处理、缺失值处理都有比较统一的入口。 但一旦切到 Python，虽然 pandas 功能很强，日常清洗时还是经常会">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-10T14:30:00.000Z">
+<meta property="article:modified_time" content="2026-03-10T11:02:52.974Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="数据分析">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2026/03/10/PyKMExtract%EF%BC%9A%E4%BB%8E%E8%AE%BA%E6%96%87KM%E5%9B%BE%E5%88%B0%E7%94%9F%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8F%90%E5%8F%96/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&text=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&is_video=false&description=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验&body=Check out this article: http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&name=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&t=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-TidyPy4DS"><span class="toc-number">1.</span> <span class="toc-text">为什么写 TidyPy4DS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">这个项目想解决什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E5%AF%B9%E6%AF%94%EF%BC%9A%E7%BA%AF-pandas-vs-tidypy"><span class="toc-number">3.</span> <span class="toc-text">一个简单对比：纯 pandas vs tidypy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%AF-pandas-%E5%86%99%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">纯 pandas 写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidypy-%E5%86%99%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">tidypy 写法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%85%88%E6%8A%8A%E5%88%97%E9%80%89%E6%8B%A9%E7%B3%BB%E7%BB%9F%E5%81%9A%E5%AF%B9"><span class="toc-number">4.</span> <span class="toc-text">核心设计：先把列选择系统做对</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%88%91%E5%88%BB%E6%84%8F%E6%B2%A1%E6%9C%89%E5%81%9A%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%9A%E8%A3%B8%E5%88%97%E5%90%8D-NSE"><span class="toc-number">5.</span> <span class="toc-text">一个我刻意没有做的东西：裸列名 NSE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#glimpse-%E4%B9%9F%E6%98%AF%E6%88%91%E5%BE%88%E6%83%B3%E8%A6%81%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%B8%9C%E8%A5%BF"><span class="toc-number">6.</span> <span class="toc-text">glimpse() 也是我很想要的一个小东西</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E6%98%AF%E4%BB%80%E4%B9%88%E7%8A%B6%E6%80%81"><span class="toc-number">7.</span> <span class="toc-text">现在这个项目是什么状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">8.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-03-10T14:30:00.000Z" class="dt-published" itemprop="datePublished">2026-03-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>, <a class="p-category" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a>, <a class="p-category" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="为什么写-TidyPy4DS"><a href="#为什么写-TidyPy4DS" class="headerlink" title="为什么写 TidyPy4DS"></a>为什么写 TidyPy4DS</h1><p>做数据分析的人，大概率都在 <code>pandas</code> 和 tidyverse 之间摇摆过。</p>
+<p>如果你长期写 R，<code>dplyr</code> &#x2F; <code>tidyr</code> &#x2F; <code>stringr</code> 那套东西会很顺手：选列有 selector，批量变换有 <code>across()</code>，宽长表转换、字符串处理、缺失值处理都有比较统一的入口。</p>
+<p>但一旦切到 Python，虽然 <code>pandas</code> 功能很强，日常清洗时还是经常会冒出几个问题：</p>
+<ul>
+<li>想按前缀、类型、条件批量选列，不够统一</li>
+<li>想对一批列做同样的处理，<code>assign(...)</code> 经常要自己手搓字典</li>
+<li>想把清洗步骤写成稳定、可复用、可读的链，容易堆很多一次性 lambda</li>
+<li>从 tidyverse 迁移过来时，肌肉记忆没地方放</li>
+</ul>
+<p>所以我写了 <strong>TidyPy4DS</strong>。</p>
+<p>它不是想重写 <code>pandas</code>，也不是想做另一个复杂框架，而是只补一小块真正不够顺手的地方：<strong>列选择、批量变换、字符串处理、宽长表转换，以及更自然的 <code>.pipe()</code> 链式体验。</strong></p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/TidyPy4DS">https://github.com/lenardar/TidyPy4DS</a></p>
+<h1 id="这个项目想解决什么"><a href="#这个项目想解决什么" class="headerlink" title="这个项目想解决什么"></a>这个项目想解决什么</h1><p>一句话说，<strong>函数名尽量跟 tidyverse，接口行为坚持 Python &#x2F; pandas。</strong></p>
+<p>也就是说：</p>
+<ul>
+<li>不做 SQL DSL</li>
+<li>不做惰性执行引擎</li>
+<li>不替代 <code>groupby</code>、<code>merge</code>、<code>assign</code> 这些已经很成熟的 <code>pandas</code> 原生能力</li>
+<li>只把最容易重复、最容易写散的那部分动作收成统一入口</li>
+</ul>
+<p>目前项目里最核心的几组能力是：</p>
+<ul>
+<li>selector 系统：<code>starts_with</code>、<code>contains</code>、<code>numeric</code>、<code>where</code> 等</li>
+<li>批量变换：<code>mutate_across</code></li>
+<li>批量改名：<code>rename_with</code></li>
+<li>汇总：<code>summarize</code></li>
+<li>结构查看：<code>glimpse</code></li>
+<li>条件映射：<code>case_when</code>、<code>if_else</code>、<code>recode</code></li>
+<li>宽长表转换：<code>pivot_longer</code>、<code>pivot_wider</code></li>
+<li>缺失值处理：<code>drop_na</code>、<code>fill_na</code>、<code>replace_na</code></li>
+<li>表头清理：<code>clean_names</code>、<code>remove_empty</code>、<code>row_to_names</code></li>
+</ul>
+<h1 id="一个简单对比：纯-pandas-vs-tidypy"><a href="#一个简单对比：纯-pandas-vs-tidypy" class="headerlink" title="一个简单对比：纯 pandas vs tidypy"></a>一个简单对比：纯 pandas vs tidypy</h1><p>先看一份很常见的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&quot;employee_id&quot;</span>: [<span class="number">101</span>, <span class="number">102</span>, <span class="number">103</span>, <span class="number">104</span>, <span class="number">105</span>],</span><br><span class="line">    <span class="string">&quot;dept&quot;</span>: [<span class="string">&quot;Sales&quot;</span>, <span class="string">&quot;Sales&quot;</span>, <span class="string">&quot;Tech&quot;</span>, <span class="string">&quot;Tech&quot;</span>, <span class="string">&quot;HR&quot;</span>],</span><br><span class="line">    <span class="string">&quot;score_math&quot;</span>: [<span class="number">92.0</span>, <span class="literal">None</span>, <span class="number">88.0</span>, <span class="number">79.0</span>, <span class="literal">None</span>],</span><br><span class="line">    <span class="string">&quot;score_eng&quot;</span>: [<span class="number">85.0</span>, <span class="number">90.0</span>, <span class="literal">None</span>, <span class="number">82.0</span>, <span class="number">87.0</span>],</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: [<span class="string">&quot; Alice &quot;</span>, <span class="string">&quot;Bob &quot;</span>, <span class="string">&quot; Carol&quot;</span>, <span class="string">&quot;David&quot;</span>, <span class="string">&quot; Frank &quot;</span>],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>目标很普通：</p>
+<ul>
+<li>只保留 ID、分组、分数字段和名字</li>
+<li>用每列中位数填补缺失值</li>
+<li>去掉 <code>score_</code> 前缀</li>
+<li>去掉名字前后空格</li>
+<li>按数学成绩做一个等级</li>
+<li>最后按分组汇总</li>
+</ul>
+<h2 id="纯-pandas-写法"><a href="#纯-pandas-写法" class="headerlink" title="纯 pandas 写法"></a>纯 pandas 写法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pandas_result = (</span><br><span class="line">    df.loc[:, [<span class="string">&quot;employee_id&quot;</span>, <span class="string">&quot;dept&quot;</span>, <span class="string">&quot;score_math&quot;</span>, <span class="string">&quot;score_eng&quot;</span>, <span class="string">&quot;name&quot;</span>]]</span><br><span class="line">    .assign(</span><br><span class="line">        score_math=<span class="keyword">lambda</span> x: x[<span class="string">&quot;score_math&quot;</span>].fillna(x[<span class="string">&quot;score_math&quot;</span>].median()),</span><br><span class="line">        score_eng=<span class="keyword">lambda</span> x: x[<span class="string">&quot;score_eng&quot;</span>].fillna(x[<span class="string">&quot;score_eng&quot;</span>].median()),</span><br><span class="line">    )</span><br><span class="line">    .rename(columns=&#123;<span class="string">&quot;score_math&quot;</span>: <span class="string">&quot;math&quot;</span>, <span class="string">&quot;score_eng&quot;</span>: <span class="string">&quot;eng&quot;</span>&#125;)</span><br><span class="line">    .assign(</span><br><span class="line">        name=<span class="keyword">lambda</span> x: x[<span class="string">&quot;name&quot;</span>].<span class="built_in">str</span>.strip(),</span><br><span class="line">        level=<span class="keyword">lambda</span> x: pd.Series(</span><br><span class="line">            [<span class="string">&quot;A&quot;</span> <span class="keyword">if</span> v &gt;= <span class="number">90</span> <span class="keyword">else</span> <span class="string">&quot;B&quot;</span> <span class="keyword">if</span> v &gt;= <span class="number">80</span> <span class="keyword">else</span> <span class="string">&quot;C&quot;</span> <span class="keyword">for</span> v <span class="keyword">in</span> x[<span class="string">&quot;math&quot;</span>]],</span><br><span class="line">            index=x.index,</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码当然没问题，而且完全是标准 <code>pandas</code>。</p>
+<p>但你会发现几个特点：</p>
+<ul>
+<li>分数字段被显式写了两遍</li>
+<li>改名前后的列名都要手动维护</li>
+<li>当类似列变多时，改动面会越来越大</li>
+</ul>
+<h2 id="tidypy-写法"><a href="#tidypy-写法" class="headerlink" title="tidypy 写法"></a>tidypy 写法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> (</span><br><span class="line">    case_when,</span><br><span class="line">    clean_names,</span><br><span class="line">    mutate_across,</span><br><span class="line">    rename_with,</span><br><span class="line">    select,</span><br><span class="line">    starts_with,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">tidypy_result = (</span><br><span class="line">    clean_names(df)</span><br><span class="line">    .pipe(</span><br><span class="line">        select,</span><br><span class="line">        <span class="string">&quot;employee_id&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dept&quot;</span>,</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">        <span class="string">&quot;name&quot;</span>,</span><br><span class="line">    )</span><br><span class="line">    .pipe(</span><br><span class="line">        mutate_across,</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">        <span class="keyword">lambda</span> s: s.fillna(s.median()),</span><br><span class="line">    )</span><br><span class="line">    .pipe(</span><br><span class="line">        rename_with,</span><br><span class="line">        <span class="keyword">lambda</span> c: c.replace(<span class="string">&quot;score_&quot;</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">    )</span><br><span class="line">    .assign(</span><br><span class="line">        name=<span class="keyword">lambda</span> x: x[<span class="string">&quot;name&quot;</span>].<span class="built_in">str</span>.strip(),</span><br><span class="line">        level=<span class="keyword">lambda</span> x: case_when(</span><br><span class="line">            (x[<span class="string">&quot;math&quot;</span>] &gt;= <span class="number">90</span>, <span class="string">&quot;A&quot;</span>),</span><br><span class="line">            (x[<span class="string">&quot;math&quot;</span>] &gt;= <span class="number">80</span>, <span class="string">&quot;B&quot;</span>),</span><br><span class="line">            default=<span class="string">&quot;C&quot;</span>,</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>它并不是神奇地比 <code>pandas</code> 少很多代码。</p>
+<p>真正的区别在于：<strong>你开始把“哪些列属于同一类”和“这批列要做什么”分开表达了。</strong></p>
+<p>这个分离在小数据上可能只是“看着顺一点”，但一旦你多加一个 <code>score_logic</code> 列，差别就出来了：</p>
+<ul>
+<li>纯 pandas 版本通常要改多处显式列名</li>
+<li>selector 版本通常只要让新列符合 <code>score_</code> 规则，主流程基本不用改</li>
+</ul>
+<p>如果再往真实一点的数据走，差异会更明显。比如很多 Excel 导出来的原始表根本不是“干净 DataFrame”，而是：</p>
+<ul>
+<li>列名里有空格、括号和标点</li>
+<li>第一行才是真正的表头</li>
+<li>后面还夹着全空行、全空列</li>
+</ul>
+<p>这时候我最近补进去的一批 janitor 风格函数就比较顺手了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> clean_names, remove_empty, row_to_names</span><br><span class="line"></span><br><span class="line">raw = pd.DataFrame(</span><br><span class="line">    [</span><br><span class="line">        [<span class="string">&quot;Patient ID&quot;</span>, <span class="string">&quot;Score Math&quot;</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">90</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">88</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>],</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">result = (</span><br><span class="line">    raw</span><br><span class="line">    .pipe(row_to_names, row=<span class="number">0</span>)</span><br><span class="line">    .pipe(remove_empty, axis=<span class="string">&quot;both&quot;</span>)</span><br><span class="line">    .pipe(clean_names)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这类东西单看都不复杂，但它们经常正好卡在“pandas 原生当然能做，只是每次都要重写一遍”的位置上。</p>
+<h1 id="核心设计：先把列选择系统做对"><a href="#核心设计：先把列选择系统做对" class="headerlink" title="核心设计：先把列选择系统做对"></a>核心设计：先把列选择系统做对</h1><p>这个项目里最重要的抽象其实不是 <code>mutate_across()</code>，而是 <code>ColSelector</code>。</p>
+<p>所有 helper 都返回一个 selector 对象，真正操作时再结合 <code>df</code> 解析出列名。</p>
+<p>比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select(df, numeric() | starts_with(<span class="string">&quot;id&quot;</span>))</span><br><span class="line">select(df, everything() - contains(<span class="string">&quot;tmp&quot;</span>))</span><br><span class="line">mutate_across(df, where(<span class="keyword">lambda</span> s: s.isnull().<span class="built_in">any</span>()), <span class="keyword">lambda</span> s: s.fillna(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p>这样做有几个明显好处：</p>
+<ul>
+<li>helper 可以访问列名，也可以访问 dtype 或数据本身</li>
+<li>selector 可以组合</li>
+<li>列选择逻辑可以复用，而不是散落在各处</li>
+</ul>
+<p>我最后定下来的规则也比较简单：</p>
+<ul>
+<li><code>|</code> 表示并集</li>
+<li><code>-</code> 表示排除</li>
+<li>结果去重且保序</li>
+<li>解析不到列时直接报错，不静默忽略</li>
+</ul>
+<p>这套东西一旦稳定下来，后面的 <code>select</code>、<code>mutate_across</code>、<code>rename_with</code>、<code>pivot_longer</code> 都会自然顺很多。</p>
+<h1 id="一个我刻意没有做的东西：裸列名-NSE"><a href="#一个我刻意没有做的东西：裸列名-NSE" class="headerlink" title="一个我刻意没有做的东西：裸列名 NSE"></a>一个我刻意没有做的东西：裸列名 NSE</h1><p>如果熟悉 tidyverse，可能第一反应会问：</p>
+<blockquote>
+<p>能不能做成 <code>mutate(df, total=a + b)</code> 这种效果？</p>
+</blockquote>
+<p>答案是：<strong>理论上可以硬做，实际上不值得。</strong></p>
+<p>在 R 里，<code>mutate()</code> 这种体验背后是 tidy evaluation；Python 没有这一层语言机制。真要做，只能走 <code>eval</code>、AST 改写、代理对象这些路线。</p>
+<p>这种东西最大的风险不是“写不出来”，而是：</p>
+<ul>
+<li>报错不直观</li>
+<li>调试很差</li>
+<li>和 <code>pandas</code> 生态不一致</li>
+<li>一旦边界复杂起来，很容易变成一套脆弱的语法魔法</li>
+</ul>
+<p>所以我最后的取舍是：</p>
+<ul>
+<li><strong>不做裸列名 NSE</strong></li>
+<li>保留 <code>assign(...)</code> 处理少量显式新列</li>
+<li>用 <code>mutate_across(...)</code> 解决批量变换</li>
+<li>用 <code>case_when(...)</code>、<code>if_else(...)</code>、<code>recode(...)</code> 解决条件映射和重编码</li>
+</ul>
+<p>这套方案不花哨，但更稳。</p>
+<h1 id="glimpse-也是我很想要的一个小东西"><a href="#glimpse-也是我很想要的一个小东西" class="headerlink" title="glimpse() 也是我很想要的一个小东西"></a><code>glimpse()</code> 也是我很想要的一个小东西</h1><p>在 notebook 里，<code>head()</code> 看值，<code>info()</code> 看结构，但两者之间总觉得差一口气。</p>
+<p>所以我顺手加了一个 <code>glimpse()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> glimpse</span><br><span class="line"></span><br><span class="line">glimpse(df)</span><br></pre></td></tr></table></figure>
+
+<p>它会给出：</p>
+<ul>
+<li>行数、列数</li>
+<li>每列 dtype</li>
+<li>非空数、缺失数</li>
+<li>唯一值数量</li>
+<li>前几条样本值预览</li>
+</ul>
+<p>而且支持：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glimpse(df, cols=starts_with(<span class="string">&quot;score_&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(glimpse(df, as_text=<span class="literal">True</span>, display=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<p>这玩意不大，但在实际 notebook 里非常顺手。</p>
+<h1 id="现在这个项目是什么状态"><a href="#现在这个项目是什么状态" class="headerlink" title="现在这个项目是什么状态"></a>现在这个项目是什么状态</h1><p>目前 TidyPy4DS 已经有一版可以直接用的实现，仓库里也把几件基础设施补上了：</p>
+<ul>
+<li>双语 README</li>
+<li>双语函数文档</li>
+<li>双语 notebook 示例</li>
+<li><code>unittest</code> 测试</li>
+<li>GitHub Actions CI</li>
+<li>一批偏 janitor 风格的小函数</li>
+</ul>
+<p>示例 notebook 分成了三类：</p>
+<ul>
+<li><strong>Why tidypy</strong>：直接对比纯 pandas 和 tidypy</li>
+<li><strong>Core APIs</strong>：看 selector、<code>mutate_across</code>、<code>summarize</code> 这些核心能力</li>
+<li><strong>Reshape and missing values</strong>：看 <code>pivot_longer</code>、<code>pivot_wider</code>、<code>separate</code>、<code>unite</code>、缺失值处理</li>
+</ul>
+<p>项目整体还在早期阶段，但核心方向已经比较清楚：</p>
+<ul>
+<li>selector 系统要稳定</li>
+<li>API 要尽量少而清晰</li>
+<li>不做多余包装</li>
+<li>不和 Python 自身的直觉打架</li>
+<li>单文件实现先保持，但内部已经按模块整理，后续可拆</li>
+</ul>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>这个项目本质上不是在和 <code>pandas</code> 对抗，而是在承认一件事：</p>
+<blockquote>
+<p><code>pandas</code> 很强，但确实有一些高频清洗动作，写起来就是不够顺。</p>
+</blockquote>
+<p>如果能用一层很薄的 helper，把这些动作收成更统一、可复用、可读的入口，那它就值得存在。</p>
+<p>如果你也经常在 <code>pandas</code> 和 tidyverse 的思路之间切换，TidyPy4DS 也许会正好补上你手感里缺的那一块。</p>
+<p>最近我自己的感受也更明确了：这个项目最有价值的地方，不是“把 tidyverse 完整搬到 Python”，而是把那些每天都会写、但又总写得零碎的数据清洗动作，收成一套尽量干净的小工具。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/TidyPy4DS">https://github.com/lenardar/TidyPy4DS</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-TidyPy4DS"><span class="toc-number">1.</span> <span class="toc-text">为什么写 TidyPy4DS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">这个项目想解决什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E5%AF%B9%E6%AF%94%EF%BC%9A%E7%BA%AF-pandas-vs-tidypy"><span class="toc-number">3.</span> <span class="toc-text">一个简单对比：纯 pandas vs tidypy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%AF-pandas-%E5%86%99%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">纯 pandas 写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidypy-%E5%86%99%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">tidypy 写法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%85%88%E6%8A%8A%E5%88%97%E9%80%89%E6%8B%A9%E7%B3%BB%E7%BB%9F%E5%81%9A%E5%AF%B9"><span class="toc-number">4.</span> <span class="toc-text">核心设计：先把列选择系统做对</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%88%91%E5%88%BB%E6%84%8F%E6%B2%A1%E6%9C%89%E5%81%9A%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%9A%E8%A3%B8%E5%88%97%E5%90%8D-NSE"><span class="toc-number">5.</span> <span class="toc-text">一个我刻意没有做的东西：裸列名 NSE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#glimpse-%E4%B9%9F%E6%98%AF%E6%88%91%E5%BE%88%E6%83%B3%E8%A6%81%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%B8%9C%E8%A5%BF"><span class="toc-number">6.</span> <span class="toc-text">glimpse() 也是我很想要的一个小东西</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E6%98%AF%E4%BB%80%E4%B9%88%E7%8A%B6%E6%80%81"><span class="toc-number">7.</span> <span class="toc-text">现在这个项目是什么状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">8.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&text=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&is_video=false&description=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验&body=Check out this article: http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&title=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&name=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/&t=TidyPy4DS：给 pandas 补上 tidyverse 风格的数据清洗体验"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2026
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
