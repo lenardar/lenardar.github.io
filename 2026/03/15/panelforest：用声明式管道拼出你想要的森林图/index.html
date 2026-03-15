@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="为什么写 panelforest做临床研究、meta 分析或者 NMA 的人，森林图是绑定出图。R 里现有的工具不少——forestplot、forestploter、forester、meta::forest()——但用下来都多少有些不顺手：  很多包的 API 偏”配置式”，参数一多就变成巨长的函数调用，想调整布局得翻文档猜参数名 想要的面板组合经常不在预设里：比如左边文本、中间 CI、右边再">
+<meta property="og:type" content="article">
+<meta property="og:title" content="panelforest：用声明式管道拼出你想要的森林图">
+<meta property="og:url" content="http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="为什么写 panelforest做临床研究、meta 分析或者 NMA 的人，森林图是绑定出图。R 里现有的工具不少——forestplot、forestploter、forester、meta::forest()——但用下来都多少有些不顺手：  很多包的 API 偏”配置式”，参数一多就变成巨长的函数调用，想调整布局得翻文档猜参数名 想要的面板组合经常不在预设里：比如左边文本、中间 CI、右边再">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png">
+<meta property="article:published_time" content="2026-03-15T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-15T07:27:49.050Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>panelforest：用声明式管道拼出你想要的森林图</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-panelforest"><span class="toc-number">1.</span> <span class="toc-text">为什么写 panelforest</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="toc-number">2.</span> <span class="toc-text">长什么样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">怎么用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E6%9D%BF%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.2.</span> <span class="toc-text">面板类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E9%A9%B1%E5%8A%A8%E7%9A%84%E7%BE%8E%E5%AD%A6%E6%98%A0%E5%B0%84"><span class="toc-number">3.3.</span> <span class="toc-text">列驱动的美学映射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84-edit-%E7%BC%96%E8%BE%91%E5%B1%82"><span class="toc-number">3.4.</span> <span class="toc-text">统一的 edit() 编辑层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%88%97%E5%88%86%E7%BB%84%E6%A0%87%E9%A2%98"><span class="toc-number">3.5.</span> <span class="toc-text">跨列分组标题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E4%B8%8A%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8F%96%E8%88%8D"><span class="toc-number">4.</span> <span class="toc-text">设计上的一些取舍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9F%BA%E4%BA%8E-ggplot2-patchwork"><span class="toc-number">4.1.</span> <span class="toc-text">为什么基于 ggplot2 + patchwork</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%81%9A-ggplot2-%E7%9A%84-geom"><span class="toc-number">4.2.</span> <span class="toc-text">为什么不做 ggplot2 的 geom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fp-size-%E7%9A%84%E5%AD%98%E5%9C%A8%E6%84%8F%E4%B9%89"><span class="toc-number">4.3.</span> <span class="toc-text">fp_size() 的存在意义</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CI-%E9%9D%A2%E6%9D%BF%E7%9A%84%E7%BB%86%E8%8A%82"><span class="toc-number">5.</span> <span class="toc-text">CI 面板的细节</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E4%BE%8B%E5%AD%90"><span class="toc-number">6.</span> <span class="toc-text">一个完整例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92"><span class="toc-number">7.</span> <span class="toc-text">后续计划</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        panelforest：用声明式管道拼出你想要的森林图
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-03-15T08:00:00.000Z" class="dt-published" itemprop="datePublished">2026-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/R/" rel="tag">R</a>, <a class="p-category" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="为什么写-panelforest"><a href="#为什么写-panelforest" class="headerlink" title="为什么写 panelforest"></a>为什么写 panelforest</h1><p>做临床研究、meta 分析或者 NMA 的人，森林图是绑定出图。R 里现有的工具不少——<code>forestplot</code>、<code>forestploter</code>、<code>forester</code>、<code>meta::forest()</code>——但用下来都多少有些不顺手：</p>
+<ul>
+<li>很多包的 API 偏”配置式”，参数一多就变成巨长的函数调用，想调整布局得翻文档猜参数名</li>
+<li>想要的面板组合经常不在预设里：比如左边文本、中间 CI、右边再来一列柱状图，基本要自己拼</li>
+<li>分组行、汇总行、条纹、分隔线这些装饰性元素，每个包的处理方式都不一样</li>
+<li>想给特定行换颜色、换形状，往往要改底层数据或者用很 hack 的方式</li>
+</ul>
+<p>所以我写了 <strong>panelforest</strong>。</p>
+<p>核心想法很简单：<strong>森林图本质上就是几列面板横向拼在一起，每列有自己的渲染逻辑。</strong> 那就不要把它当成一个”森林图函数”来设计，而是让用户自己声明”我要哪些列、每列长什么样”，剩下的事情交给引擎。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/panelforest">https://github.com/lenardar/panelforest</a></p>
+<h1 id="长什么样"><a href="#长什么样" class="headerlink" title="长什么样"></a>长什么样</h1><p>先看结果：</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png"></p>
+<p>这张图是一个 NMA 安全性数据的森林图，包含：</p>
+<ul>
+<li>左侧文本列（亚组标签）</li>
+<li>中间文本列（OR 数值）</li>
+<li>右侧 CI 面板（对数刻度、参考线、截断箭头、favors 标注）</li>
+<li>分组行加粗、行间分隔线、条纹背景</li>
+<li>不同比较用不同颜色和形状区分</li>
+</ul>
+<p>生成这张图的代码大概 30 行，全部是管道式组合。</p>
+<h1 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>panelforest<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span>            <span class="comment"># 传入数据</span></span><br><span class="line">  add_stripe<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>          <span class="comment"># 条纹背景</span></span><br><span class="line">  add_group<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>           <span class="comment"># 分组行</span></span><br><span class="line">  add_hline<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>           <span class="comment"># 分隔线</span></span><br><span class="line">  add_text<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>            <span class="comment"># 文本列</span></span><br><span class="line">  add_ci<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>              <span class="comment"># CI 面板</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span>                 <span class="comment"># 渲染</span></span><br></pre></td></tr></table></figure>
+
+<p>每个 <code>add_*()</code> 就是往布局里追加一列面板。顺序决定了从左到右的排列。想调整布局，移动调用顺序就行。</p>
+<h2 id="面板类型"><a href="#面板类型" class="headerlink" title="面板类型"></a>面板类型</h2><p>目前内置了这些面板：</p>
+<ul>
+<li><code>fp_text()</code> — 纯文本列，支持对齐、缩进、格式化函数</li>
+<li><code>fp_text_ci()</code> — 把 est&#x2F;lower&#x2F;upper 三列自动格式化成 “0.45 (0.32, 0.61)”</li>
+<li><code>fp_ci()</code> — 置信区间可视化，支持对数刻度、截断箭头、菱形汇总、favors 标注</li>
+<li><code>fp_bar()</code> — 水平柱状图</li>
+<li><code>fp_dot()</code> — 散点 + 误差线</li>
+<li><code>fp_gap()</code> &#x2F; <code>fp_spacer()</code> — 间距控制</li>
+<li><code>fp_custom()</code> — 自定义面板，传入一个返回 ggplot 的函数</li>
+</ul>
+<p>不够用的时候，<code>fp_custom()</code> 加上 <code>fp_register()</code> 可以注册自定义面板类型，引擎会自动纳入渲染流程。</p>
+<h2 id="列驱动的美学映射"><a href="#列驱动的美学映射" class="headerlink" title="列驱动的美学映射"></a>列驱动的美学映射</h2><p>跟 ggplot2 的 <code>aes()</code> 思路类似，panelforest 用 <code>fp_aes()</code> 把数据列映射到视觉属性：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据里有 ci_colour 和 ci_shape 两列</span></span><br><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;OR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span></span><br><span class="line">    mapping <span class="operator">=</span> fp_aes<span class="punctuation">(</span>colour <span class="operator">=</span> <span class="string">&quot;ci_colour&quot;</span><span class="punctuation">,</span> shape <span class="operator">=</span> <span class="string">&quot;ci_shape&quot;</span><span class="punctuation">)</span></span><br><span class="line">  <span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>这样每一行可以有不同的颜色和形状，不需要手动逐行设置。</p>
+<h2 id="统一的-edit-编辑层"><a href="#统一的-edit-编辑层" class="headerlink" title="统一的 edit() 编辑层"></a>统一的 edit() 编辑层</h2><p>想给某些行做特殊处理？一个 <code>edit()</code> 函数搞定行级、单元格级、行高调整：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Subgroup&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># 第 1 行用菱形</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">1</span><span class="punctuation">,</span> panel <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> glyph <span class="operator">=</span> <span class="string">&quot;diamond&quot;</span><span class="punctuation">,</span> fill <span class="operator">=</span> <span class="string">&quot;#dbeafe&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># 第 2-4 行斜体</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">2</span><span class="operator">:</span><span class="number">4</span><span class="punctuation">,</span> fontface <span class="operator">=</span> <span class="string">&quot;italic&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># 第 5 行加高</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">5</span><span class="punctuation">,</span> height <span class="operator">=</span> <span class="number">1.5</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>panel</code> 参数可以用索引、标题字符串或列名来定位，不需要记面板编号。</p>
+<h2 id="跨列分组标题"><a href="#跨列分组标题" class="headerlink" title="跨列分组标题"></a>跨列分组标题</h2><p>多个面板可以用 <code>add_header_group()</code> 加父级标题，层级自动推断：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Drug A&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;n_events&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Drug B&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_header_group<span class="punctuation">(</span><span class="string">&quot;Treatment&quot;</span><span class="punctuation">,</span> panels <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">2</span><span class="punctuation">,</span> border <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>支持多层嵌套——包含其他分组的分组会自动升至更高层。</p>
+<h1 id="设计上的一些取舍"><a href="#设计上的一些取舍" class="headerlink" title="设计上的一些取舍"></a>设计上的一些取舍</h1><h2 id="为什么基于-ggplot2-patchwork"><a href="#为什么基于-ggplot2-patchwork" class="headerlink" title="为什么基于 ggplot2 + patchwork"></a>为什么基于 ggplot2 + patchwork</h2><p>每个面板本质上是一个独立的 ggplot 对象，最终用 patchwork 横向拼接。这个选择有几个好处：</p>
+<ul>
+<li>继承 ggplot2 的渲染质量和主题系统</li>
+<li>每个面板的坐标系独立，CI 面板可以用对数刻度，文本面板用 [0, 1] 坐标，互不干扰</li>
+<li>patchwork 的布局系统天然支持比例宽度和固定宽度混合</li>
+<li>输出是标准 ggplot 对象，<code>ggsave()</code> 直接用</li>
+</ul>
+<p>缺点是性能——面板多、行数多的时候渲染会慢。但森林图通常几十行到一两百行，这个量级下完全没有问题。</p>
+<h2 id="为什么不做-ggplot2-的-geom"><a href="#为什么不做-ggplot2-的-geom" class="headerlink" title="为什么不做 ggplot2 的 geom"></a>为什么不做 ggplot2 的 geom</h2><p>另一条路是写 <code>geom_forest()</code> 这样的扩展。我没走这条路，因为森林图的本质是”多列异构面板”，每列的坐标系和渲染逻辑完全不同。硬塞进一个 ggplot 的 facet 或者 annotation 系统里会很别扭。</p>
+<p>patchwork 的多面板方案更自然——每列是独立的 ggplot，互不干扰但共享行坐标。</p>
+<h2 id="fp-size-的存在意义"><a href="#fp-size-的存在意义" class="headerlink" title="fp_size() 的存在意义"></a>fp_size() 的存在意义</h2><p>森林图的尺寸应该由内容决定，不应该让用户猜 <code>width</code> 和 <code>height</code>。<code>fp_size()</code> 根据面板数量、行数和行高自动计算出精确的英寸尺寸：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">size <span class="operator">&lt;-</span> fp_size<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span><span class="string">&quot;forest.png&quot;</span><span class="punctuation">,</span> fp_render<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  width <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;width&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> height <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;height&quot;</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>这样不管你加几列面板、数据有多少行，出图的密度和比例都是一致的。</p>
+<h1 id="CI-面板的细节"><a href="#CI-面板的细节" class="headerlink" title="CI 面板的细节"></a>CI 面板的细节</h1><p><code>fp_ci()</code> 是功能最密集的面板，支持的东西比较多：</p>
+<ul>
+<li><strong>对数刻度</strong>：<code>trans = &quot;log&quot;</code>，自动处理正值约束和刻度标签</li>
+<li><strong>截断箭头</strong>：CI 超出显示范围时，用箭头提示截断方向，箭头类型可配置 (<code>arrow_type = &quot;open&quot;</code> &#x2F; <code>&quot;closed&quot;</code>)</li>
+<li><strong>菱形汇总</strong>：<code>add_summary()</code> 标记的行自动渲染为菱形</li>
+<li><strong>favors 标注</strong>：<code>favors_left</code> &#x2F; <code>favors_right</code> 在坐标轴下方画方向箭头和标签</li>
+<li><strong>参考线</strong>：<code>ref_line</code> 画虚线</li>
+<li><strong>美学映射</strong>：通过 <code>fp_aes()</code> 让每行有不同的颜色、形状、大小</li>
+</ul>
+<p>这些功能单独看都不复杂，但组合起来就能覆盖绝大多数临床研究的森林图需求。</p>
+<h1 id="一个完整例子"><a href="#一个完整例子" class="headerlink" title="一个完整例子"></a>一个完整例子</h1><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>panelforest<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">df <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span></span><br><span class="line">  label <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;Overall&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Age &lt; 65&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Age &gt;= 65&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Male&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Female&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  HR <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.72</span><span class="punctuation">,</span> <span class="number">0.68</span><span class="punctuation">,</span> <span class="number">0.81</span><span class="punctuation">,</span> <span class="number">0.75</span><span class="punctuation">,</span> <span class="number">0.69</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  LCI <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.58</span><span class="punctuation">,</span> <span class="number">0.49</span><span class="punctuation">,</span> <span class="number">0.61</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">0.48</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  UCI <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.89</span><span class="punctuation">,</span> <span class="number">0.94</span><span class="punctuation">,</span> <span class="number">1.07</span><span class="punctuation">,</span> <span class="number">1.02</span><span class="punctuation">,</span> <span class="number">0.99</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">plot_obj <span class="operator">&lt;-</span> forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_stripe<span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;#f4f7f5&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_summary<span class="punctuation">(</span><span class="number">1</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_hline<span class="punctuation">(</span><span class="number">1</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Subgroup&quot;</span><span class="punctuation">,</span> width <span class="operator">=</span> <span class="number">2</span><span class="punctuation">,</span> align <span class="operator">=</span> <span class="string">&quot;left&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR (95% CI)&quot;</span><span class="punctuation">,</span> width <span class="operator">=</span> <span class="number">2</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span></span><br><span class="line">    header <span class="operator">=</span> <span class="string">&quot;Hazard Ratio&quot;</span><span class="punctuation">,</span></span><br><span class="line">    trans <span class="operator">=</span> <span class="string">&quot;log&quot;</span><span class="punctuation">,</span></span><br><span class="line">    width <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">    show_axis <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span></span><br><span class="line">    favors_left <span class="operator">=</span> <span class="string">&quot;Favors treatment&quot;</span><span class="punctuation">,</span></span><br><span class="line">    favors_right <span class="operator">=</span> <span class="string">&quot;Favors control&quot;</span></span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">size <span class="operator">&lt;-</span> fp_size<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span><span class="string">&quot;forest.png&quot;</span><span class="punctuation">,</span> fp_render<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  width <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;width&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> height <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;height&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  dpi <span class="operator">=</span> <span class="number">300</span><span class="punctuation">,</span> bg <span class="operator">=</span> <span class="string">&quot;white&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>从数据到出图，代码结构很清晰：数据 → 装饰 → 面板 → 渲染。想调整布局就移动 <code>add_*()</code> 的顺序，想改样式就加 <code>edit()</code>。</p>
+<h1 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h1><p>panelforest 目前是 v0.2.0，核心功能已经稳定。后续打算做的事情：</p>
+<ul>
+<li><strong><code>forest_plot_from()</code> — 模型直出森林图</strong>：传入 <code>glm</code>、<code>coxph</code>、<code>lm</code> 等模型对象，自动生成森林图。底层基于 <code>broom::tidy()</code>，根据模型类型自动推断效应量（OR&#x2F;HR&#x2F;β）和坐标变换。逐步适配 <code>lme4</code>、<code>metafor</code>、<code>brms</code> 等更多包。</li>
+<li><strong><code>add_rule()</code> — 条件样式</strong>：声明式规则批量高亮，替代逐行 <code>edit()</code></li>
+<li><strong>更多坐标变换</strong>：<code>sqrt</code>、<code>logit</code> 等</li>
+<li><strong>文本自动换行、导出助手、脚注系统</strong>等体验优化</li>
+</ul>
+<p>最重要的是模型直出这个方向——让 panelforest 不只是一个画图工具，而是能直接对接统计建模的输出，减少”跑完模型还要手动整理数据再画图”这个环节。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/panelforest">https://github.com/lenardar/panelforest</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%86%99-panelforest"><span class="toc-number">1.</span> <span class="toc-text">为什么写 panelforest</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="toc-number">2.</span> <span class="toc-text">长什么样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">怎么用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E6%9D%BF%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.2.</span> <span class="toc-text">面板类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E9%A9%B1%E5%8A%A8%E7%9A%84%E7%BE%8E%E5%AD%A6%E6%98%A0%E5%B0%84"><span class="toc-number">3.3.</span> <span class="toc-text">列驱动的美学映射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84-edit-%E7%BC%96%E8%BE%91%E5%B1%82"><span class="toc-number">3.4.</span> <span class="toc-text">统一的 edit() 编辑层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%88%97%E5%88%86%E7%BB%84%E6%A0%87%E9%A2%98"><span class="toc-number">3.5.</span> <span class="toc-text">跨列分组标题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E4%B8%8A%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8F%96%E8%88%8D"><span class="toc-number">4.</span> <span class="toc-text">设计上的一些取舍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9F%BA%E4%BA%8E-ggplot2-patchwork"><span class="toc-number">4.1.</span> <span class="toc-text">为什么基于 ggplot2 + patchwork</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%81%9A-ggplot2-%E7%9A%84-geom"><span class="toc-number">4.2.</span> <span class="toc-text">为什么不做 ggplot2 的 geom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fp-size-%E7%9A%84%E5%AD%98%E5%9C%A8%E6%84%8F%E4%B9%89"><span class="toc-number">4.3.</span> <span class="toc-text">fp_size() 的存在意义</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CI-%E9%9D%A2%E6%9D%BF%E7%9A%84%E7%BB%86%E8%8A%82"><span class="toc-number">5.</span> <span class="toc-text">CI 面板的细节</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E4%BE%8B%E5%AD%90"><span class="toc-number">6.</span> <span class="toc-text">一个完整例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92"><span class="toc-number">7.</span> <span class="toc-text">后续计划</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2026
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
