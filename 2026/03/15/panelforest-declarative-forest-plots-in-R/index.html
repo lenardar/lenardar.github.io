@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Why I Built panelforestForest plots are a staple of clinical research, meta-analyses, and NMA. R has no shortage of options — forestplot, forestploter, forester, meta::forest() — but after using them">
+<meta property="og:type" content="article">
+<meta property="og:title" content="panelforest: Build Forest Plots with a Declarative Pipeline">
+<meta property="og:url" content="http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="Why I Built panelforestForest plots are a staple of clinical research, meta-analyses, and NMA. R has no shortage of options — forestplot, forestploter, forester, meta::forest() — but after using them">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png">
+<meta property="article:published_time" content="2026-03-15T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-15T10:14:25.235Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="R">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>panelforest: Build Forest Plots with a Declarative Pipeline</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&text=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&is_video=false&description=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest: Build Forest Plots with a Declarative Pipeline&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&name=panelforest: Build Forest Plots with a Declarative Pipeline&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&t=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-I-Built-panelforest"><span class="toc-number">1.</span> <span class="toc-text">Why I Built panelforest</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-It-Looks-Like"><span class="toc-number">2.</span> <span class="toc-text">What It Looks Like</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-Use-It"><span class="toc-number">3.</span> <span class="toc-text">How to Use It</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Structure"><span class="toc-number">3.1.</span> <span class="toc-text">Basic Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Panel-Types"><span class="toc-number">3.2.</span> <span class="toc-text">Panel Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Column-Driven-Aesthetic-Mapping"><span class="toc-number">3.3.</span> <span class="toc-text">Column-Driven Aesthetic Mapping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Unified-edit-Layer"><span class="toc-number">3.4.</span> <span class="toc-text">A Unified edit() Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spanning-Header-Groups"><span class="toc-number">3.5.</span> <span class="toc-text">Spanning Header Groups</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-Decisions"><span class="toc-number">4.</span> <span class="toc-text">Design Decisions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-ggplot2-patchwork"><span class="toc-number">4.1.</span> <span class="toc-text">Why ggplot2 + patchwork</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Not-a-ggplot2-Geom"><span class="toc-number">4.2.</span> <span class="toc-text">Why Not a ggplot2 Geom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fp-size-Let-Content-Determine-Dimensions"><span class="toc-number">4.3.</span> <span class="toc-text">fp_size(): Let Content Determine Dimensions</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CI-Panel-Details"><span class="toc-number">5.</span> <span class="toc-text">CI Panel Details</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Complete-Example"><span class="toc-number">6.</span> <span class="toc-text">A Complete Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Roadmap"><span class="toc-number">7.</span> <span class="toc-text">Roadmap</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        panelforest: Build Forest Plots with a Declarative Pipeline
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-03-15T08:00:00.000Z" class="dt-published" itemprop="datePublished">2026-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/R/" rel="tag">R</a>, <a class="p-category" href="/tags/tools/" rel="tag">tools</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Why-I-Built-panelforest"><a href="#Why-I-Built-panelforest" class="headerlink" title="Why I Built panelforest"></a>Why I Built panelforest</h1><p>Forest plots are a staple of clinical research, meta-analyses, and NMA. R has no shortage of options — <code>forestplot</code>, <code>forestploter</code>, <code>forester</code>, <code>meta::forest()</code> — but after using them across several projects, I kept running into the same frustrations:</p>
+<ul>
+<li>Most packages use a configuration-style API: one long function call with dozens of parameters, where adjusting layout means hunting through docs for the right argument name</li>
+<li>The panel combinations I actually want — text on the left, CI in the middle, a bar chart on the right — are rarely built-in, so I end up hand-assembling things</li>
+<li>Grouped rows, summary rows, stripes, dividers: every package handles these differently</li>
+<li>Changing the color or shape of specific rows usually requires hacking the underlying data</li>
+</ul>
+<p>So I wrote <strong>panelforest</strong>.</p>
+<p>The core idea is simple: <strong>a forest plot is just several panels placed side by side, each with its own rendering logic.</strong> Instead of designing it as a “forest plot function,” let users declare which columns they want and what each one should look like — then let the engine handle the rest.</p>
+<p>Project: <a target="_blank" rel="noopener" href="https://github.com/lenardar/panelforest">https://github.com/lenardar/panelforest</a></p>
+<h1 id="What-It-Looks-Like"><a href="#What-It-Looks-Like" class="headerlink" title="What It Looks Like"></a>What It Looks Like</h1><p>Here’s the result:</p>
+<p><img src="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png"></p>
+<p>This is a forest plot from an NMA safety analysis. It includes:</p>
+<ul>
+<li>A text column on the left (subgroup labels)</li>
+<li>A text column in the middle (OR values)</li>
+<li>A CI panel on the right (log scale, reference line, truncation arrows, favors annotation)</li>
+<li>Bold group rows, row dividers, striped background</li>
+<li>Different colors and shapes per comparison</li>
+</ul>
+<p>The code to produce this is about 30 lines, all pipeline composition.</p>
+<h1 id="How-to-Use-It"><a href="#How-to-Use-It" class="headerlink" title="How to Use It"></a>How to Use It</h1><h2 id="Basic-Structure"><a href="#Basic-Structure" class="headerlink" title="Basic Structure"></a>Basic Structure</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>panelforest<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span>            <span class="comment"># pass in data</span></span><br><span class="line">  add_stripe<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>          <span class="comment"># striped background</span></span><br><span class="line">  add_group<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>           <span class="comment"># grouped rows</span></span><br><span class="line">  add_hline<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>           <span class="comment"># divider lines</span></span><br><span class="line">  add_text<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>            <span class="comment"># text column</span></span><br><span class="line">  add_ci<span class="punctuation">(</span>...<span class="punctuation">)</span> <span class="operator">|&gt;</span>              <span class="comment"># CI panel</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span>                 <span class="comment"># render</span></span><br></pre></td></tr></table></figure>
+
+<p>Each <code>add_*()</code> appends a panel column to the layout. Order determines left-to-right arrangement. To change the layout, move the calls around.</p>
+<h2 id="Panel-Types"><a href="#Panel-Types" class="headerlink" title="Panel Types"></a>Panel Types</h2><p>Currently built in:</p>
+<ul>
+<li><code>add_text()</code> &#x2F; <code>fp_text()</code> — plain text column, supports alignment, indentation, format functions</li>
+<li><code>add_text_ci()</code> &#x2F; <code>fp_text_ci()</code> — formats est&#x2F;lower&#x2F;upper into “0.45 (0.32, 0.61)”</li>
+<li><code>add_ci()</code> &#x2F; <code>fp_ci()</code> — CI visualization: log scale, truncation arrows, diamond summaries, favors annotation</li>
+<li><code>add_bar()</code> &#x2F; <code>fp_bar()</code> — horizontal bar chart</li>
+<li><code>add_dot()</code> &#x2F; <code>fp_dot()</code> — dot + error bar</li>
+<li><code>add_gap()</code> &#x2F; <code>fp_gap()</code> — fixed-width gap</li>
+<li><code>add_spacer()</code> &#x2F; <code>fp_spacer()</code> — absolute-unit spacer (mm)</li>
+<li><code>fp_custom()</code> — custom panel: pass in a function that returns a ggplot</li>
+</ul>
+<p>When the built-ins aren’t enough, <code>fp_custom()</code> combined with <code>fp_register()</code> lets you register a custom panel type that the engine will treat like a native one.</p>
+<h2 id="Column-Driven-Aesthetic-Mapping"><a href="#Column-Driven-Aesthetic-Mapping" class="headerlink" title="Column-Driven Aesthetic Mapping"></a>Column-Driven Aesthetic Mapping</h2><p>Similar to ggplot2’s <code>aes()</code>, panelforest uses <code>fp_aes()</code> to map data columns to visual attributes:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># df has columns ci_colour and ci_shape</span></span><br><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;OR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span></span><br><span class="line">    mapping <span class="operator">=</span> fp_aes<span class="punctuation">(</span>colour <span class="operator">=</span> <span class="string">&quot;ci_colour&quot;</span><span class="punctuation">,</span> shape <span class="operator">=</span> <span class="string">&quot;ci_shape&quot;</span><span class="punctuation">)</span></span><br><span class="line">  <span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>This lets each row have a different color and shape without setting them row by row.</p>
+<h2 id="A-Unified-edit-Layer"><a href="#A-Unified-edit-Layer" class="headerlink" title="A Unified edit() Layer"></a>A Unified edit() Layer</h2><p>Need special treatment for specific rows? One <code>edit()</code> function handles row-level, cell-level, and row-height edits:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Subgroup&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># row 1: diamond glyph</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">1</span><span class="punctuation">,</span> panel <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> glyph <span class="operator">=</span> <span class="string">&quot;diamond&quot;</span><span class="punctuation">,</span> fill <span class="operator">=</span> <span class="string">&quot;#dbeafe&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># rows 2-4: italic</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">2</span><span class="operator">:</span><span class="number">4</span><span class="punctuation">,</span> fontface <span class="operator">=</span> <span class="string">&quot;italic&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  <span class="comment"># row 5: taller</span></span><br><span class="line">  edit<span class="punctuation">(</span>row <span class="operator">=</span> <span class="number">5</span><span class="punctuation">,</span> height <span class="operator">=</span> <span class="number">1.5</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>The <code>panel</code> argument accepts an index, header string, or column name — no need to remember panel numbers.</p>
+<h2 id="Spanning-Header-Groups"><a href="#Spanning-Header-Groups" class="headerlink" title="Spanning Header Groups"></a>Spanning Header Groups</h2><p>Multiple panels can share a parent label with <code>add_header_group()</code>, and nesting levels are inferred automatically:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Drug A&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;n_events&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Drug B&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_header_group<span class="punctuation">(</span><span class="string">&quot;Treatment&quot;</span><span class="punctuation">,</span> panels <span class="operator">=</span> <span class="number">1</span><span class="operator">:</span><span class="number">2</span><span class="punctuation">,</span> border <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  fp_render<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>Multi-level nesting is supported — a group that contains other groups is automatically promoted to a higher tier.</p>
+<h1 id="Design-Decisions"><a href="#Design-Decisions" class="headerlink" title="Design Decisions"></a>Design Decisions</h1><h2 id="Why-ggplot2-patchwork"><a href="#Why-ggplot2-patchwork" class="headerlink" title="Why ggplot2 + patchwork"></a>Why ggplot2 + patchwork</h2><p>Each panel is an independent ggplot object, assembled horizontally with patchwork. The benefits:</p>
+<ul>
+<li>Inherits ggplot2’s rendering quality and theme system</li>
+<li>Independent coordinate systems per panel — CI panels can use log scale while text panels use [0, 1], without interference</li>
+<li>patchwork’s layout system natively supports mixing proportional and fixed widths</li>
+<li>The output is a standard ggplot object, so <code>ggsave()</code> just works</li>
+</ul>
+<p>The downside is performance — rendering slows when there are many panels or many rows. But forest plots are typically tens to a few hundred rows; at that scale it’s not an issue.</p>
+<h2 id="Why-Not-a-ggplot2-Geom"><a href="#Why-Not-a-ggplot2-Geom" class="headerlink" title="Why Not a ggplot2 Geom"></a>Why Not a ggplot2 Geom</h2><p>The alternative would be a <code>geom_forest()</code> extension. I didn’t go that route because a forest plot is fundamentally “multiple heterogeneous column panels” — each column has completely different coordinate systems and rendering logic. Forcing that into ggplot2’s facet or annotation systems would be awkward.</p>
+<p>patchwork’s multi-panel approach is more natural: each column is an independent ggplot that doesn’t interfere with the others, but they share a common row coordinate.</p>
+<h2 id="fp-size-Let-Content-Determine-Dimensions"><a href="#fp-size-Let-Content-Determine-Dimensions" class="headerlink" title="fp_size(): Let Content Determine Dimensions"></a>fp_size(): Let Content Determine Dimensions</h2><p>Forest plot dimensions should be determined by content, not guessed by the user. <code>fp_size()</code> calculates exact inch dimensions from the number of panels, row count, and row heights:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">size <span class="operator">&lt;-</span> fp_size<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span><span class="string">&quot;forest.png&quot;</span><span class="punctuation">,</span> fp_render<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  width <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;width&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> height <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;height&quot;</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>No matter how many panel columns you add or how many rows your data has, the output will always have consistent density and proportions.</p>
+<h1 id="CI-Panel-Details"><a href="#CI-Panel-Details" class="headerlink" title="CI Panel Details"></a>CI Panel Details</h1><p><code>fp_ci()</code> is the most feature-dense panel:</p>
+<ul>
+<li><strong>Log scale</strong>: <code>trans = &quot;log&quot;</code>, automatically handles positive-value constraints and axis labels</li>
+<li><strong>Truncation arrows</strong>: when CIs extend beyond the display range, arrows indicate the truncation direction; <code>arrow_type = &quot;open&quot;</code> or <code>&quot;closed&quot;</code></li>
+<li><strong>Diamond summaries</strong>: rows marked with <code>add_summary()</code> render as diamonds automatically</li>
+<li><strong>Favors annotation</strong>: <code>favors_left</code> &#x2F; <code>favors_right</code> draw directional arrows and labels below the axis</li>
+<li><strong>Reference line</strong>: <code>ref_line</code> draws a dashed vertical line</li>
+<li><strong>Aesthetic mapping</strong>: per-row colors, shapes, and sizes via <code>fp_aes()</code></li>
+</ul>
+<p>Any of these alone is straightforward. Combined, they cover the vast majority of clinical forest plot requirements.</p>
+<h1 id="A-Complete-Example"><a href="#A-Complete-Example" class="headerlink" title="A Complete Example"></a>A Complete Example</h1><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>panelforest<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">df <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span></span><br><span class="line">  label <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;Overall&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Age &lt; 65&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Age &gt;= 65&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Male&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Female&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  HR <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.72</span><span class="punctuation">,</span> <span class="number">0.68</span><span class="punctuation">,</span> <span class="number">0.81</span><span class="punctuation">,</span> <span class="number">0.75</span><span class="punctuation">,</span> <span class="number">0.69</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  LCI <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.58</span><span class="punctuation">,</span> <span class="number">0.49</span><span class="punctuation">,</span> <span class="number">0.61</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">0.48</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  UCI <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.89</span><span class="punctuation">,</span> <span class="number">0.94</span><span class="punctuation">,</span> <span class="number">1.07</span><span class="punctuation">,</span> <span class="number">1.02</span><span class="punctuation">,</span> <span class="number">0.99</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">plot_obj <span class="operator">&lt;-</span> forest_plot<span class="punctuation">(</span>df<span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_stripe<span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;#f4f7f5&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_summary<span class="punctuation">(</span><span class="number">1</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_hline<span class="punctuation">(</span><span class="number">1</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text<span class="punctuation">(</span><span class="string">&quot;label&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;Subgroup&quot;</span><span class="punctuation">,</span> width <span class="operator">=</span> <span class="number">2</span><span class="punctuation">,</span> align <span class="operator">=</span> <span class="string">&quot;left&quot;</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_text_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="string">&quot;HR (95% CI)&quot;</span><span class="punctuation">,</span> width <span class="operator">=</span> <span class="number">2</span><span class="punctuation">)</span> <span class="operator">|&gt;</span></span><br><span class="line">  add_ci<span class="punctuation">(</span><span class="string">&quot;HR&quot;</span><span class="punctuation">,</span> <span class="string">&quot;LCI&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UCI&quot;</span><span class="punctuation">,</span></span><br><span class="line">    header <span class="operator">=</span> <span class="string">&quot;Hazard Ratio&quot;</span><span class="punctuation">,</span></span><br><span class="line">    trans <span class="operator">=</span> <span class="string">&quot;log&quot;</span><span class="punctuation">,</span></span><br><span class="line">    width <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">    show_axis <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span></span><br><span class="line">    favors_left <span class="operator">=</span> <span class="string">&quot;Favors treatment&quot;</span><span class="punctuation">,</span></span><br><span class="line">    favors_right <span class="operator">=</span> <span class="string">&quot;Favors control&quot;</span></span><br><span class="line">  <span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">size <span class="operator">&lt;-</span> fp_size<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span><span class="string">&quot;forest.png&quot;</span><span class="punctuation">,</span> fp_render<span class="punctuation">(</span>plot_obj<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  width <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;width&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> height <span class="operator">=</span> size<span class="punctuation">[</span><span class="string">&quot;height&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  dpi <span class="operator">=</span> <span class="number">300</span><span class="punctuation">,</span> bg <span class="operator">=</span> <span class="string">&quot;white&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>The structure is clear: data → decorations → panels → render. To change layout, reorder the <code>add_*()</code> calls. To change style, add <code>edit()</code>.</p>
+<h1 id="Roadmap"><a href="#Roadmap" class="headerlink" title="Roadmap"></a>Roadmap</h1><p>panelforest is currently at v0.2.0, with core features stable. Planned work:</p>
+<ul>
+<li><strong><code>forest_plot_from()</code> — model-to-forest-plot</strong>: pass in <code>glm</code>, <code>coxph</code>, <code>lm</code>, etc., and get a forest plot automatically. Powered by <code>broom::tidy()</code>, with automatic effect size and scale inference per model type. Planned support for <code>lme4</code>, <code>metafor</code>, <code>brms</code>.</li>
+<li><strong><code>add_rule()</code> — conditional styling</strong>: declarative rules for batch highlighting, as an alternative to repeated <code>edit()</code> calls</li>
+<li><strong>More scales</strong>: <code>sqrt</code>, <code>logit</code>, etc.</li>
+<li><strong>Text wrapping, export helpers, footnote system</strong>, and other UX improvements</li>
+</ul>
+<p>The model-direct direction is the most important — making panelforest not just a plotting tool, but something that connects directly to statistical model output, removing the “run the model, manually wrangle the data, then plot” cycle.</p>
+<p>Project: <a target="_blank" rel="noopener" href="https://github.com/lenardar/panelforest">https://github.com/lenardar/panelforest</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-I-Built-panelforest"><span class="toc-number">1.</span> <span class="toc-text">Why I Built panelforest</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-It-Looks-Like"><span class="toc-number">2.</span> <span class="toc-text">What It Looks Like</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-Use-It"><span class="toc-number">3.</span> <span class="toc-text">How to Use It</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Structure"><span class="toc-number">3.1.</span> <span class="toc-text">Basic Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Panel-Types"><span class="toc-number">3.2.</span> <span class="toc-text">Panel Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Column-Driven-Aesthetic-Mapping"><span class="toc-number">3.3.</span> <span class="toc-text">Column-Driven Aesthetic Mapping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Unified-edit-Layer"><span class="toc-number">3.4.</span> <span class="toc-text">A Unified edit() Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spanning-Header-Groups"><span class="toc-number">3.5.</span> <span class="toc-text">Spanning Header Groups</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-Decisions"><span class="toc-number">4.</span> <span class="toc-text">Design Decisions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-ggplot2-patchwork"><span class="toc-number">4.1.</span> <span class="toc-text">Why ggplot2 + patchwork</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Not-a-ggplot2-Geom"><span class="toc-number">4.2.</span> <span class="toc-text">Why Not a ggplot2 Geom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fp-size-Let-Content-Determine-Dimensions"><span class="toc-number">4.3.</span> <span class="toc-text">fp_size(): Let Content Determine Dimensions</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CI-Panel-Details"><span class="toc-number">5.</span> <span class="toc-text">CI Panel Details</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Complete-Example"><span class="toc-number">6.</span> <span class="toc-text">A Complete Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Roadmap"><span class="toc-number">7.</span> <span class="toc-text">Roadmap</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&text=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&is_video=false&description=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest: Build Forest Plots with a Declarative Pipeline&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&title=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&name=panelforest: Build Forest Plots with a Declarative Pipeline&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest-declarative-forest-plots-in-R/&t=panelforest: Build Forest Plots with a Declarative Pipeline"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2026
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

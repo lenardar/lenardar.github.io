@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Why I Built TidyPy4DSAnyone who does data analysis has probably switched back and forth between pandas and tidyverse. If you’ve spent a lot of time in R, dplyr &#x2F; tidyr &#x2F; stringr feel natural">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas">
+<meta property="og:url" content="http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/index.html">
+<meta property="og:site_name" content="Lenardar&#39;s Blog">
+<meta property="og:description" content="Why I Built TidyPy4DSAnyone who does data analysis has probably switched back and forth between pandas and tidyverse. If you’ve spent a lot of time in R, dplyr &#x2F; tidyr &#x2F; stringr feel natural">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-10T14:30:00.000Z">
+<meta property="article:modified_time" content="2026-03-15T10:17:25.957Z">
+<meta property="article:author" content="Lenardar">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="data analysis">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2026/03/10/TidyPy4DS%EF%BC%9A%E7%BB%99%20pandas%20%E8%A1%A5%E4%B8%8A%20tidyverse%20%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%BD%93%E9%AA%8C/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2026/03/10/PyKMExtract%EF%BC%9A%E4%BB%8E%E8%AE%BA%E6%96%87KM%E5%9B%BE%E5%88%B0%E7%94%9F%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8F%90%E5%8F%96/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&text=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&is_video=false&description=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas&body=Check out this article: http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&name=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&t=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-I-Built-TidyPy4DS"><span class="toc-number">1.</span> <span class="toc-text">Why I Built TidyPy4DS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-Problem-This-Solves"><span class="toc-number">2.</span> <span class="toc-text">What Problem This Solves</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Direct-Comparison-Pure-pandas-vs-tidypy"><span class="toc-number">3.</span> <span class="toc-text">A Direct Comparison: Pure pandas vs. tidypy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pure-pandas"><span class="toc-number">3.1.</span> <span class="toc-text">Pure pandas</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidypy"><span class="toc-number">3.2.</span> <span class="toc-text">tidypy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Core-Design-Get-Column-Selection-Right-First"><span class="toc-number">4.</span> <span class="toc-text">The Core Design: Get Column Selection Right First</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#One-Thing-I-Deliberately-Didn%E2%80%99t-Do-Bare-Name-NSE"><span class="toc-number">5.</span> <span class="toc-text">One Thing I Deliberately Didn’t Do: Bare-Name NSE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#glimpse-The-Thing-I-Always-Wanted"><span class="toc-number">6.</span> <span class="toc-text">glimpse(): The Thing I Always Wanted</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Current-State"><span class="toc-number">7.</span> <span class="toc-text">Current State</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Closing-Thought"><span class="toc-number">8.</span> <span class="toc-text">Closing Thought</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Lenardar</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-03-10T14:30:00.000Z" class="dt-published" itemprop="datePublished">2026-03-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Python/" rel="tag">Python</a>, <a class="p-category" href="/tags/data-analysis/" rel="tag">data analysis</a>, <a class="p-category" href="/tags/tools/" rel="tag">tools</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Why-I-Built-TidyPy4DS"><a href="#Why-I-Built-TidyPy4DS" class="headerlink" title="Why I Built TidyPy4DS"></a>Why I Built TidyPy4DS</h1><p>Anyone who does data analysis has probably switched back and forth between <code>pandas</code> and tidyverse.</p>
+<p>If you’ve spent a lot of time in R, <code>dplyr</code> &#x2F; <code>tidyr</code> &#x2F; <code>stringr</code> feel natural: column selectors, <code>across()</code> for batch transforms, consistent entry points for reshaping, string handling, and missing value treatment.</p>
+<p>Switch to Python and <code>pandas</code> is powerful, but a few things still come up regularly:</p>
+<ul>
+<li>Batch-selecting columns by prefix, type, or condition doesn’t have a unified approach</li>
+<li>Applying the same operation to a set of columns means hand-rolling a dictionary in <code>assign()</code></li>
+<li>Writing cleaning steps that are stable, reusable, and readable leads to accumulating one-off lambdas</li>
+<li>Muscle memory from tidyverse has nowhere to go</li>
+</ul>
+<p>So I built <strong>TidyPy4DS</strong>.</p>
+<p>It’s not trying to rewrite <code>pandas</code> or build another complex framework. It fills one specific gap: <strong>column selection, batch transforms, string handling, reshape operations, and a more natural <code>.pipe()</code> chaining experience.</strong></p>
+<p>Project: <a target="_blank" rel="noopener" href="https://github.com/lenardar/TidyPy4DS">https://github.com/lenardar/TidyPy4DS</a></p>
+<h1 id="What-Problem-This-Solves"><a href="#What-Problem-This-Solves" class="headerlink" title="What Problem This Solves"></a>What Problem This Solves</h1><p>In one sentence: <strong>function names follow tidyverse conventions; behavior follows Python &#x2F; pandas idioms.</strong></p>
+<p>Specifically:</p>
+<ul>
+<li>No SQL DSL</li>
+<li>No lazy evaluation engine</li>
+<li>No replacing <code>groupby</code>, <code>merge</code>, or <code>assign</code> — those are already well-handled by pandas</li>
+<li>Just collecting the most frequently repeated, most easily scattered operations into a consistent interface</li>
+</ul>
+<p>The core capabilities currently in the project:</p>
+<ul>
+<li>Selector system: <code>starts_with</code>, <code>contains</code>, <code>numeric</code>, <code>where</code>, etc.</li>
+<li>Batch transforms: <code>mutate_across</code></li>
+<li>Batch renaming: <code>rename_with</code></li>
+<li>Summarizing: <code>summarize</code></li>
+<li>Structure overview: <code>glimpse</code></li>
+<li>Conditional mapping: <code>case_when</code>, <code>if_else</code>, <code>recode</code></li>
+<li>Reshape: <code>pivot_longer</code>, <code>pivot_wider</code></li>
+<li>Missing values: <code>drop_na</code>, <code>fill_na</code>, <code>replace_na</code></li>
+<li>Header cleaning: <code>clean_names</code>, <code>remove_empty</code>, <code>row_to_names</code></li>
+</ul>
+<h1 id="A-Direct-Comparison-Pure-pandas-vs-tidypy"><a href="#A-Direct-Comparison-Pure-pandas-vs-tidypy" class="headerlink" title="A Direct Comparison: Pure pandas vs. tidypy"></a>A Direct Comparison: Pure pandas vs. tidypy</h1><p>Starting with a common dataset:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&quot;employee_id&quot;</span>: [<span class="number">101</span>, <span class="number">102</span>, <span class="number">103</span>, <span class="number">104</span>, <span class="number">105</span>],</span><br><span class="line">    <span class="string">&quot;dept&quot;</span>: [<span class="string">&quot;Sales&quot;</span>, <span class="string">&quot;Sales&quot;</span>, <span class="string">&quot;Tech&quot;</span>, <span class="string">&quot;Tech&quot;</span>, <span class="string">&quot;HR&quot;</span>],</span><br><span class="line">    <span class="string">&quot;score_math&quot;</span>: [<span class="number">92.0</span>, <span class="literal">None</span>, <span class="number">88.0</span>, <span class="number">79.0</span>, <span class="literal">None</span>],</span><br><span class="line">    <span class="string">&quot;score_eng&quot;</span>: [<span class="number">85.0</span>, <span class="number">90.0</span>, <span class="literal">None</span>, <span class="number">82.0</span>, <span class="number">87.0</span>],</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: [<span class="string">&quot; Alice &quot;</span>, <span class="string">&quot;Bob &quot;</span>, <span class="string">&quot; Carol&quot;</span>, <span class="string">&quot;David&quot;</span>, <span class="string">&quot; Frank &quot;</span>],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Goal:</p>
+<ul>
+<li>Keep ID, grouping, score columns, and name</li>
+<li>Fill missing values with column medians</li>
+<li>Strip the <code>score_</code> prefix from column names</li>
+<li>Strip leading&#x2F;trailing whitespace from names</li>
+<li>Assign a letter grade based on math score</li>
+<li>Summarize by group</li>
+</ul>
+<h2 id="Pure-pandas"><a href="#Pure-pandas" class="headerlink" title="Pure pandas"></a>Pure pandas</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pandas_result = (</span><br><span class="line">    df.loc[:, [<span class="string">&quot;employee_id&quot;</span>, <span class="string">&quot;dept&quot;</span>, <span class="string">&quot;score_math&quot;</span>, <span class="string">&quot;score_eng&quot;</span>, <span class="string">&quot;name&quot;</span>]]</span><br><span class="line">    .assign(</span><br><span class="line">        score_math=<span class="keyword">lambda</span> x: x[<span class="string">&quot;score_math&quot;</span>].fillna(x[<span class="string">&quot;score_math&quot;</span>].median()),</span><br><span class="line">        score_eng=<span class="keyword">lambda</span> x: x[<span class="string">&quot;score_eng&quot;</span>].fillna(x[<span class="string">&quot;score_eng&quot;</span>].median()),</span><br><span class="line">    )</span><br><span class="line">    .rename(columns=&#123;<span class="string">&quot;score_math&quot;</span>: <span class="string">&quot;math&quot;</span>, <span class="string">&quot;score_eng&quot;</span>: <span class="string">&quot;eng&quot;</span>&#125;)</span><br><span class="line">    .assign(</span><br><span class="line">        name=<span class="keyword">lambda</span> x: x[<span class="string">&quot;name&quot;</span>].<span class="built_in">str</span>.strip(),</span><br><span class="line">        level=<span class="keyword">lambda</span> x: pd.Series(</span><br><span class="line">            [<span class="string">&quot;A&quot;</span> <span class="keyword">if</span> v &gt;= <span class="number">90</span> <span class="keyword">else</span> <span class="string">&quot;B&quot;</span> <span class="keyword">if</span> v &gt;= <span class="number">80</span> <span class="keyword">else</span> <span class="string">&quot;C&quot;</span> <span class="keyword">for</span> v <span class="keyword">in</span> x[<span class="string">&quot;math&quot;</span>]],</span><br><span class="line">            index=x.index,</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>This is fine — it’s standard pandas. But notice:</p>
+<ul>
+<li>Score columns are explicitly named twice</li>
+<li>Column names before and after renaming both need to be kept in sync manually</li>
+<li>As more similar columns are added, the number of places to change grows</li>
+</ul>
+<h2 id="tidypy"><a href="#tidypy" class="headerlink" title="tidypy"></a>tidypy</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> (</span><br><span class="line">    case_when,</span><br><span class="line">    clean_names,</span><br><span class="line">    mutate_across,</span><br><span class="line">    rename_with,</span><br><span class="line">    select,</span><br><span class="line">    starts_with,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">tidypy_result = (</span><br><span class="line">    clean_names(df)</span><br><span class="line">    .pipe(</span><br><span class="line">        select,</span><br><span class="line">        <span class="string">&quot;employee_id&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dept&quot;</span>,</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">        <span class="string">&quot;name&quot;</span>,</span><br><span class="line">    )</span><br><span class="line">    .pipe(</span><br><span class="line">        mutate_across,</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">        <span class="keyword">lambda</span> s: s.fillna(s.median()),</span><br><span class="line">    )</span><br><span class="line">    .pipe(</span><br><span class="line">        rename_with,</span><br><span class="line">        <span class="keyword">lambda</span> c: c.replace(<span class="string">&quot;score_&quot;</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">        starts_with(<span class="string">&quot;score_&quot;</span>),</span><br><span class="line">    )</span><br><span class="line">    .assign(</span><br><span class="line">        name=<span class="keyword">lambda</span> x: x[<span class="string">&quot;name&quot;</span>].<span class="built_in">str</span>.strip(),</span><br><span class="line">        level=<span class="keyword">lambda</span> x: case_when(</span><br><span class="line">            (x[<span class="string">&quot;math&quot;</span>] &gt;= <span class="number">90</span>, <span class="string">&quot;A&quot;</span>),</span><br><span class="line">            (x[<span class="string">&quot;math&quot;</span>] &gt;= <span class="number">80</span>, <span class="string">&quot;B&quot;</span>),</span><br><span class="line">            default=<span class="string">&quot;C&quot;</span>,</span><br><span class="line">        ),</span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>This isn’t magically shorter than pandas.</p>
+<p>The real difference: <strong>you’re now expressing “which columns belong together” and “what to do to those columns” as separate concerns.</strong></p>
+<p>In a small dataset, this might just feel slightly cleaner. Once you add a <code>score_logic</code> column, the gap becomes concrete:</p>
+<ul>
+<li>The pure pandas version usually requires updating multiple explicit column names</li>
+<li>The selector version usually just needs the new column to match the <code>score_</code> pattern — the main pipeline doesn’t need to change</li>
+</ul>
+<p>The difference is even more pronounced with real-world data that isn’t a clean DataFrame to begin with — like Excel exports with:</p>
+<ul>
+<li>Column names containing spaces, brackets, and punctuation</li>
+<li>Actual headers buried in row 1</li>
+<li>Interspersed fully empty rows and columns</li>
+</ul>
+<p>The janitor-style functions handle this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> clean_names, remove_empty, row_to_names</span><br><span class="line"></span><br><span class="line">raw = pd.DataFrame(</span><br><span class="line">    [</span><br><span class="line">        [<span class="string">&quot;Patient ID&quot;</span>, <span class="string">&quot;Score Math&quot;</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">90</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">88</span>, <span class="literal">None</span>],</span><br><span class="line">        [<span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>],</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">result = (</span><br><span class="line">    raw</span><br><span class="line">    .pipe(row_to_names, row=<span class="number">0</span>)</span><br><span class="line">    .pipe(remove_empty, axis=<span class="string">&quot;both&quot;</span>)</span><br><span class="line">    .pipe(clean_names)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>Each of these is simple on its own. But they consistently appear exactly in the gap between “pandas can obviously do this” and “I end up rewriting this from scratch every time.”</p>
+<h1 id="The-Core-Design-Get-Column-Selection-Right-First"><a href="#The-Core-Design-Get-Column-Selection-Right-First" class="headerlink" title="The Core Design: Get Column Selection Right First"></a>The Core Design: Get Column Selection Right First</h1><p>The most important abstraction in this project isn’t <code>mutate_across()</code> — it’s <code>ColSelector</code>.</p>
+<p>All helpers return a selector object. The actual column resolution happens when the selector is combined with a specific DataFrame.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select(df, numeric() | starts_with(<span class="string">&quot;id&quot;</span>))</span><br><span class="line">select(df, everything() - contains(<span class="string">&quot;tmp&quot;</span>))</span><br><span class="line">mutate_across(df, where(<span class="keyword">lambda</span> s: s.isnull().<span class="built_in">any</span>()), <span class="keyword">lambda</span> s: s.fillna(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p>The benefits:</p>
+<ul>
+<li>Helpers can inspect column names, dtypes, or actual data values</li>
+<li>Selectors compose</li>
+<li>Column selection logic can be reused rather than scattered</li>
+</ul>
+<p>The rules I landed on:</p>
+<ul>
+<li><code>|</code> is union</li>
+<li><code>-</code> is exclusion</li>
+<li>Results are deduplicated and order-preserving</li>
+<li>Unresolvable columns raise immediately — no silent failures</li>
+</ul>
+<p>Once this layer is stable, <code>select</code>, <code>mutate_across</code>, <code>rename_with</code>, and <code>pivot_longer</code> all follow naturally.</p>
+<h1 id="One-Thing-I-Deliberately-Didn’t-Do-Bare-Name-NSE"><a href="#One-Thing-I-Deliberately-Didn’t-Do-Bare-Name-NSE" class="headerlink" title="One Thing I Deliberately Didn’t Do: Bare-Name NSE"></a>One Thing I Deliberately Didn’t Do: Bare-Name NSE</h1><p>If you know tidyverse, your first question might be:</p>
+<blockquote>
+<p>Can I write <code>mutate(df, total=a + b)</code> like in R?</p>
+</blockquote>
+<p>The short answer: <strong>technically possible, not worth it.</strong></p>
+<p>In R, that experience is backed by tidy evaluation. Python has no equivalent language mechanism. The only paths are <code>eval</code>, AST rewriting, or proxy objects.</p>
+<p>The problem isn’t writing it — it’s what you get:</p>
+<ul>
+<li>Unintuitive error messages</li>
+<li>Poor debuggability</li>
+<li>Inconsistency with the pandas ecosystem</li>
+<li>Once edge cases appear, it becomes fragile syntax magic</li>
+</ul>
+<p>My tradeoff:</p>
+<ul>
+<li><strong>No bare-name NSE</strong></li>
+<li>Keep <code>assign(...)</code> for a small number of explicit new columns</li>
+<li>Use <code>mutate_across(...)</code> for batch transforms</li>
+<li>Use <code>case_when(...)</code>, <code>if_else(...)</code>, <code>recode(...)</code> for conditional mapping and recoding</li>
+</ul>
+<p>Less flashy, more stable.</p>
+<h1 id="glimpse-The-Thing-I-Always-Wanted"><a href="#glimpse-The-Thing-I-Always-Wanted" class="headerlink" title="glimpse(): The Thing I Always Wanted"></a>glimpse(): The Thing I Always Wanted</h1><p>In a notebook, <code>head()</code> shows values and <code>info()</code> shows structure, but neither is quite what I want.</p>
+<p>So I added <code>glimpse()</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tidypy.tidy <span class="keyword">import</span> glimpse</span><br><span class="line"></span><br><span class="line">glimpse(df)</span><br></pre></td></tr></table></figure>
+
+<p>It shows:</p>
+<ul>
+<li>Row count and column count</li>
+<li>Each column’s dtype</li>
+<li>Non-null count, missing count</li>
+<li>Unique value count</li>
+<li>A few sample values as preview</li>
+</ul>
+<p>With additional options:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glimpse(df, cols=starts_with(<span class="string">&quot;score_&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(glimpse(df, as_text=<span class="literal">True</span>, display=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<p>Small thing, but consistently useful in actual notebook work.</p>
+<h1 id="Current-State"><a href="#Current-State" class="headerlink" title="Current State"></a>Current State</h1><p>TidyPy4DS has a working implementation. The infrastructure is in place:</p>
+<ul>
+<li>Bilingual README</li>
+<li>Bilingual function documentation</li>
+<li>Bilingual notebook examples</li>
+<li><code>unittest</code> test suite</li>
+<li>GitHub Actions CI</li>
+<li>A batch of janitor-style utility functions</li>
+</ul>
+<p>Example notebooks are in three categories:</p>
+<ul>
+<li><strong>Why tidypy</strong>: direct comparison with pure pandas</li>
+<li><strong>Core APIs</strong>: selectors, <code>mutate_across</code>, <code>summarize</code></li>
+<li><strong>Reshape and missing values</strong>: <code>pivot_longer</code>, <code>pivot_wider</code>, <code>separate</code>, <code>unite</code>, missing value handling</li>
+</ul>
+<p>The project is still early, but the direction is clear:</p>
+<ul>
+<li>The selector system should be stable</li>
+<li>API surface should be small and explicit</li>
+<li>No unnecessary wrapping</li>
+<li>Don’t fight Python’s natural idioms</li>
+<li>Single-file implementation for now, but internally organized for later decomposition</li>
+</ul>
+<h1 id="Closing-Thought"><a href="#Closing-Thought" class="headerlink" title="Closing Thought"></a>Closing Thought</h1><p>This project isn’t fighting against <code>pandas</code>. It’s acknowledging something:</p>
+<blockquote>
+<p>pandas is powerful, but some high-frequency cleaning operations are just not as smooth as they could be.</p>
+</blockquote>
+<p>If a thin helper layer can collect those operations into a more consistent, reusable, readable interface — it earns its place.</p>
+<p>If you find yourself switching mentally between pandas and tidyverse thinking, TidyPy4DS might fill exactly the gap you’re feeling.</p>
+<p>What I’ve come to see as its most valuable part isn’t “porting tidyverse to Python” — it’s collecting those operations you write every day but always write in a slightly scattered way, into a small set of clean tools.</p>
+<p>Project: <a target="_blank" rel="noopener" href="https://github.com/lenardar/TidyPy4DS">https://github.com/lenardar/TidyPy4DS</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-I-Built-TidyPy4DS"><span class="toc-number">1.</span> <span class="toc-text">Why I Built TidyPy4DS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-Problem-This-Solves"><span class="toc-number">2.</span> <span class="toc-text">What Problem This Solves</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Direct-Comparison-Pure-pandas-vs-tidypy"><span class="toc-number">3.</span> <span class="toc-text">A Direct Comparison: Pure pandas vs. tidypy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pure-pandas"><span class="toc-number">3.1.</span> <span class="toc-text">Pure pandas</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tidypy"><span class="toc-number">3.2.</span> <span class="toc-text">tidypy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Core-Design-Get-Column-Selection-Right-First"><span class="toc-number">4.</span> <span class="toc-text">The Core Design: Get Column Selection Right First</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#One-Thing-I-Deliberately-Didn%E2%80%99t-Do-Bare-Name-NSE"><span class="toc-number">5.</span> <span class="toc-text">One Thing I Deliberately Didn’t Do: Bare-Name NSE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#glimpse-The-Thing-I-Always-Wanted"><span class="toc-number">6.</span> <span class="toc-text">glimpse(): The Thing I Always Wanted</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Current-State"><span class="toc-number">7.</span> <span class="toc-text">Current State</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Closing-Thought"><span class="toc-number">8.</span> <span class="toc-text">Closing Thought</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&text=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&is_video=false&description=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas&body=Check out this article: http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&title=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&name=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/10/TidyPy4DS-tidyverse-style-data-cleaning-for-pandas/&t=TidyPy4DS: Bringing Tidyverse-Style Data Cleaning to pandas"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2024-2026
+    Lenardar
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/lenardar">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
