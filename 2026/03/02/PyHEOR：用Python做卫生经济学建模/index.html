@@ -9,13 +9,13 @@
     <meta name="description" content="为什么写 PyHEOR做卫生经济学评价（Health Economics and Outcome Research, HEOR）的同学大多用 R（heemod、hesim、DARTH）或者 TreeAge。R 生态确实成熟，但我在实际项目中遇到了一些痛点：  R 的多个包 API 风格不统一，拼一个完整流程需要在不同包之间跳来跳去 TreeAge 是商业软件，价格不菲，而且不够灵活 Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PyHEOR：用Python做卫生经济学建模">
-<meta property="og:url" content="http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/index.html">
+<meta property="og:url" content="https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
 <meta property="og:description" content="为什么写 PyHEOR做卫生经济学评价（Health Economics and Outcome Research, HEOR）的同学大多用 R（heemod、hesim、DARTH）或者 TreeAge。R 生态确实成熟，但我在实际项目中遇到了一些痛点：  R 的多个包 API 风格不统一，拼一个完整流程需要在不同包之间跳来跳去 TreeAge 是商业软件，价格不菲，而且不够灵活 Python">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/%E6%8B%BE%E5%85%89_wallhaven_yxqmkg.jpg">
 <meta property="article:published_time" content="2026-03-02T11:04:14.000Z">
-<meta property="article:modified_time" content="2026-03-10T11:08:16.742Z">
+<meta property="article:modified_time" content="2026-03-02T11:04:14.000Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="研究">
 <meta property="article:tag" content="Python">
@@ -57,6 +57,8 @@
     <!-- rss -->
     
     
+      <link rel="alternate" href="/atom.xml" title="Lenardar&#39;s Blog" type="application/atom+xml" />
+    
 	<!-- mathjax -->
 	
 <meta name="generator" content="Hexo 7.3.0"></head>
@@ -76,6 +78,10 @@
        --><li><a href="/about/">关于</a></li><!--
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
      --><!--
        --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
      -->
@@ -101,17 +107,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -257,6 +263,12 @@
 </article>
 
 
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
 
         
           <div id="footer-post-container">
@@ -270,6 +282,10 @@
           <li><a href="/about/">关于</a></li>
         
           <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
         
           <li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li>
         
@@ -285,17 +301,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&text=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&is_video=false&description=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PyHEOR：用Python做卫生经济学建模&body=Check out this article: https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&title=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&name=PyHEOR：用Python做卫生经济学建模&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2026/03/02/PyHEOR%EF%BC%9A%E7%94%A8Python%E5%81%9A%E5%8D%AB%E7%94%9F%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%BB%BA%E6%A8%A1/&t=PyHEOR：用Python做卫生经济学建模"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -330,6 +346,10 @@
        --><li><a href="/about/">关于</a></li><!--
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
      --><!--
        --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
      -->
@@ -390,6 +410,26 @@
 <!-- Disqus Comments -->
 
 <!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'lenardar/blog-comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
 
 </body>
 </html>

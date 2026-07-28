@@ -9,13 +9,13 @@
     <meta name="description" content="为什么写 panelforest做临床研究、meta 分析或者 NMA 的人，森林图是绑定出图。R 里现有的工具不少——forestplot、forestploter、forester、meta::forest()——但用下来都多少有些不顺手：  很多包的 API 偏”配置式”，参数一多就变成巨长的函数调用，想调整布局得翻文档猜参数名 想要的面板组合经常不在预设里：比如左边文本、中间 CI、右边再">
 <meta property="og:type" content="article">
 <meta property="og:title" content="panelforest：用声明式管道拼出你想要的森林图">
-<meta property="og:url" content="http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/index.html">
+<meta property="og:url" content="https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/index.html">
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
 <meta property="og:description" content="为什么写 panelforest做临床研究、meta 分析或者 NMA 的人，森林图是绑定出图。R 里现有的工具不少——forestplot、forestploter、forester、meta::forest()——但用下来都多少有些不顺手：  很多包的 API 偏”配置式”，参数一多就变成巨长的函数调用，想调整布局得翻文档猜参数名 想要的面板组合经常不在预设里：比如左边文本、中间 CI、右边再">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/lenardar/panelforest/main/man/figures/README-classic-forest.png">
 <meta property="article:published_time" content="2026-03-15T08:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-15T10:11:03.561Z">
+<meta property="article:modified_time" content="2026-03-15T08:00:00.000Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="R">
 <meta property="article:tag" content="工具">
@@ -57,6 +57,8 @@
     <!-- rss -->
     
     
+      <link rel="alternate" href="/atom.xml" title="Lenardar&#39;s Blog" type="application/atom+xml" />
+    
 	<!-- mathjax -->
 	
 <meta name="generator" content="Hexo 7.3.0"></head>
@@ -76,6 +78,10 @@
        --><li><a href="/about/">关于</a></li><!--
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
      --><!--
        --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
      -->
@@ -99,17 +105,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -250,6 +256,12 @@
 </article>
 
 
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
 
         
           <div id="footer-post-container">
@@ -263,6 +275,10 @@
           <li><a href="/about/">关于</a></li>
         
           <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
         
           <li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li>
         
@@ -278,17 +294,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&text=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&is_video=false&description=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=panelforest：用声明式管道拼出你想要的森林图&body=Check out this article: https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&title=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&name=panelforest：用声明式管道拼出你想要的森林图&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2026/03/15/panelforest%EF%BC%9A%E7%94%A8%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%AE%A1%E9%81%93%E6%8B%BC%E5%87%BA%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E6%A3%AE%E6%9E%97%E5%9B%BE/&t=panelforest：用声明式管道拼出你想要的森林图"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -323,6 +339,10 @@
        --><li><a href="/about/">关于</a></li><!--
      --><!--
        --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
      --><!--
        --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
      -->
@@ -383,6 +403,26 @@
 <!-- Disqus Comments -->
 
 <!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'lenardar/blog-comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
 
 </body>
 </html>
