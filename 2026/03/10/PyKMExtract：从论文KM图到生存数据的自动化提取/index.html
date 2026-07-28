@@ -13,18 +13,18 @@
 <meta property="og:site_name" content="Lenardar&#39;s Blog">
 <meta property="og:description" content="为什么写 PyKMExtract上一篇介绍了 PyHEOR，其中「文献 KM 图 → IPD → 参数拟合 → 建模」是一个很实用的流程。但实际操作中，第一步「从 KM 图提取坐标」仍然是手工活——要么用 WebPlotDigitizer 一个点一个点地点，要么用 Engauge Digitizer 半自动描线，一张双臂 KM 图搞下来十几二十分钟是常事。 当一个系统评价涉及十几篇文献、每篇两三张">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/PenzancePool_ZH-CN4493022613_UHD.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/all_overlays.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_original.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_reconstructed.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_overlay.png">
+<meta property="og:image" content="https://lenardar.github.io/images/PenzancePool_ZH-CN4493022613_UHD.jpg">
+<meta property="og:image" content="https://lenardar.github.io/images/all_overlays.png">
+<meta property="og:image" content="https://lenardar.github.io/images/study04_os_original.png">
+<meta property="og:image" content="https://lenardar.github.io/images/study04_os_reconstructed.png">
+<meta property="og:image" content="https://lenardar.github.io/images/study04_os_overlay.png">
 <meta property="article:published_time" content="2026-03-10T12:00:00.000Z">
 <meta property="article:modified_time" content="2026-03-10T12:00:00.000Z">
 <meta property="article:author" content="Lenardar">
 <meta property="article:tag" content="研究">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/PenzancePool_ZH-CN4493022613_UHD.jpg">
+<meta name="twitter:image" content="https://lenardar.github.io/images/PenzancePool_ZH-CN4493022613_UHD.jpg">
     
     
       
@@ -173,7 +173,7 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="为什么写-PyKMExtract"><a href="#为什么写-PyKMExtract" class="headerlink" title="为什么写 PyKMExtract"></a><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/PenzancePool_ZH-CN4493022613_UHD.jpg">为什么写 PyKMExtract</h1><p>上一篇介绍了 <a target="_blank" rel="noopener" href="https://github.com/lenardar/PyHEOR">PyHEOR</a>，其中「文献 KM 图 → IPD → 参数拟合 → 建模」是一个很实用的流程。但实际操作中，第一步「从 KM 图提取坐标」仍然是手工活——要么用 WebPlotDigitizer 一个点一个点地点，要么用 Engauge Digitizer 半自动描线，一张双臂 KM 图搞下来十几二十分钟是常事。</p>
+    <h1 id="为什么写-PyKMExtract"><a href="#为什么写-PyKMExtract" class="headerlink" title="为什么写 PyKMExtract"></a><img src="/images/PenzancePool_ZH-CN4493022613_UHD.jpg">为什么写 PyKMExtract</h1><p>上一篇介绍了 <a target="_blank" rel="noopener" href="https://github.com/lenardar/PyHEOR">PyHEOR</a>，其中「文献 KM 图 → IPD → 参数拟合 → 建模」是一个很实用的流程。但实际操作中，第一步「从 KM 图提取坐标」仍然是手工活——要么用 WebPlotDigitizer 一个点一个点地点，要么用 Engauge Digitizer 半自动描线，一张双臂 KM 图搞下来十几二十分钟是常事。</p>
 <p>当一个系统评价涉及十几篇文献、每篇两三张 KM 图时，手工数字化就变成了一件非常痛苦的事情。</p>
 <p>所以我写了 <strong>PyKMExtract</strong>——一个面向研究场景的 KM 曲线自动化数字化工具。它从论文截图中提取结构化的 <code>time / survival</code> 数据，做基础验证，再桥接到 PyHEOR 做 Guyot 重建和后续生存建模。</p>
 <p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/lenardar/PyKMExtract">https://github.com/lenardar/PyKMExtract</a></p>
@@ -277,7 +277,7 @@
 <p>overlay 是最直观的验证方式——提取的虚线和原图实线重合程度如何，一目了然。</p>
 <h1 id="真实文献测试"><a href="#真实文献测试" class="headerlink" title="真实文献测试"></a>真实文献测试</h1><p>我在 5 篇 JAMA Oncology &#x2F; Lancet 的三期临床试验文献上做了测试（10 张 panel，涵盖 OS 和 PFS）。</p>
 <p><strong>10 张 panel 的 overlay 总览：</strong></p>
-<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/all_overlays.png"></p>
+<p><img src="/images/all_overlays.png"></p>
 <p>逐张人工复核后的评价：</p>
 <table>
 <thead>
@@ -359,12 +359,12 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_original.png" alt="img"></td>
-<td><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_reconstructed.png"></td>
+<td><img src="/images/study04_os_original.png" alt="img"></td>
+<td><img src="/images/study04_os_reconstructed.png"></td>
 </tr>
 </tbody></table>
 <p>提取 overlay：</p>
-<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/study04_os_overlay.png"></p>
+<p><img src="/images/study04_os_overlay.png"></p>
 <p>更客观的结论是：</p>
 <ul>
 <li>在白底、高对比、1-2 条曲线的常见 KM 图上，PyKMExtract 基本可以做到「自动提取 + 人工快速复核」的工作流</li>
