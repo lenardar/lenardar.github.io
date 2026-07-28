@@ -12,7 +12,26 @@
     <![CDATA[呀哈喽！我是 Lenardar，还在读书，方向是 HEOR。<br>平时用 Python 和 R 干活，喜欢造点小轮子、折腾各种工作流。<br>博客随缘更新，写点技术记录和碎碎念，有问题欢迎邮件联系我～]]>
   </subtitle>
   <title>Lenardar's Blog</title>
-  <updated>2026-03-15T08:00:00.000Z</updated>
+  <updated>2026-07-28T10:34:21.000Z</updated>
+  <entry>
+    <author>
+      <name>Lenardar</name>
+    </author>
+    <category term="折腾" scheme="https://lenardar.github.io/tags/%E6%8A%98%E8%85%BE/"/>
+    <content>
+      <![CDATA[<p>这个随缘更新的博客居然更新了，而且这次更新的不是文章，是博客本身，哈哈。今天给它来了一次大扫除加装修，流水账记录一下。</p><p>特别说明：这次大扫除是和 Claude 一起干的，连这篇流水账都是 Fable 5 直接写的，哈哈。</p><h1 id="内容瘦身"><a href="#内容瘦身" class="headerlink" title="内容瘦身"></a>内容瘦身</h1><p>之前每篇技术文都是中英双语各发一份，维护起来实在累，想了想还是全删了英文版，以后就纯中文。顺便把仓库里吃灰的三个主题、各种垃圾文件也清了一遍，还意外修掉一个 bug——有个图片文件夹因为中文文件名的锅，一直往线上部署几百 KB 根本没人引用的死图片。</p><h1 id="修了侧边大纲"><a href="#修了侧边大纲" class="headerlink" title="修了侧边大纲"></a>修了侧边大纲</h1><p>一直觉得文章页右侧的大纲怪怪的，只显示小节标题。翻了下主题源码才发现，cactus 默认把一级标题在大纲里隐藏了（它假设你正文从二级标题开始写，而我习惯用一级标题当章节）。改了几行 CSS 搞定：现在大纲显示两级，一级前缀 <code>#</code>、二级前缀 <code>##</code>，还挺有 Markdown 味的。</p><h1 id="上新功能"><a href="#上新功能" class="headerlink" title="上新功能"></a>上新功能</h1><ul><li><strong>RSS 订阅</strong>：地址是 <a href="/atom.xml">&#x2F;atom.xml</a>，欢迎用阅读器订阅，这才是博客的正确打开方式</li><li><strong>评论区</strong>：文章底下现在可以评论了（utterances，用 GitHub 账号登录就行），欢迎来盖楼</li><li><strong>搜索和标签页</strong>：导航栏多了两个入口，文章多了以后好找</li></ul><h1 id="其他小修小补"><a href="#其他小修小补" class="headerlink" title="其他小修小补"></a>其他小修小补</h1><p>站点链接全面 https、标签体系整顿了一遍、关于页面从空白写成了正经版本、首页简介也扩写了。最重要的一条：博客源码终于进了 git 仓库备份，再也不怕手滑删库了。</p><p>就这些，评论区试试新功能？哈哈</p>]]>
+    </content>
+    <id>https://lenardar.github.io/2026/07/28/%E6%B0%B4%E4%B8%80%E7%AF%87%EF%BC%9A%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%A4%A7%E6%89%AB%E9%99%A4%20+%20%E8%A3%85%E4%BF%AE/</id>
+    <link href="https://lenardar.github.io/2026/07/28/%E6%B0%B4%E4%B8%80%E7%AF%87%EF%BC%9A%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%A4%A7%E6%89%AB%E9%99%A4%20+%20%E8%A3%85%E4%BF%AE/"/>
+    <published>2026-07-28T10:34:21.000Z</published>
+    <summary>
+      <![CDATA[<p>这个随缘更新的博客居然更新了，而且这次更新的不是文章，是博客本身，哈哈。今天给它来了一次大扫除加装修，流水账记录一下。</p>
+<p>特别说明：这次大扫除是和 Claude 一起干的，连这篇流水账都是 Fable 5 直接写的，哈哈。</p>
+<h1 id="内容瘦身"><]]>
+    </summary>
+    <title>水一篇：给博客大扫除 + 装修</title>
+    <updated>2026-07-28T10:34:21.000Z</updated>
+  </entry>
   <entry>
     <author>
       <name>Lenardar</name>
