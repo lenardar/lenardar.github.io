@@ -14,9 +14,9 @@
       
         <tags>
             
-            <tag> R </tag>
+            <tag> 研究 </tag>
             
-            <tag> 工具 </tag>
+            <tag> R </tag>
             
         </tags>
       
@@ -35,11 +35,9 @@
       
         <tags>
             
+            <tag> 研究 </tag>
+            
             <tag> Python </tag>
-            
-            <tag> 工具 </tag>
-            
-            <tag> 数据分析 </tag>
             
         </tags>
       
@@ -135,6 +133,12 @@
         <content type="html"><![CDATA[<p><img src="https://raw.githubusercontent.com/lenardar/picgo4siyuan/main/marek-piwnicki-OtQbFMOZlhc-unsplash.jpg"></p><h1 id="这是我的第一篇博客！"><a href="#这是我的第一篇博客！" class="headerlink" title="这是我的第一篇博客！"></a>这是我的第一篇博客！</h1>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
       
     </entry>
     
