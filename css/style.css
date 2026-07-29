@@ -1622,6 +1622,19 @@ article .content .caption {
 #blog-pet.is-thinking .blog-pet-toggle {
   animation: blog-pet-typing-bounce 0.22s ease-in-out infinite alternate;
 }
+#blog-pet.is-rampage .blog-pet-toggle {
+  animation: blog-pet-rampage 0.09s steps(2, end) infinite;
+  filter: drop-shadow(0 0 12px rgba(43,188,138,0.8));
+}
+#blog-pet.is-rampage .blog-pet-mascot-frame-a {
+  animation: blog-pet-frame-a 0.08s steps(1, end) infinite;
+}
+#blog-pet.is-rampage .blog-pet-mascot-frame-b {
+  animation: blog-pet-frame-b 0.08s steps(1, end) infinite;
+}
+#blog-pet.is-rampage .blog-pet-speech {
+  border-color: #2bbc8a;
+}
 .blog-pet-speech {
   position: absolute;
   right: 108px;
@@ -1705,13 +1718,47 @@ article .content .caption {
   align-items: flex-start;
   margin-bottom: 11px;
 }
-.blog-pet-message p {
+.blog-pet-message > p,
+.blog-pet-message .blog-pet-message-content {
   max-width: 88%;
   margin: 0;
   padding: 9px 11px;
   border-radius: 10px;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+.blog-pet-message .blog-pet-message-content {
+  overflow-wrap: anywhere;
+}
+.blog-pet-message .blog-pet-message-content p {
+  max-width: none;
+  margin: 0 0 0.55em;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.blog-pet-message .blog-pet-message-content p:last-child {
+  margin-bottom: 0;
+}
+.blog-pet-message .blog-pet-message-content ul,
+.blog-pet-message .blog-pet-message-content ol {
+  width: auto;
+  margin: 0.35em 0;
+  padding-left: 1.35em;
+}
+.blog-pet-message .blog-pet-message-content pre {
+  max-width: 100%;
+  margin: 0.5em 0;
+  padding: 7px 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(144,141,141,0.45);
+  border-radius: 5px;
+  background: #1d1f21;
+  white-space: pre;
+}
+.blog-pet-message .blog-pet-message-content code {
+  font-family: "Menlo", "Meslo LG", monospace;
 }
 .blog-pet-message ul {
   width: 88%;
@@ -1721,7 +1768,8 @@ article .content .caption {
 .blog-pet-message a {
   color: #2bbc8a;
 }
-.blog-pet-message-assistant p {
+.blog-pet-message-assistant > p,
+.blog-pet-message-assistant > .blog-pet-message-content {
   border: 1px solid rgba(144,141,141,0.4);
   border-bottom-left-radius: 2px;
   background: #212326;
@@ -1729,12 +1777,14 @@ article .content .caption {
 .blog-pet-message-user {
   align-items: flex-end;
 }
-.blog-pet-message-user p {
+.blog-pet-message-user > p,
+.blog-pet-message-user > .blog-pet-message-content {
   border-bottom-right-radius: 2px;
   background: rgba(43,188,138,0.16);
   color: #c9cacc;
 }
-.blog-pet-message-loading p {
+.blog-pet-message-loading > p,
+.blog-pet-message-loading > .blog-pet-message-content {
   color: #908d8d;
 }
 .blog-pet-actions {
@@ -1844,6 +1894,17 @@ article .content .caption {
   #blog-pet.is-thinking .blog-pet-mascot-frame-b {
     opacity: 0;
   }
+  #blog-pet.is-rampage .blog-pet-mascot-frame-a,
+  #blog-pet.is-rampage .blog-pet-mascot-frame-b,
+  #blog-pet.is-rampage .blog-pet-toggle {
+    animation: none;
+  }
+  #blog-pet.is-rampage .blog-pet-mascot-frame-a {
+    opacity: 1;
+  }
+  #blog-pet.is-rampage .blog-pet-mascot-frame-b {
+    opacity: 0;
+  }
 }
 @-moz-keyframes blog-pet-frame-a {
   0%, 49% {
@@ -1939,6 +2000,50 @@ article .content .caption {
   }
   to {
     transform: translateY(-2px);
+  }
+}
+@-moz-keyframes blog-pet-rampage {
+  0% {
+    transform: translate(-3px, 1px) rotate(-4deg) scale(1.04);
+  }
+  50% {
+    transform: translate(3px, -2px) rotate(4deg) scale(1.08);
+  }
+  100% {
+    transform: translate(-1px, -3px) rotate(-2deg) scale(1.04);
+  }
+}
+@-webkit-keyframes blog-pet-rampage {
+  0% {
+    transform: translate(-3px, 1px) rotate(-4deg) scale(1.04);
+  }
+  50% {
+    transform: translate(3px, -2px) rotate(4deg) scale(1.08);
+  }
+  100% {
+    transform: translate(-1px, -3px) rotate(-2deg) scale(1.04);
+  }
+}
+@-o-keyframes blog-pet-rampage {
+  0% {
+    transform: translate(-3px, 1px) rotate(-4deg) scale(1.04);
+  }
+  50% {
+    transform: translate(3px, -2px) rotate(4deg) scale(1.08);
+  }
+  100% {
+    transform: translate(-1px, -3px) rotate(-2deg) scale(1.04);
+  }
+}
+@keyframes blog-pet-rampage {
+  0% {
+    transform: translate(-3px, 1px) rotate(-4deg) scale(1.04);
+  }
+  50% {
+    transform: translate(3px, -2px) rotate(4deg) scale(1.08);
+  }
+  100% {
+    transform: translate(-1px, -3px) rotate(-2deg) scale(1.04);
   }
 }
 .highlight {

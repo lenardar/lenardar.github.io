@@ -18,6 +18,11 @@
   var searchEntriesPromise;
   var speechTimer;
   var thinkingRequests = 0;
+  var tapCount = 0;
+  var tapTimer;
+  var rampageTimer;
+  var rampageSpeechTimer;
+  var DAILY_GREETING_KEY = "blog-pet-daily-greeting-v1";
 
   var fallbackGreetings = [
     "欢迎光临，作者今天好像也在摸鱼。",
@@ -191,15 +196,124 @@
     root.classList.toggle("is-thinking", thinkingRequests > 0);
   }
 
+  function appendInlineMarkdown(container, text) {
+    var pattern = /(\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*)/g;
+    var lastIndex = 0;
+    var match;
+
+    while ((match = pattern.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        container.appendChild(
+          document.createTextNode(text.slice(lastIndex, match.index))
+        );
+      }
+
+      var token = match[0];
+      var element;
+      if (token.slice(0, 2) === "**") {
+        element = document.createElement("strong");
+        element.textContent = token.slice(2, -2);
+      } else if (token.charAt(0) === "`") {
+        element = document.createElement("code");
+        element.textContent = token.slice(1, -1);
+      } else {
+        element = document.createElement("em");
+        element.textContent = token.slice(1, -1);
+      }
+      container.appendChild(element);
+      lastIndex = pattern.lastIndex;
+    }
+
+    if (lastIndex < text.length) {
+      container.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+  }
+
+  function renderMarkdown(container, markdown) {
+    var lines = (markdown || "").replace(/\r\n?/g, "\n").split("\n");
+    var index = 0;
+
+    function appendParagraph(text) {
+      var paragraph = document.createElement("p");
+      appendInlineMarkdown(paragraph, text);
+      container.appendChild(paragraph);
+    }
+
+    while (index < lines.length) {
+      var line = lines[index];
+      if (!line.trim()) {
+        index += 1;
+        continue;
+      }
+
+      if (/^```/.test(line.trim())) {
+        var codeLines = [];
+        index += 1;
+        while (index < lines.length && !/^```/.test(lines[index].trim())) {
+          codeLines.push(lines[index]);
+          index += 1;
+        }
+        if (index < lines.length) index += 1;
+        var pre = document.createElement("pre");
+        var code = document.createElement("code");
+        code.textContent = codeLines.join("\n");
+        pre.appendChild(code);
+        container.appendChild(pre);
+        continue;
+      }
+
+      var unordered = line.match(/^\s*[-*+]\s+(.+)$/);
+      var ordered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+      if (unordered || ordered) {
+        var list = document.createElement(ordered ? "ol" : "ul");
+        var matcher = ordered
+          ? /^\s*\d+[.)]\s+(.+)$/
+          : /^\s*[-*+]\s+(.+)$/;
+
+        while (index < lines.length) {
+          var itemMatch = lines[index].match(matcher);
+          if (!itemMatch) break;
+          var item = document.createElement("li");
+          appendInlineMarkdown(item, itemMatch[1]);
+          list.appendChild(item);
+          index += 1;
+        }
+        container.appendChild(list);
+        continue;
+      }
+
+      var paragraphLines = [line.trim()];
+      index += 1;
+      while (
+        index < lines.length &&
+        lines[index].trim() &&
+        !/^```/.test(lines[index].trim()) &&
+        !/^\s*[-*+]\s+/.test(lines[index]) &&
+        !/^\s*\d+[.)]\s+/.test(lines[index])
+      ) {
+        paragraphLines.push(lines[index].trim());
+        index += 1;
+      }
+      appendParagraph(paragraphLines.join(" "));
+    }
+  }
+
   function addMessage(role, text, sources, loading) {
     var wrapper = document.createElement("div");
     wrapper.className =
       "blog-pet-message blog-pet-message-" + role +
       (loading ? " blog-pet-message-loading" : "");
 
-    var paragraph = document.createElement("p");
-    paragraph.textContent = text;
-    wrapper.appendChild(paragraph);
+    var content = document.createElement("div");
+    content.className = "blog-pet-message-content";
+    if (role === "assistant" && !loading) {
+      renderMarkdown(content, text);
+    } else {
+      var paragraph = document.createElement("p");
+      paragraph.textContent = text;
+      content.appendChild(paragraph);
+    }
+    wrapper.appendChild(content);
 
     if (sources && sources.length) {
       var list = document.createElement("ul");
@@ -241,10 +355,31 @@
   }
 
   function loadGreeting() {
+    try {
+      var cached = JSON.parse(localStorage.getItem(DAILY_GREETING_KEY) || "null");
+      if (cached && cached.day === shanghaiDay() && cached.text) {
+        setSpeech("今日猫语：" + cached.text, true);
+        return;
+      }
+    } catch (error) {
+      // Storage can be unavailable in private browsing; continue without it.
+    }
+
     setThinking(true);
     postJson("/greeting", { page: pageInfo() }, 15000)
       .then(function(data) {
-        setSpeech(data.text || randomFallback(), true);
+        var text = data.text || randomFallback();
+        setSpeech("今日猫语：" + text, true);
+        if (data.day) {
+          try {
+            localStorage.setItem(
+              DAILY_GREETING_KEY,
+              JSON.stringify({ day: data.day, text: text })
+            );
+          } catch (error) {
+            // The greeting still works when storage is unavailable.
+          }
+        }
       })
       .catch(function() {
         setSpeech(randomFallback(), true);
@@ -252,6 +387,50 @@
       .finally(function() {
         setThinking(false);
       });
+  }
+
+  function shanghaiDay() {
+    try {
+      return new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date());
+    } catch (error) {
+      return new Date().toISOString().slice(0, 10);
+    }
+  }
+
+  function stopRampage() {
+    window.clearTimeout(rampageTimer);
+    window.clearInterval(rampageSpeechTimer);
+    root.classList.remove("is-rampage");
+    setSpeech("呼……键盘保住了，暂时。", true);
+  }
+
+  function triggerRampage() {
+    var lines = [
+      "检测到连续摸猫——暴走模式启动！",
+      "哒哒哒哒哒哒哒哒！",
+      "今天的键盘由我接管！",
+      "Bug 快跑，小猫来了！"
+    ];
+    var lineIndex = 0;
+
+    tapCount = 0;
+    window.clearTimeout(tapTimer);
+    window.clearTimeout(rampageTimer);
+    window.clearInterval(rampageSpeechTimer);
+    setPanel(false);
+    root.classList.add("is-rampage");
+    setSpeech(lines[lineIndex], false);
+
+    rampageSpeechTimer = window.setInterval(function() {
+      lineIndex = (lineIndex + 1) % lines.length;
+      setSpeech(lines[lineIndex], false);
+    }, 850);
+    rampageTimer = window.setTimeout(stopRampage, 7000);
   }
 
   function localSearchReply(references) {
@@ -308,6 +487,16 @@
   }
 
   toggle.addEventListener("click", function() {
+    tapCount += 1;
+    window.clearTimeout(tapTimer);
+    tapTimer = window.setTimeout(function() {
+      tapCount = 0;
+    }, 1800);
+
+    if (tapCount >= 5) {
+      triggerRampage();
+      return;
+    }
     setPanel(!panel.classList.contains("is-open"));
   });
 
