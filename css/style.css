@@ -1079,6 +1079,12 @@ body {
   flex-wrap: wrap;
   gap: 0.35rem;
   margin: 0.2rem 0;
+  padding-left: 1rem;
+}
+.site-endpoints li::before {
+  margin-left: -1rem;
+  color: #908d8d;
+  content: "-";
 }
 .site-endpoints .site-endpoint-note::before {
   margin-right: 0.35rem;
