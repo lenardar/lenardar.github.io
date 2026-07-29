@@ -1060,6 +1060,30 @@ body {
     display: none;
   }
 }
+.site-endpoints {
+  margin-top: 0.9rem;
+  color: #908d8d;
+  font-size: 13px;
+}
+.site-endpoints .site-endpoints-label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.site-endpoints ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-endpoints li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.2rem 0;
+}
+.site-endpoints .site-endpoint-note::before {
+  margin-right: 0.35rem;
+  content: "—";
+}
 .post-list {
   padding: 0;
 }
