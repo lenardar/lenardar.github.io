@@ -112,6 +112,30 @@
     <div class="meta">
       
         
+          <time datetime="2026-07-29T13:49:39.000Z" class="dt-published" itemprop="datePublished">2026-07-29</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2026/07/29/%E5%B0%8F%E7%8C%AB%E5%92%AA%E9%99%8D%E4%B8%B4/">小猫咪降临</a>
+    
+
+
+</span>
+      </li>
+    
+      
+      
+      
+      
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
           <time datetime="2026-07-28T10:34:21.000Z" class="dt-published" itemprop="datePublished">2026-07-28</time>
         
       
@@ -120,7 +144,7 @@
 
         <span>
     
-        <a class="" href="/2026/07/28/%E6%B0%B4%E4%B8%80%E7%AF%87%EF%BC%9A%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%A4%A7%E6%89%AB%E9%99%A4%20+%20%E8%A3%85%E4%BF%AE/">水一篇：给博客大扫除 + 装修</a>
+        <a class="" href="/2026/07/28/%E5%8D%9A%E5%AE%A2%E5%A4%A7%E6%89%AB%E9%99%A4/">博客大扫除</a>
     
 
 
@@ -333,6 +357,75 @@
 </footer>
 
     </div>
+    
+      <aside
+  id="blog-pet"
+  class="blog-pet"
+  data-api-base="/api"
+  data-pet-name="小猫助手"
+>
+  <div id="blog-pet-speech" class="blog-pet-speech" role="status" aria-live="polite">
+    让我想一句欢迎词……
+  </div>
+
+  <section
+    id="blog-pet-panel"
+    class="blog-pet-panel"
+    aria-label="小猫助手"
+    aria-hidden="true"
+  >
+    <header class="blog-pet-header">
+      <div>
+        <strong>小猫助手</strong>
+        <span>可以陪聊，也可以帮你读博客</span>
+      </div>
+      <button id="blog-pet-close" class="blog-pet-close" type="button" aria-label="关闭聊天">
+        &times;
+      </button>
+    </header>
+
+    <div id="blog-pet-messages" class="blog-pet-messages" aria-live="polite">
+      <div class="blog-pet-message blog-pet-message-assistant">
+        <p>你好呀！你可以问我当前文章讲了什么，也可以让我推荐相关文章。</p>
+      </div>
+    </div>
+
+    <div class="blog-pet-actions" aria-label="快捷提问">
+      <button type="button" data-question="请简要总结当前页面的主要内容。">总结本文</button>
+      <button type="button" data-question="请用容易理解的方式解释当前页面的核心概念。">解释概念</button>
+      <button type="button" data-question="请根据当前页面推荐博客里的相关文章。">推荐文章</button>
+    </div>
+
+    <form id="blog-pet-form" class="blog-pet-form">
+      <label class="sr-only" for="blog-pet-input">和小猫聊天</label>
+      <input
+        id="blog-pet-input"
+        name="question"
+        type="text"
+        maxlength="300"
+        autocomplete="off"
+        placeholder="问问这篇博客……"
+        required
+      />
+      <button type="submit">发送</button>
+    </form>
+  </section>
+
+  <button
+    id="blog-pet-toggle"
+    class="blog-pet-toggle"
+    type="button"
+    aria-label="打开小猫助手"
+    aria-expanded="false"
+  >
+    <span class="blog-pet-mascot" aria-hidden="true">
+      <img class="blog-pet-mascot-frame blog-pet-mascot-frame-a" src="/images/keyboard-cat.png" alt="" />
+      <img class="blog-pet-mascot-frame blog-pet-mascot-frame-b" src="/images/keyboard-cat.png" alt="" />
+    </span>
+  </button>
+</aside>
+
+    
     <!-- styles -->
 
 
@@ -351,6 +444,11 @@
 
 
 <script src="/js/main.js"></script>
+
+
+  
+<script src="/js/pet.js"></script>
+
 
 <!-- search -->
 
