@@ -196,8 +196,8 @@
     root.classList.toggle("is-thinking", thinkingRequests > 0);
   }
 
-  function appendInlineMarkdown(container, text) {
-    var pattern = /(\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*)/g;
+  function appendInlineMarkdown(container, text, renderedLinks) {
+    var pattern = /(\[[^\]\n]+\]\(\/(?!\/)[^)\s\n]+\)|\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*)/g;
     var lastIndex = 0;
     var match;
 
@@ -210,7 +210,13 @@
 
       var token = match[0];
       var element;
-      if (token.slice(0, 2) === "**") {
+      var linkMatch = token.match(/^\[([^\]]+)\]\((\/(?!\/)[^)]+)\)$/);
+      if (linkMatch) {
+        element = document.createElement("a");
+        element.href = linkMatch[2];
+        element.textContent = linkMatch[1];
+        if (renderedLinks) renderedLinks.add(linkMatch[2]);
+      } else if (token.slice(0, 2) === "**") {
         element = document.createElement("strong");
         element.textContent = token.slice(2, -2);
       } else if (token.charAt(0) === "`") {
@@ -229,13 +235,13 @@
     }
   }
 
-  function renderMarkdown(container, markdown) {
+  function renderMarkdown(container, markdown, renderedLinks) {
     var lines = (markdown || "").replace(/\r\n?/g, "\n").split("\n");
     var index = 0;
 
     function appendParagraph(text) {
       var paragraph = document.createElement("p");
-      appendInlineMarkdown(paragraph, text);
+      appendInlineMarkdown(paragraph, text, renderedLinks);
       container.appendChild(paragraph);
     }
 
@@ -274,7 +280,7 @@
           var itemMatch = lines[index].match(matcher);
           if (!itemMatch) break;
           var item = document.createElement("li");
-          appendInlineMarkdown(item, itemMatch[1]);
+          appendInlineMarkdown(item, itemMatch[1], renderedLinks);
           list.appendChild(item);
           index += 1;
         }
@@ -306,8 +312,9 @@
 
     var content = document.createElement("div");
     content.className = "blog-pet-message-content";
+    var renderedLinks = new Set();
     if (role === "assistant" && !loading) {
-      renderMarkdown(content, text);
+      renderMarkdown(content, text, renderedLinks);
     } else {
       var paragraph = document.createElement("p");
       paragraph.textContent = text;
@@ -318,7 +325,12 @@
     if (sources && sources.length) {
       var list = document.createElement("ul");
       sources.forEach(function(source) {
-        if (!source.url || source.url.charAt(0) !== "/") return;
+        if (
+          !source.url ||
+          source.url.charAt(0) !== "/" ||
+          source.url.slice(0, 2) === "//"
+        ) return;
+        if (renderedLinks.has(source.url)) return;
         var item = document.createElement("li");
         var link = document.createElement("a");
         link.href = source.url;
