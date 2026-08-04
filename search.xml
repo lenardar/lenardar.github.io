@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>从 Craft 搬出来，给自己写一个文档分享站</title>
+      <link href="/2026/08/04/%E4%BB%8E%20Craft%20%E6%90%AC%E5%87%BA%E6%9D%A5%EF%BC%8C%E7%BB%99%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%87%E6%A1%A3%E5%88%86%E4%BA%AB%E7%AB%99/"/>
+      <url>/2026/08/04/%E4%BB%8E%20Craft%20%E6%90%AC%E5%87%BA%E6%9D%A5%EF%BC%8C%E7%BB%99%E8%87%AA%E5%B7%B1%E5%86%99%E4%B8%80%E4%B8%AA%E6%96%87%E6%A1%A3%E5%88%86%E4%BA%AB%E7%AB%99/</url>
+      
+        <content type="html"><![CDATA[<h1 id="起因：从-Craft-搬出来"><a href="#起因：从-Craft-搬出来" class="headerlink" title="起因：从 Craft 搬出来"></a>起因：从 Craft 搬出来</h1><p>我之前一直用 Craft 写和存文档。它好看，块编辑也顺手，但用久了几个地方越来越别扭。</p><p>一个是数据的归属感。文档存在它自己的格式和云里，想整体导出、按自己的方式管版本，都要绕一圈。我真正在意的其实不是编辑器手感，而是这些东西到底是不是我的，能不能离开这个 app 独立存在。</p><p>还有个很具体的麻烦：Markdown 在不同软件之间来回倒，格式老是乱。这个软件的图片语法、那个软件的表格、粘过去缩进又变了，每次都得手动收拾。明明是纯文本，却被各家的私有实现绑住。</p><p>再就是私密性。我经常想把一篇写给特定某个人的东西发出去，但不放心丢到公开的地方，也不想为了让对方看一篇文章、还得让人去注册个账号。</p><p>这件事博客解决不了。博客是写给所有人看的，是公开的；我要的是点对点的、私密的分享，同一篇东西可能只发给一两个朋友。这是两种不同的需求。</p><p>想到最后就剩一个念头：我需要的功能其实很少，写 Markdown，加上偶尔私密地分享给朋友，那为什么不自己做一个，把控制权拿回来。</p><p>方向于是很清楚：内容要私有化、要能脱离任何专有软件独立存在；本地只留一个 Markdown 编辑器，其余功能自己写。这样既踏实，也能少占一点电脑资源。</p><p><img src="/images/docs-share-home.png" alt="首页"></p><h1 id="一个偷懒的决定：让-Git-当唯一内容源"><a href="#一个偷懒的决定：让-Git-当唯一内容源" class="headerlink" title="一个偷懒的决定：让 Git 当唯一内容源"></a>一个偷懒的决定：让 Git 当唯一内容源</h1><p>我本来就是用 Typora 在本地写 Markdown，文件都在一个 Git 仓库里。既然文档已经是纯文本、已经在版本控制里了，那就没必要再引入第二个存放正文的地方。</p><p>于是整个系统只有一条内容规则：正文只存在于 Git。本地写完，<code>git push</code>，剩下的自动完成。没有后台管理界面去编辑正文，也没有数据库里另存一份正文。想改文章，就改 Markdown 再推一次。</p><p>这带来一个我很喜欢的性质：内容和代码是同一次提交的事。文章的历史、图片、甚至发布这个动作，全都落在 Git 里，可回滚、可离线、可迁移。哪天我不想用这套系统了，仓库拿走，Markdown 还是 Markdown。</p><h1 id="正文归-Git，运行时归数据库"><a href="#正文归-Git，运行时归数据库" class="headerlink" title="正文归 Git，运行时归数据库"></a>正文归 Git，运行时归数据库</h1><p>光有正文不够。分享链接、访问密码、评论、访问统计这些是会随时变化的状态，把它们塞进 Git 会很别扭，它们不该产生 commit，也不需要版本。</p><p>所以我把系统清楚地分成两层：</p><ul><li>正文和资源：Git 管，是唯一内容源。</li><li>运行时状态：数据库管，包括分享 token、权限、评论、划线、访问量这些。</li></ul><p>托管选了 Cloudflare 的一套：Pages 跑前端阅读器，Pages Functions 做 API，D1 存运行时状态，R2 存图片和附件。一次 push 会同时触发两件事，Pages 重新构建阅读器，GitHub Actions 把正文同步进 D1、把资源同步进 R2。</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">本地 Markdown（Typora）</span><br><span class="line">        │ git push</span><br><span class="line">        ▼</span><br><span class="line">   私有 GitHub 仓库</span><br><span class="line">        │</span><br><span class="line">        ├── Cloudflare Pages 构建阅读器</span><br><span class="line">        └── GitHub Actions 同步</span><br><span class="line">                 ├── D1  正文、权限、分享、评论、统计</span><br><span class="line">                 └── R2  图片、附件</span><br></pre></td></tr></table></figure><p>正文和状态一旦分开，很多事情就变简单了。同步只需要判断哪些 Markdown 变了；权限逻辑完全不用碰正文；后来想加访问统计、评论表情、二维码分享这些功能，也都是在运行时这一层动，一个字的正文都不用改。</p><p>管理端也是照这个边界设计的，它不是编辑器，而是一个只管运行时的控制台：暂停分享、临时关闭评论、生成或撤销分享链接，正文永远回 Git 改。</p><p><img src="/images/docs-share-library.png" alt="管理端：文档一览"></p><p><img src="/images/docs-share-runtime.png" alt="管理端：只控制运行时那一层"></p><h1 id="访问控制：读者不用注册"><a href="#访问控制：读者不用注册" class="headerlink" title="访问控制：读者不用注册"></a>访问控制：读者不用注册</h1><p>分享是这个东西的主要用途，所以权限做得细一点，但对读者要足够轻。</p><p>每篇文档有四种可见性：公开、随机链接、链接加密码、以及仅自己可见。读者不需要注册账号，打开一个随机 token 链接就能读，需要的话再输个密码。评论也只要填个显示名。</p><p><img src="/images/docs-share-password.png" alt="链接加密码的文档，读者只需输入邀请里的密码"></p><p>进去之后是一个干净的阅读页：左边目录，右边评论，选中句子可以划线评论，也可以让 AI 解释或翻译这段。</p><p><img src="/images/docs-share-reader.png" alt="阅读页"></p><p>安全上有几条底线：分享 token 只存哈希，不存明文；会话用 HttpOnly cookie；访问校验全部在服务端做，前端把按钮藏起来不算数。公开文档在服务端直接禁用 AI 功能，而不是靠前端隐藏。</p><h1 id="为什么觉得比原来可靠"><a href="#为什么觉得比原来可靠" class="headerlink" title="为什么觉得比原来可靠"></a>为什么觉得比原来可靠</h1><p>这套东西真正让我安心的，是它没有单点的专有依赖。</p><p>正文是纯 Markdown，躺在我自己的 Git 仓库里；托管在 Cloudflare 上，前端、API、数据、资源各就各位。就算哪天这套服务整个不跑了，我的文档一篇都不会丢，它们从来没有真的离开过我的仓库。相比把内容托付给一个专有 app，这种内容始终在我手里的状态，可靠性对我来说是更高的。</p><h1 id="要不要开源"><a href="#要不要开源" class="headerlink" title="要不要开源"></a>要不要开源</h1><p>写完之后确实想过开源，但很快打消了。</p><p>这套系统顺手的地方，恰恰在于内容和代码在同一个私有仓库里、一次 push 全部搞定。要开源就得把代码单独抽出来做成模板，再维护一份不含我文章的版本，反而给自己添了活。它本来就是为了让我自己用得舒服而写的，那就让它保持这样。</p><p>现在的状态我挺满意：本地只留一个 Markdown 编辑器，写完推上去，链接发出去。数字资产是我自己的，功能是我自己写的，电脑也清净了不少。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 折腾 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Kimi K3 白嫖，Cloudflare Workers 立大功</title>
       <link href="/2026/07/30/Kimi%20K3%E7%99%BD%E5%AB%96%EF%BC%8CCloudflare%20Workers%E7%AB%8B%E5%A4%A7%E5%8A%9F/"/>
       <url>/2026/07/30/Kimi%20K3%E7%99%BD%E5%AB%96%EF%BC%8CCloudflare%20Workers%E7%AB%8B%E5%A4%A7%E5%8A%9F/</url>
