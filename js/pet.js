@@ -47,7 +47,7 @@
   function currentArticleText() {
     var article = document.querySelector(".e-content");
     if (!article) return "";
-    return article.innerText.replace(/\s+/g, " ").trim().slice(0, 5000);
+    return article.innerText.replace(/\s+/g, " ").trim().slice(0, 12000);
   }
 
   function stripHtml(html) {
@@ -155,7 +155,7 @@
       related.forEach(function(entry) {
         if (entry.url === window.location.pathname && currentText) return;
         sections.push(
-          "【相关文章：" + entry.title + "】\n" + entry.content.slice(0, 1800)
+          "【相关文章：" + entry.title + "】\n" + entry.content.slice(0, 4000)
         );
       });
 
@@ -453,7 +453,7 @@
   }
 
   function ask(question) {
-    var cleanQuestion = (question || "").trim().slice(0, 300);
+    var cleanQuestion = (question || "").trim().slice(0, 1000);
     if (!cleanQuestion || submitButton.disabled) return;
 
     setPanel(true);
