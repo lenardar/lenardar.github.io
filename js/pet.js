@@ -160,7 +160,7 @@
       });
 
       return {
-        context: sections.join("\n\n").slice(0, 9000),
+        context: sections.join("\n\n").slice(0, 24000),
         references: related.map(function(entry) {
           return { title: entry.title, url: entry.url };
         })
@@ -470,7 +470,7 @@
           question: cleanQuestion,
           context: payload.context,
           references: payload.references,
-          history: history.slice(-6)
+          history: history.slice(-12)
         }, 30000).catch(function() {
           return {
             answer: localSearchReply(payload.references),
@@ -485,7 +485,7 @@
         addMessage("assistant", answer, data.sources || []);
         history.push({ role: "user", content: cleanQuestion });
         history.push({ role: "assistant", content: answer });
-        history = history.slice(-6);
+        history = history.slice(-12);
       })
       .catch(function() {
         loading.remove();
