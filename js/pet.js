@@ -378,7 +378,7 @@
     }
 
     setThinking(true);
-    postJson("/greeting", { page: pageInfo() }, 15000)
+    postJson("/greeting", { page: pageInfo() }, 30000)
       .then(function(data) {
         var text = data.text || randomFallback();
         setSpeech("今日猫语：" + text, true);
