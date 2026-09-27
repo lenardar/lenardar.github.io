@@ -15,7 +15,6 @@
   var submitButton = form.querySelector("button[type='submit']");
   var quickActions = root.querySelectorAll("[data-question]");
   var history = [];
-  var searchEntriesPromise;
   var speechTimer;
   var thinkingRequests = 0;
   var tapCount = 0;
@@ -44,128 +43,13 @@
     };
   }
 
-  function currentArticleText() {
-    var article = document.querySelector(".e-content");
-    if (!article) return "";
-    return article.innerText.replace(/\s+/g, " ").trim().slice(0, 12000);
-  }
-
-  function stripHtml(html) {
-    var doc = new DOMParser().parseFromString(html || "", "text/html");
-    return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function normalizePath(url) {
-    try {
-      return new URL(url, window.location.origin).pathname;
-    } catch (error) {
-      return "/";
-    }
-  }
-
-  function tokenize(text) {
-    var normalized = (text || "").toLowerCase();
-    var ascii = normalized.match(/[a-z0-9_+.-]{2,}/g) || [];
-    var chineseRuns = normalized.match(/[\u3400-\u9fff]+/g) || [];
-    var chinese = [];
-
-    chineseRuns.forEach(function(run) {
-      if (run.length === 1) {
-        chinese.push(run);
-        return;
-      }
-      for (var i = 0; i < run.length - 1; i += 1) {
-        chinese.push(run.slice(i, i + 2));
-      }
-    });
-
-    return Array.from(new Set(ascii.concat(chinese))).slice(0, 80);
-  }
-
-  function loadSearchEntries() {
-    if (searchEntriesPromise) return searchEntriesPromise;
-
-    searchEntriesPromise = fetch("/search.xml", { credentials: "same-origin" })
-      .then(function(response) {
-        if (!response.ok) throw new Error("search index unavailable");
-        return response.text();
-      })
-      .then(function(xmlText) {
-        var xml = new DOMParser().parseFromString(xmlText, "application/xml");
-        return Array.prototype.map.call(xml.querySelectorAll("entry"), function(entry) {
-          return {
-            title: (entry.querySelector("title")?.textContent || "未命名文章").trim(),
-            url: normalizePath(entry.querySelector("link")?.getAttribute("href") || "/"),
-            content: stripHtml(entry.querySelector("content")?.textContent || "")
-          };
-        });
-      })
-      .catch(function() {
-        return [];
-      });
-
-    return searchEntriesPromise;
-  }
-
-  function rankEntries(entries, query) {
-    var tokens = tokenize(query);
-    var currentPath = window.location.pathname;
-
-    return entries
-      .map(function(entry) {
-        var title = entry.title.toLowerCase();
-        var content = entry.content.toLowerCase();
-        var score = 0;
-
-        tokens.forEach(function(token) {
-          if (title.indexOf(token) >= 0) score += 5;
-          var first = content.indexOf(token);
-          if (first >= 0) score += 1;
-        });
-
-        if (entry.url === currentPath) score += 2;
-        return { entry: entry, score: score };
-      })
-      .filter(function(item) {
-        return item.score > 0;
-      })
-      .sort(function(a, b) {
-        return b.score - a.score;
-      })
-      .slice(0, 3)
-      .map(function(item) {
-        return item.entry;
-      });
-  }
-
-  function buildContext(question) {
-    var currentText = currentArticleText();
-    var query = [question, pageInfo().title, currentText.slice(0, 1200)].join(" ");
-
-    return loadSearchEntries().then(function(entries) {
-      var related = rankEntries(entries, query);
-      var sections = [];
-
-      if (currentText) {
-        sections.push(
-          "【当前页面：" + pageInfo().title + "】\n" + currentText
-        );
-      }
-
-      related.forEach(function(entry) {
-        if (entry.url === window.location.pathname && currentText) return;
-        sections.push(
-          "【相关文章：" + entry.title + "】\n" + entry.content.slice(0, 4000)
-        );
-      });
-
-      return {
-        context: sections.join("\n\n").slice(0, 24000),
-        references: related.map(function(entry) {
-          return { title: entry.title, url: entry.url };
-        })
-      };
-    });
+  function currentPageText() {
+    if (document.querySelector("#search, #tag-cloud, #categories")) return "";
+    var content = document.querySelector(".e-content") ||
+      document.querySelector(".post .content[itemprop='articleBody']") ||
+      document.querySelector("#about");
+    if (!content) return "";
+    return content.innerText.replace(/\s+/g, " ").trim().slice(0, 24000);
   }
 
   function setSpeech(text, autoHide) {
@@ -196,7 +80,7 @@
     root.classList.toggle("is-thinking", thinkingRequests > 0);
   }
 
-  function appendInlineMarkdown(container, text, renderedLinks) {
+  function appendInlineMarkdown(container, text) {
     var pattern = /(\[[^\]\n]+\]\(\/(?!\/)[^)\s\n]+\)|\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*)/g;
     var lastIndex = 0;
     var match;
@@ -215,7 +99,6 @@
         element = document.createElement("a");
         element.href = linkMatch[2];
         element.textContent = linkMatch[1];
-        if (renderedLinks) renderedLinks.add(linkMatch[2]);
       } else if (token.slice(0, 2) === "**") {
         element = document.createElement("strong");
         element.textContent = token.slice(2, -2);
@@ -235,13 +118,13 @@
     }
   }
 
-  function renderMarkdown(container, markdown, renderedLinks) {
+  function renderMarkdown(container, markdown) {
     var lines = (markdown || "").replace(/\r\n?/g, "\n").split("\n");
     var index = 0;
 
     function appendParagraph(text) {
       var paragraph = document.createElement("p");
-      appendInlineMarkdown(paragraph, text, renderedLinks);
+      appendInlineMarkdown(paragraph, text);
       container.appendChild(paragraph);
     }
 
@@ -280,7 +163,7 @@
           var itemMatch = lines[index].match(matcher);
           if (!itemMatch) break;
           var item = document.createElement("li");
-          appendInlineMarkdown(item, itemMatch[1], renderedLinks);
+          appendInlineMarkdown(item, itemMatch[1]);
           list.appendChild(item);
           index += 1;
         }
@@ -304,7 +187,7 @@
     }
   }
 
-  function addMessage(role, text, sources, loading) {
+  function addMessage(role, text, loading) {
     var wrapper = document.createElement("div");
     wrapper.className =
       "blog-pet-message blog-pet-message-" + role +
@@ -312,34 +195,14 @@
 
     var content = document.createElement("div");
     content.className = "blog-pet-message-content";
-    var renderedLinks = new Set();
     if (role === "assistant" && !loading) {
-      renderMarkdown(content, text, renderedLinks);
+      renderMarkdown(content, text);
     } else {
       var paragraph = document.createElement("p");
       paragraph.textContent = text;
       content.appendChild(paragraph);
     }
     wrapper.appendChild(content);
-
-    if (sources && sources.length) {
-      var list = document.createElement("ul");
-      sources.forEach(function(source) {
-        if (
-          !source.url ||
-          source.url.charAt(0) !== "/" ||
-          source.url.slice(0, 2) === "//"
-        ) return;
-        if (renderedLinks.has(source.url)) return;
-        var item = document.createElement("li");
-        var link = document.createElement("a");
-        link.href = source.url;
-        link.textContent = source.title || source.url;
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-      if (list.children.length) wrapper.appendChild(list);
-    }
 
     messages.appendChild(wrapper);
     messages.scrollTop = messages.scrollHeight;
@@ -445,14 +308,7 @@
     rampageTimer = window.setTimeout(stopRampage, 7000);
   }
 
-  function localSearchReply(references, recommendArticles) {
-    if (recommendArticles && references.length) {
-      return "云端脑袋暂时没响应，不过我找到了几篇可能相关的文章：";
-    }
-    return "云端脑袋暂时没响应，过会儿再问我吧。";
-  }
-
-  function ask(question, recommendArticles) {
+  function ask(question) {
     var cleanQuestion = (question || "").trim().slice(0, 1000);
     if (!cleanQuestion || submitButton.disabled) return;
 
@@ -462,28 +318,18 @@
     submitButton.disabled = true;
     setThinking(true);
 
-    var loading = addMessage("assistant", "小猫正在翻文章……", null, true);
+    var loading = addMessage("assistant", "小猫正在读当前页面……", true);
 
-    buildContext(cleanQuestion)
-      .then(function(payload) {
-        return postJson("/chat", {
-          question: cleanQuestion,
-          context: payload.context,
-          references: payload.references,
-          recommendArticles: !!recommendArticles,
-          history: history.slice(-12)
-        }, 30000).catch(function() {
-          return {
-            answer: localSearchReply(payload.references, recommendArticles),
-            sources: recommendArticles ? payload.references : [],
-            source: "local"
-          };
-        });
-      })
+    postJson("/chat", {
+      question: cleanQuestion,
+      context: currentPageText(),
+      page: pageInfo(),
+      history: history.slice(-12)
+    }, 30000)
       .then(function(data) {
         loading.remove();
         var answer = data.answer || "小猫刚才走神了，再问一次试试？";
-        addMessage("assistant", answer, recommendArticles ? data.sources || [] : []);
+        addMessage("assistant", answer);
         history.push({ role: "user", content: cleanQuestion });
         history.push({ role: "assistant", content: answer });
         history = history.slice(-12);
@@ -524,7 +370,7 @@
 
   Array.prototype.forEach.call(quickActions, function(button) {
     button.addEventListener("click", function() {
-      ask(button.dataset.question, button.dataset.action === "recommend");
+      ask(button.dataset.question);
     });
   });
 
