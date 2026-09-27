@@ -445,14 +445,14 @@
     rampageTimer = window.setTimeout(stopRampage, 7000);
   }
 
-  function localSearchReply(references) {
-    if (references.length) {
+  function localSearchReply(references, recommendArticles) {
+    if (recommendArticles && references.length) {
       return "云端脑袋暂时没响应，不过我找到了几篇可能相关的文章：";
     }
-    return "云端脑袋暂时没响应，我也没搜到明确相关的文章。换个关键词再问问？";
+    return "云端脑袋暂时没响应，过会儿再问我吧。";
   }
 
-  function ask(question) {
+  function ask(question, recommendArticles) {
     var cleanQuestion = (question || "").trim().slice(0, 1000);
     if (!cleanQuestion || submitButton.disabled) return;
 
@@ -470,11 +470,12 @@
           question: cleanQuestion,
           context: payload.context,
           references: payload.references,
+          recommendArticles: !!recommendArticles,
           history: history.slice(-12)
         }, 30000).catch(function() {
           return {
-            answer: localSearchReply(payload.references),
-            sources: payload.references,
+            answer: localSearchReply(payload.references, recommendArticles),
+            sources: recommendArticles ? payload.references : [],
             source: "local"
           };
         });
@@ -482,7 +483,7 @@
       .then(function(data) {
         loading.remove();
         var answer = data.answer || "小猫刚才走神了，再问一次试试？";
-        addMessage("assistant", answer, data.sources || []);
+        addMessage("assistant", answer, recommendArticles ? data.sources || [] : []);
         history.push({ role: "user", content: cleanQuestion });
         history.push({ role: "assistant", content: answer });
         history = history.slice(-12);
@@ -523,7 +524,7 @@
 
   Array.prototype.forEach.call(quickActions, function(button) {
     button.addEventListener("click", function() {
-      ask(button.dataset.question);
+      ask(button.dataset.question, button.dataset.action === "recommend");
     });
   });
 
