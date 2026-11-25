@@ -222,3 +222,7 @@ figure.highlight:hover .copy-btn{opacity:1}
 /* seal */
 .seal-row{display:flex;justify-content:flex-end;margin-top:48px}
 .seal{display:grid;place-items:center;width:34px;height:34px;border-radius:3px;background:var(--accent);color:var(--bg);font:600 20px/1 var(--serif);transform:rotate(-4deg);opacity:.88;box-shadow:inset 0 0 0 2px var(--bg),inset 0 0 0 3px var(--accent)}
+
+/* comments */
+.comments{margin-top:48px}
+.comments .utterances{max-width:100%}
