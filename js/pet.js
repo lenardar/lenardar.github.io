@@ -44,7 +44,7 @@
   }
 
   function currentPageText() {
-    if (document.querySelector("#search, #tag-cloud, #categories")) return "";
+    if (document.querySelector("#search-input, .cloud")) return "";
     var content = document.querySelector(".e-content") ||
       document.querySelector(".post .content[itemprop='articleBody']") ||
       document.querySelector("#about");

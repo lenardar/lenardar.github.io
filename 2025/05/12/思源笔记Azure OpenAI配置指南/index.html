@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang=zh>
+<html lang="zh-CN">
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>思源笔记 Azure OpenAI 配置指南 | Lenardar&#39;s Blog</title>
+  <meta name="description" content="呀哈喽！我是 Lenardar。平时喜欢用 R 和 Python 做一点好玩的事，热衷于摸索各种新颖的事物。">
+  <meta name="description" content="关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！ 需要填写的参数首先需要填一下用红框框出来的参数：  一个一个介绍。 模型打开欢迎使用 Azure AI Foundry - Azure OpenAI 服务连接 选择“部署”选项，页面中的“名称”或“模型名称”就是要填的模型参数  AP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="思源笔记 Azure OpenAI 配置指南">
 <meta property="og:url" content="https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
@@ -26,153 +25,64 @@
 <meta property="article:tag" content="折腾">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lenardar.github.io/images/siyuan-azure-openai-cover-marek-piwnicki.jpg">
-    
-    
-      
-        
-          <link rel="shortcut icon" href="/images/favicon.ico">
-        
-      
-      
-        
-          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-        
-      
-      
-        
-          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-        
-      
-    
-    <!-- title -->
-    <title>思源笔记 Azure OpenAI 配置指南</title>
-    <!-- async scripts -->
-    <!-- Google Analytics -->
-
-
-    <!-- Umami Analytics -->
-
-
-    <!-- styles -->
-    
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Lenardar&#39;s Blog" type="application/atom+xml">
+  
+  <script>
+    try {
+      var m = new Date().getMonth() + 1;
+      document.documentElement.setAttribute('data-season', m < 3 || m > 11 ? 'winter' : m < 6 ? 'spring' : m < 9 ? 'summer' : 'autumn');
+    } catch (e) {}
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  
 <link rel="stylesheet" href="/css/style.css">
 
-    <!-- persian styles -->
-    
-    <!-- rss -->
-    
-    
-      <link rel="alternate" href="/atom.xml" title="Lenardar&#39;s Blog" type="application/atom+xml" />
-    
-	<!-- mathjax -->
-	
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
+<body class="is-post">
+  <div class="wrap">
+    <header class="site-header">
+  <a class="brand" href="/"><i>/</i> Lenardar&#39;s Blog</a>
+  <nav>
     
-      <div id="header-post">
-  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-        <!--
-       --><li><a href="/">首页</a></li><!--
-     --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
-       --><li><a href="/archives/">归档</a></li><!--
-     --><!--
-       --><li><a href="/tags/">标签</a></li><!--
-     --><!--
-       --><li><a href="/search/">搜索</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
-     -->
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" aria-label="上一篇" href="/2025/05/24/MacBook-%E5%BE%AE%E4%BF%A1%E6%96%87%E4%BB%B6%E4%BA%91%E5%A4%87%E4%BB%BD/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" aria-label="下一篇" href="/2025/05/11/%E8%A7%81%E5%AD%97%E5%A6%82%E9%9D%A2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
-        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">上一篇</span>
-      <span id="i-next" class="info" style="display:none;">下一篇</span>
-      <span id="i-top" class="info" style="display:none;">返回顶部</span>
-      <span id="i-share" class="info" style="display:none;">分享文章</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=思源笔记 Azure OpenAI 配置指南&body=Check out this article: https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=思源笔记 Azure OpenAI 配置指南&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
-</ul>
+      <a href="/" class="">首页</a>
+    
+      <a href="/archives/" class="">文章</a>
+    
+      <a href="/tags/" class="">标签</a>
+    
+      <a href="/search/" class="">搜索</a>
+    
+      <a href="/about/" class="">关于</a>
+    
+    <button id="theme-toggle" type="button" aria-label="切换明暗">◐</button>
+  </nav>
+</header>
 
-    </div>
-    
-    
-      <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
-      </div>
-    
-  </span>
-</div>
-
-    
-    <div class="content index py4 ">
-        
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle p-name" itemprop="name headline">
-        思源笔记 Azure OpenAI 配置指南
-    </h1>
-
-
-
+    <main>
+      
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  
+    <aside class="outline"><b>目录</b><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-text">模型测试</span></a></li></ol></aside>
+  
+  <header class="post-head">
+    <h1 class="p-name" itemprop="name headline">思源笔记 Azure OpenAI 配置指南</h1>
     <div class="meta">
-      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span class="p-name" itemprop="name">Lenardar</span>
-      </span>
+      <time class="dt-published" datetime="2025-05-12T10:08:34.000Z" itemprop="datePublished">2025-05-12</time>
       
-    <div class="postdate">
+        <a class="tag" href="/tags/%E6%8A%98%E8%85%BE/">折腾</a>
       
-        <time datetime="2025-05-12T10:08:34.000Z" class="dt-published" itemprop="datePublished">2025-05-12</time>
-        
-      
-    </div>
-
-
-      
-
-      
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E6%8A%98%E8%85%BE/" rel="tag">折腾</a>
-    </div>
-
-
+      <span>约 2 分钟</span>
     </div>
   </header>
-  
-
-  <div class="content e-content" itemprop="articleBody">
+  <div class="e-content" itemprop="articleBody">
     <p><img src="/images/siyuan-azure-openai-cover-marek-piwnicki.jpg"></p>
 <p>关于如何注册Azure OpenAI以及部署模型就不谈了，好多文章都介绍了，我主要记录一下自己配置思源笔记中Azure OpenAI的经验，配了一上午终于成功了！</p>
 <h1 id="需要填写的参数"><a href="#需要填写的参数" class="headerlink" title="需要填写的参数"></a>需要填写的参数</h1><p>首先需要填一下用红框框出来的参数：</p>
@@ -212,106 +122,45 @@
 <p>‍</p>
 
   </div>
+  <div class="seal-row"><span class="seal" aria-hidden="true">L</span></div>
+  
+    <div class="pn">
+      <a href="/2025/05/24/MacBook-%E5%BE%AE%E4%BF%A1%E6%96%87%E4%BB%B6%E4%BA%91%E5%A4%87%E4%BB%BD/">← 上一篇：MacBook 微信文件云备份</a>
+      <a href="/2025/05/11/%E8%A7%81%E5%AD%97%E5%A6%82%E9%9D%A2/">下一篇：见字如面 →</a>
+    </div>
+  
 </article>
 
-
-    <div class="blog-post-comments">
-        <div id="utterances_thread">
-            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
-        </div>
-    </div>
-
-
-        
-          <div id="footer-post-container">
-  <div id="footer-post">
-
-    <div id="nav-footer" style="display: none">
-      <ul>
-        
-          <li><a href="/">首页</a></li>
-        
-          <li><a href="/about/">关于</a></li>
-        
-          <li><a href="/archives/">归档</a></li>
-        
-          <li><a href="/tags/">标签</a></li>
-        
-          <li><a href="/search/">搜索</a></li>
-        
-          <li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li>
-        
-      </ul>
-    </div>
-
-    
-    
-      <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E5%A1%AB%E5%86%99%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">需要填写的参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-Key"><span class="toc-number">3.</span> <span class="toc-text">API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-%E5%9F%BA%E7%A1%80%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">API 基础地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">API版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">模型测试</span></a></li></ol>
-      </div>
-    
-
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&text=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&is_video=false&description=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=思源笔记 Azure OpenAI 配置指南&body=Check out this article: https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&title=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&name=思源笔记 Azure OpenAI 配置指南&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lenardar.github.io/2025/05/12/%E6%80%9D%E6%BA%90%E7%AC%94%E8%AE%B0Azure%20OpenAI%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/&t=思源笔记 Azure OpenAI 配置指南"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
-        
-          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
-        
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
-    </div>
-
-  </div>
-</div>
-
-        
-        <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy;
-    
-    
-    2024-2026
-    Lenardar
-  </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-        <!--
-       --><li><a href="/">首页</a></li><!--
-     --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
-       --><li><a href="/archives/">归档</a></li><!--
-     --><!--
-       --><li><a href="/tags/">标签</a></li><!--
-     --><!--
-       --><li><a href="/search/">搜索</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="https://github.com/lenardar">项目</a></li><!--
-     -->
-      </ul>
-    </nav>
+    </main>
+    <footer class="site-footer">
+  
+    <div>站点入口</div>
+    <ul class="endpoints">
+      
+        <li><a href="https://ilovemilktea.top" target="_blank" rel="noopener">ilovemilktea.top</a><em>Cloudflare Pages</em></li>
+      
+        <li><a href="https://blog.ilovemilktea.top" target="_blank" rel="noopener">blog.ilovemilktea.top</a><em>GitHub Pages</em></li>
+      
+        <li><a href="https://lenardar.github.io" target="_blank" rel="noopener">lenardar.github.io</a><em>GitHub Pages</em></li>
+      
+        <li><a href="https://lenardar.pages.dev" target="_blank" rel="noopener">lenardar.pages.dev</a><em>Cloudflare Pages</em></li>
+      
+    </ul>
+  
+  <div class="foot-row">
+    <span>
+      &copy; 2024–2026 Lenardar
+    </span>
+    <span class="foot-links">
+      <a href="/atom.xml">RSS</a>
+      <a href="https://github.com/lenardar" target="_blank" rel="noopener">GitHub</a>
+    </span>
   </div>
 </footer>
 
-    </div>
-    
-      <aside
+  </div>
+  
+    <aside
   id="blog-pet"
   class="blog-pet"
   data-api-base="/api"
@@ -321,20 +170,13 @@
     让我想一句欢迎词……
   </div>
 
-  <section
-    id="blog-pet-panel"
-    class="blog-pet-panel"
-    aria-label="小猫助手"
-    aria-hidden="true"
-  >
+  <section id="blog-pet-panel" class="blog-pet-panel" aria-label="小猫助手" aria-hidden="true">
     <header class="blog-pet-header">
       <div>
         <strong>小猫助手</strong>
         <span>喵，今天也在认真值班</span>
       </div>
-      <button id="blog-pet-close" class="blog-pet-close" type="button" aria-label="关闭聊天">
-        &times;
-      </button>
+      <button id="blog-pet-close" class="blog-pet-close" type="button" aria-label="关闭聊天">&times;</button>
     </header>
 
     <div id="blog-pet-messages" class="blog-pet-messages" aria-live="polite">
@@ -350,26 +192,12 @@
 
     <form id="blog-pet-form" class="blog-pet-form">
       <label class="sr-only" for="blog-pet-input">和小猫聊天</label>
-      <input
-        id="blog-pet-input"
-        name="question"
-        type="text"
-        maxlength="1000"
-        autocomplete="off"
-        placeholder="问问这篇博客……"
-        required
-      />
+      <input id="blog-pet-input" name="question" type="text" maxlength="1000" autocomplete="off" placeholder="问问这篇博客……" required />
       <button type="submit">发送</button>
     </form>
   </section>
 
-  <button
-    id="blog-pet-toggle"
-    class="blog-pet-toggle"
-    type="button"
-    aria-label="打开小猫助手"
-    aria-expanded="false"
-  >
+  <button id="blog-pet-toggle" class="blog-pet-toggle" type="button" aria-label="打开小猫助手" aria-expanded="false">
     <span class="blog-pet-mascot" aria-hidden="true">
       <img class="blog-pet-mascot-frame blog-pet-mascot-frame-a" src="/images/keyboard-cat.png" alt="" />
       <img class="blog-pet-mascot-frame blog-pet-mascot-frame-b" src="/images/keyboard-cat.png" alt="" />
@@ -377,47 +205,8 @@
   </button>
 </aside>
 
-    
-    <!-- styles -->
-
-
-
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-
-
-    <!-- jquery -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-
-
-
-
-<!-- clipboard -->
-
   
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
   
-  <script type="text/javascript">
-  $(function() {
-    // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
-    btn += '<i class="fa-regular fa-clone"></i>';
-    btn += '</span>';
-    // mount it!
-    $(".highlight table").before(btn);
-    var clip = new ClipboardJS('.btn-copy', {
-      text: function(trigger) {
-        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
-      }
-    });
-    clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "复制成功！");
-      e.clearSelection();
-    })
-  })
-  </script>
-
-
 <script src="/js/main.js"></script>
 
 
@@ -425,35 +214,7 @@
 <script src="/js/pet.js"></script>
 
 
-<!-- search -->
 
-<!-- Baidu Analytics -->
-
-<!-- Cloudflare Analytics -->
-
-<!-- Disqus Comments -->
-
-<!-- utterances Comments -->
-
-    <script type="text/javascript">
-      var utterances_repo = 'lenardar/blog-comments';
-      var utterances_issue_term = 'pathname';
-      var utterances_label = 'Comment';
-      var utterances_theme = 'github-dark';
-
-      (function(){
-          var script = document.createElement('script');
-
-          script.src = 'https://utteranc.es/client.js';
-          script.setAttribute('repo', utterances_repo);
-          script.setAttribute('issue-term', 'pathname');
-          script.setAttribute('label', utterances_label);
-          script.setAttribute('theme', utterances_theme);
-          script.setAttribute('crossorigin', 'anonymous');
-          script.async = true;
-          (document.getElementById('utterances_thread')).appendChild(script);
-      }());
-  </script>
 
 </body>
 </html>
