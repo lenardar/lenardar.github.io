@@ -21,7 +21,7 @@
   }
 
   // copy buttons for code blocks
-  document.querySelectorAll("figure.highlight").forEach(function (fig) {
+  document.querySelectorAll("figure.highlight:not(.mermaid)").forEach(function (fig) {
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "copy-btn";
@@ -38,6 +38,99 @@
     });
     fig.appendChild(btn);
   });
+
+  // auto-render mermaid diagrams (lazy-loaded only on pages with mermaid blocks)
+  var mermaidNodes = [];
+  document.querySelectorAll(".mermaid-box[data-mermaid]").forEach(function (box) {
+    try {
+      var src = decodeURIComponent(box.getAttribute("data-mermaid") || "").trim();
+      if (src) mermaidNodes.push({ box: box, src: src });
+    } catch (e) {}
+  });
+  document.querySelectorAll("figure.highlight.mermaid").forEach(function (fig) {
+    var lines = fig.querySelectorAll(".code .line");
+    var src = lines.length
+      ? Array.prototype.map.call(lines, function (l) { return l.textContent; }).join("\n")
+      : (fig.querySelector(".code") || fig).textContent;
+    if (src.trim()) mermaidNodes.push({ el: fig, src: src.trim() });
+  });
+  document.querySelectorAll("pre > code.language-mermaid").forEach(function (code) {
+    var src = code.textContent.trim();
+    if (src) mermaidNodes.push({ el: code.parentElement, src: src });
+  });
+  if (mermaidNodes.length) {
+    import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+      .then(function (mod) {
+        var mermaid = mod.default;
+        var boxes = mermaidNodes.map(function (item) {
+          if (item.box) return { box: item.box, src: item.src };
+          var box = document.createElement("div");
+          box.className = "mermaid-box";
+          item.el.parentNode.replaceChild(box, item.el);
+          return { box: box, src: item.src };
+        });
+        var renderSeq = 0;
+        var renderAll = function () {
+          var isDark = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() === "#171614";
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: "loose",
+            theme: "base",
+            fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif',
+            themeVariables: isDark
+              ? {
+                  background: "#201f1c",
+                  primaryColor: "#2a2824",
+                  primaryTextColor: "#e6e2d9",
+                  primaryBorderColor: "#e08a62",
+                  secondaryColor: "#262420",
+                  tertiaryColor: "#1b1a17",
+                  lineColor: "#9c9589",
+                  textColor: "#e6e2d9",
+                  clusterBkg: "#1a1916",
+                  clusterBorder: "#3a3731",
+                  edgeLabelBackground: "#201f1c"
+                }
+              : {
+                  background: "#f3efe7",
+                  primaryColor: "#faf8f4",
+                  primaryTextColor: "#2b2a27",
+                  primaryBorderColor: "#b5532f",
+                  secondaryColor: "#f7f3eb",
+                  tertiaryColor: "#ede7dc",
+                  lineColor: "#7a756c",
+                  textColor: "#2b2a27",
+                  clusterBkg: "#faf8f4",
+                  clusterBorder: "#d8d0c1",
+                  edgeLabelBackground: "#f3efe7"
+                }
+          });
+          boxes.forEach(function (item, idx) {
+            var id = "mmd-" + (++renderSeq) + "-" + idx;
+            mermaid.render(id, item.src).then(function (res) {
+              item.box.innerHTML = res.svg;
+            }).catch(function (err) {
+              console.error("Mermaid render failed:", err);
+              item.box.textContent = item.src;
+            });
+          });
+        };
+        renderAll();
+        if (window.MutationObserver) {
+          new MutationObserver(renderAll).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+          });
+        }
+        if (window.matchMedia) {
+          var mq = window.matchMedia("(prefers-color-scheme: dark)");
+          if (mq.addEventListener) mq.addEventListener("change", renderAll);
+        }
+      })
+      .catch(function (err) {
+        console.error("Mermaid load failed:", err);
+      });
+  }
 
   // highlight current heading in the outline
   var links = document.querySelectorAll(".outline a");

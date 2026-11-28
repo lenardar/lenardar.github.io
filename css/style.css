@@ -226,3 +226,8 @@ figure.highlight:hover .copy-btn{opacity:1}
 /* comments */
 .comments{margin-top:48px}
 .comments .utterances{max-width:100%}
+
+/* mermaid diagrams */
+.mermaid-box{margin:1.6em 0;padding:18px 14px;border:1px solid var(--line);border-radius:6px;background:var(--card);overflow-x:auto;text-align:center}
+.mermaid-box svg{max-width:100%;height:auto;display:inline-block}
+.mermaid-box .mermaid-source{margin:0;padding:0;background:none;text-align:left;font-size:13px;color:var(--muted)}
